@@ -34,7 +34,7 @@ name: Private repository CI runner
 # Capital allocation binds quality and dated ADV evidence to capped, residual-cash target weights.
 # Adaptive capital-risk pipeline binds selection, allocation, risk, and final research decision receipts. Re-run after canonical memory-status field correction.
 # Revalidation after duplicate-ID fixture correction and adaptive-memory status binding.
-# Paper runtime Decimal arithmetic is independent of ambient caller context.
+# Paper Decimal assertion aligned with fixed 50-digit arithmetic; exact-source rerun.
 
 on:
   push:
