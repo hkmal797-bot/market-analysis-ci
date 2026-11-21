@@ -237,3 +237,4 @@ jobs:
 # PR33 concurrency test now opens each SQLite connection in its owning thread.
 # PR33 normalizes nested code-object filenames to bind the same executor across Windows and POSIX paths.
 # PR33 retains only the non-secret Windows OS architecture variables needed for stable runtime identity.
+# PR33 explicitly closes the legacy SQLite fixture connection to avoid Windows file-lock leakage.
