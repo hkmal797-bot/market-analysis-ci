@@ -40,27 +40,6 @@ on:
     branches:
       - main
   workflow_dispatch:
-    inputs:
-      private_ref:
-        description: Private repository branch to test
-        required: true
-        type: choice
-        options:
-          - feature/adaptive-daily-supervisor-cycle-v1
-          - feature/adaptive-frozen-registry-enforcement-v1
-          - feature/cross-provider-ohlcv-parity-v1
-          - feature/portfolio-risk-governor-v1
-          - feature/adaptive-portfolio-risk-orchestration-v1
-          - feature/evidence-weighted-capital-allocation-v1
-          - feature/adaptive-capital-risk-pipeline-v1
-          - feature/adaptive-research-execution-v1
-          - feature/adaptive-walk-forward-robustness-v1
-          - feature/statistical-validity-anti-overfit-v1
-          - feature/immutable-research-trial-registry-v1
-          - feature/registry-first-experiment-launch-v1
-          - feature/spawned-research-execution-provenance-v1
-          - feature/trusted-executor-admission-gate-v1
-
 permissions:
   contents: read
 
