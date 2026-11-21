@@ -3,6 +3,7 @@ name: Private repository CI runner
 # Archive replay and live ingestion share one canonical content-identity digest.
 # Final candidate selection is validated against a separate untouched holdout.
 # Daily cycle tests enforce the configured seven-calendar-day latest-bar freshness bound.
+# Adaptive cycle tests bind selected decisions to append-only, linked prequential outcomes.
 # Insufficient holdout tests retain observed sample counts for auditability.
 
 on:
