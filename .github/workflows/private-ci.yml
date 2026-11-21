@@ -59,7 +59,7 @@ on:
           - feature/immutable-research-trial-registry-v1
           - feature/registry-first-experiment-launch-v1
           - feature/spawned-research-execution-provenance-v1
-          - feature/research-worker-containment-v1
+          - feature/os-process-containment-v2
 
 permissions:
   contents: read
@@ -79,7 +79,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ inputs.private_ref || 'feature/research-worker-containment-v1' }}
+          ref: ${{ inputs.private_ref || 'feature/os-process-containment-v2' }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -111,7 +111,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ inputs.private_ref || 'feature/research-worker-containment-v1' }}
+          ref: ${{ inputs.private_ref || 'feature/os-process-containment-v2' }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -238,3 +238,5 @@ jobs:
 # PR33 normalizes nested code-object filenames to bind the same executor across Windows and POSIX paths.
 # PR33 retains only the non-secret Windows OS architecture variables needed for stable runtime identity.
 # PR33 explicitly closes the legacy SQLite fixture connection to avoid Windows file-lock leakage.
+
+# PR34 adds fail-closed Windows Job Object process-tree containment and Linux no_new_privs/parent-death hardening; verify exact source SHA on both OS jobs.
