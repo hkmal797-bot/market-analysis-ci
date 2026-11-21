@@ -225,3 +225,5 @@ jobs:
 # PR30 rerun after correcting eager snapshot-tamper assertions; validate latest immutable trial registry head.
 
 # PR32 validates spawned-process isolation, worker timeout, source/bytecode identity and runtime binding on both operating systems.
+
+# PR32 rerun after provenance assertion cleanup; source head recorded in PR metadata.
