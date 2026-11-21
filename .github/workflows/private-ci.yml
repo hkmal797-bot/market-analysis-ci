@@ -64,6 +64,9 @@ on:
 permissions:
   contents: read
 
+env:
+  PRIVATE_SOURCE_SHA: '6dd27dece542a970b55ce80643fc1bee644fb051'
+
 concurrency:
   group: private-ci-${{ github.ref }}
   cancel-in-progress: false
@@ -79,7 +82,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ inputs.private_ref || 'feature/trusted-executor-admission-gate-v1' }}
+          ref: ${{ env.PRIVATE_SOURCE_SHA }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -87,7 +90,12 @@ jobs:
 
       - name: Record exact private source commit
         working-directory: private-source
-        run: git rev-parse HEAD
+        env:
+          EXPECTED_PRIVATE_SOURCE_SHA: ${{ env.PRIVATE_SOURCE_SHA }}
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "$EXPECTED_PRIVATE_SOURCE_SHA"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
 
       - name: Set up Python
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
@@ -167,7 +175,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ inputs.private_ref || 'feature/trusted-executor-admission-gate-v1' }}
+          ref: ${{ env.PRIVATE_SOURCE_SHA }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -175,7 +183,13 @@ jobs:
 
       - name: Record exact private source commit
         working-directory: private-source
-        run: git rev-parse HEAD
+        env:
+          EXPECTED_PRIVATE_SOURCE_SHA: ${{ env.PRIVATE_SOURCE_SHA }}
+        shell: pwsh
+        run: |
+          $actual = (git rev-parse HEAD).Trim()
+          if ($actual -ne $env:EXPECTED_PRIVATE_SOURCE_SHA) { throw "PRIVATE_SOURCE_SHA_MISMATCH" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
 
       - name: Set up Python
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
