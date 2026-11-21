@@ -233,3 +233,4 @@ jobs:
 # Re-run PR33 after final process-group cleanup and descendant teardown tests.
 # PR33 resource ceilings now accommodate bounded larger research workloads.
 # PR33 fixes unsealed trial return path and preserves safe worker exception class diagnostics.
+# PR33 exposes only allow-listed worker failure codes and strengthens concurrent startup assertions.
