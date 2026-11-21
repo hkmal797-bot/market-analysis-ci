@@ -37,6 +37,7 @@ name: Private repository CI runner
 # Seven-root quality validation added; exact-source cross-platform CI.
 # PR43 adds explicit root_scope and ordered symbols to five/seven-root quality receipts.
 # PR44 verifies opt-in Linux Landlock enforcement in the actual spawned worker.
+# PR44 rerun after adding the missing socket import to the adversarial worker test.
 
 on:
   push:
@@ -47,7 +48,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: 'bf1ce6495bee4339a6b0818cf3b971a9dd3a3254'
+  PRIVATE_SOURCE_SHA: '44b45e84cfdcd10d57324e967156ee841e8c920e'
 
 concurrency:
   group: private-ci-${{ github.ref }}
