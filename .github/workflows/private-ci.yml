@@ -26,6 +26,7 @@ name: Private repository CI runner
 # Positive daily returns are non-loss observations; risk thresholds may explicitly be zero.
 # Malformed risk assessment receipts are rejected without verifier exceptions.
 # The canonical receipt verifier guard remains inside its fail-closed exception boundary.
+# Adaptive orchestration joins verified strategy selection to complete portfolio risk approval.
 
 on:
   push:
@@ -42,6 +43,7 @@ on:
           - feature/adaptive-frozen-registry-enforcement-v1
           - feature/cross-provider-ohlcv-parity-v1
           - feature/portfolio-risk-governor-v1
+          - feature/adaptive-portfolio-risk-orchestration-v1
 
 permissions:
   contents: read
