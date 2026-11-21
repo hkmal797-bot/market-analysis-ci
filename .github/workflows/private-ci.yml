@@ -9,6 +9,7 @@ name: Private repository CI runner
 # Frozen out-of-time tests require a future-only append and a durable single-use reservation.
 # Registry integrity, retention gates and exclusion preflight are tested on both operating systems.
 # Frozen-registry tests explicitly close SQLite handles before Windows temp cleanup.
+# Frozen exclusions reject boundary labels and a missing registry cannot silently reset.
 # Insufficient holdout tests retain observed sample counts for auditability.
 
 on:
