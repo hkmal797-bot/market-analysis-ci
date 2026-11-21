@@ -20,6 +20,7 @@ name: Private repository CI runner
 # Insufficient holdout tests retain observed sample counts for auditability.
 # EODHD split endpoint ratios are parsed as unclassified observations until action type and listing mapping are independently resolved.
 # Split-adjustment consumers retain canonical record bytes and verify their SHA-256 before reconstruction.
+# The parity verifier replays the canonical split-evidence payload and checks its content digest.
 
 on:
   push:
