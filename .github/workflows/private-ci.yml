@@ -44,7 +44,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: 'ec4d5d10dd1032e08b1406bcec5e66b49f743c4d'
+  PRIVATE_SOURCE_SHA: '92d077967128da954c422e27b3dcfa46ed969c14'
 
 concurrency:
   group: private-ci-${{ github.ref }}
@@ -311,3 +311,5 @@ jobs:
 # PR36 requires explicit trusted-code acknowledgement before any research trial declaration or worker launch.
 # PR36 rerun after fixing the statistical test fixture acknowledgement; validate the exact updated source head.
 # Diagnostic-only probe of Linux user/mount/network namespaces and Windows AppContainer profile support; no executor is launched.
+
+# PR38: expected quota-block test output is captured and asserted without polluting operational CI diagnostics.
