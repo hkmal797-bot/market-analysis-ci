@@ -108,6 +108,47 @@ jobs:
             bwrap --unshare-user --unshare-pid --unshare-net --ro-bind /usr /usr --ro-bind /bin /bin --proc /proc --dev /dev /bin/true 2>&1
             echo "BWRAP_MINIMAL_PROBE_EXIT=$?"
           fi
+          python - <<'PY'
+          import ctypes, errno, os, subprocess, sys
+          code = r"""
+          import ctypes, errno, os
+          libc = ctypes.CDLL(None, use_errno=True)
+          class RulesetAttr(ctypes.Structure):
+              _fields_ = [("handled_access_fs", ctypes.c_uint64)]
+          # Landlock syscall numbers are 444/445/446 on supported Linux architectures.
+          abi = libc.syscall(444, 0, 0, 1)
+          print(f"LANDLOCK_ABI={abi}")
+          if abi < 1:
+              print(f"LANDLOCK_VERSION_PROBE_ERRNO={ctypes.get_errno()}")
+              raise SystemExit(0)
+          attr = RulesetAttr((1 << 2) | (1 << 3))  # READ_FILE | READ_DIR
+          fd = libc.syscall(444, ctypes.byref(attr), ctypes.sizeof(attr), 0)
+          if fd < 0:
+              print(f"LANDLOCK_CREATE_ERRNO={ctypes.get_errno()}")
+              raise SystemExit(0)
+          if libc.prctl(38, 1, 0, 0, 0) != 0:
+              print(f"LANDLOCK_NO_NEW_PRIVS_ERRNO={ctypes.get_errno()}")
+              os.close(fd)
+              raise SystemExit(0)
+          if libc.syscall(446, fd, 0) != 0:
+              print(f"LANDLOCK_RESTRICT_ERRNO={ctypes.get_errno()}")
+              os.close(fd)
+              raise SystemExit(0)
+          os.close(fd)
+          try:
+              os.open("/etc/hostname", os.O_RDONLY)
+          except OSError as exc:
+              print(f"LANDLOCK_READ_DENIAL_ERRNO={exc.errno}")
+              print(f"LANDLOCK_ENFORCEMENT_PROBE={'PASS' if exc.errno in (errno.EACCES, errno.EPERM) else 'FAIL'}")
+          else:
+              print("LANDLOCK_ENFORCEMENT_PROBE=FAIL")
+          """
+          p = subprocess.run([sys.executable, "-c", code], text=True, capture_output=True)
+          print(p.stdout, end="")
+          if p.stderr:
+              print(p.stderr, end="", file=sys.stderr)
+          print(f"LANDLOCK_PROBE_PROCESS_EXIT={p.returncode}")
+          PY
 
       - name: Run complete deterministic unit-test suite
         working-directory: private-source
