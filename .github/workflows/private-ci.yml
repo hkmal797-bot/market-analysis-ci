@@ -36,6 +36,7 @@ name: Private repository CI runner
 # Revalidation after duplicate-ID fixture correction and adaptive-memory status binding.
 # Seven-root quality validation added; exact-source cross-platform CI.
 # PR43 adds explicit root_scope and ordered symbols to five/seven-root quality receipts.
+# PR44 verifies opt-in Linux Landlock enforcement in the actual spawned worker.
 
 on:
   push:
@@ -46,7 +47,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '88b568b58192b50906f533b8cfcfd9f0fc2cc1a8'
+  PRIVATE_SOURCE_SHA: 'bf1ce6495bee4339a6b0818cf3b971a9dd3a3254'
 
 concurrency:
   group: private-ci-${{ github.ref }}
