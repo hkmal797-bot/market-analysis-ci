@@ -1,0 +1,127 @@
+name: Private repository CI runner
+
+on:
+  workflow_dispatch:
+    inputs:
+      private_ref:
+        description: Private repository branch to test
+        required: true
+        type: choice
+        options:
+          - feature/adaptive-daily-supervisor-cycle-v1
+
+permissions:
+  contents: read
+
+concurrency:
+  group: private-ci-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  unit-tests:
+    name: Standard-library unit tests (Ubuntu)
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout private source (read-only token; credentials not persisted)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: ${{ inputs.private_ref }}
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+
+      - name: Run complete deterministic unit-test suite
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests -v
+
+  windows-paper-safety:
+    name: Windows Paper safety and adaptive-cycle tests
+    if: github.ref == 'refs/heads/main'
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout private source (read-only token; credentials not persisted)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: ${{ inputs.private_ref }}
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+
+      - name: Install pinned Windows IANA time-zone database
+        run: python -m pip install --disable-pip-version-check tzdata==2026.6
+
+      - name: Run Windows Paper and adaptive safety tests
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        shell: pwsh
+        run: |
+          $patterns = @(
+            "test_paper_trading_v1.py",
+            "test_windows_paper_launcher.py",
+            "test_windows_paper_readonly_launcher.py",
+            "test_daily_backtest_v1.py",
+            "test_sma_trend_signal_v1.py",
+            "test_sma_walk_forward_v1.py",
+            "test_strategy_intelligence_lab_v1.py",
+            "test_strategy_language_v1.py",
+            "test_shadow_learning_v1.py",
+            "test_shadow_runner_v1.py",
+            "test_shadow_daily_cycle_v1.py",
+            "test_adaptive_strategy_supervisor_v1.py",
+            "test_adaptive_daily_cycle_v1.py",
+            "test_cross_provider_session_evidence_v1.py",
+            "test_eodhd_local_archive_recovery_cli.py",
+            "test_local_archive_media_v1.py",
+            "test_eodhd_free_seven_root_local_capture.py"
+          )
+          foreach ($pattern in $patterns) {
+            Write-Output "RUNNING_TEST_PATTERN=$pattern"
+            python -m unittest discover -s tests -p $pattern -v
+            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          }
+
+      - name: Parse PowerShell Paper launchers without executing API actions
+        working-directory: private-source
+        shell: pwsh
+        run: |
+          $scripts = @(
+            "scripts/run_paper_order_windows.ps1",
+            "scripts/run_paper_account_readonly_windows.ps1"
+          )
+          foreach ($scriptPath in $scripts) {
+            $tokens = $null
+            $errors = $null
+            [System.Management.Automation.Language.Parser]::ParseFile(
+              (Join-Path $PWD $scriptPath),
+              [ref]$tokens,
+              [ref]$errors
+            ) | Out-Null
+            if ($errors.Count -gt 0) {
+              $errors | Format-List | Out-String | Write-Error
+              exit 1
+            }
+          }
+          Write-Output "WINDOWS_PAPER_LAUNCHERS_SYNTAX=PASS"
+          Write-Output "NO_ORDER_EXECUTED=TRUE"
