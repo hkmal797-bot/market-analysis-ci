@@ -230,3 +230,4 @@ jobs:
 # PR32 rerun after provenance assertion cleanup; source head recorded in PR metadata.
 
 # PR33 worker containment: scrub inherited environment, apply POSIX limits, and terminate process-group descendants.
+# Re-run PR33 after final process-group cleanup and descendant teardown tests.
