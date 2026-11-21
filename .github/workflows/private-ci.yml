@@ -189,3 +189,4 @@ jobs:
 # PR26 session-date binding now uses the observed selector as-of date, not the requested calendar end date.
 # Print the exact private-source checkout SHA in both OS job logs for PR head binding.
 # PR26 now replays post-fill risk and verifies exact close holdings against upstream risk receipts.
+# PR26 latest source includes post-execution risk replay and append-only prequential memory continuity.
