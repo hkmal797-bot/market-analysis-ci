@@ -28,6 +28,7 @@ name: Private repository CI runner
 # The canonical receipt verifier guard remains inside its fail-closed exception boundary.
 # Adaptive orchestration joins verified strategy selection to complete portfolio risk approval.
 # Capital allocation binds quality and dated ADV evidence to capped, residual-cash target weights.
+# Adaptive capital-risk pipeline binds selection, allocation, risk, and final research decision receipts.
 # Revalidation after duplicate-ID fixture correction and adaptive-memory status binding.
 
 on:
@@ -47,6 +48,7 @@ on:
           - feature/portfolio-risk-governor-v1
           - feature/adaptive-portfolio-risk-orchestration-v1
           - feature/evidence-weighted-capital-allocation-v1
+          - feature/adaptive-capital-risk-pipeline-v1
 
 permissions:
   contents: read
@@ -134,6 +136,7 @@ jobs:
             "test_cross_provider_ohlcv_parity_v1.py",
             "test_portfolio_risk_governor_v1.py",
             "test_capital_allocator_v1.py",
+            "test_adaptive_capital_risk_pipeline_v1.py",
             "test_eodhd_local_archive_recovery_cli.py",
             "test_local_archive_media_v1.py",
             "test_eodhd_free_seven_root_local_capture.py"
