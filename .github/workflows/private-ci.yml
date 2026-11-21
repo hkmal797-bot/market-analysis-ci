@@ -215,3 +215,5 @@ jobs:
 
 # PR30 seals the exact multiple-testing candidate universe in a hash-chained append-only trial registry.
 # PR30 validation: exercise sealed trial registry persistence, chain integrity, and statistical binding on both OS jobs.
+
+# PR30 rerun after correcting eager snapshot-tamper assertions; validate latest immutable trial registry head.
