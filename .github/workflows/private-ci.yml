@@ -50,6 +50,7 @@ on:
           - feature/evidence-weighted-capital-allocation-v1
           - feature/adaptive-capital-risk-pipeline-v1
           - feature/adaptive-research-execution-v1
+          - feature/adaptive-walk-forward-robustness-v1
 
 permissions:
   contents: read
@@ -69,7 +70,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ inputs.private_ref || 'feature/adaptive-research-execution-v1' }}
+          ref: ${{ inputs.private_ref || 'feature/adaptive-walk-forward-robustness-v1' }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -101,7 +102,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ inputs.private_ref || 'feature/adaptive-research-execution-v1' }}
+          ref: ${{ inputs.private_ref || 'feature/adaptive-walk-forward-robustness-v1' }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -147,6 +148,7 @@ jobs:
             "test_capital_allocator_v1.py",
             "test_adaptive_capital_risk_pipeline_v1.py",
             "test_adaptive_research_execution_v1.py",
+            "test_adaptive_walk_forward_robustness_v1.py",
             "test_eodhd_local_archive_recovery_cli.py",
             "test_local_archive_media_v1.py",
             "test_eodhd_free_seven_root_local_capture.py"
@@ -198,3 +200,4 @@ jobs:
 # PR26 retains and replays blocked post-execution risk outcomes, cutting off later signals.
 # Windows job now checks out and records the same PR26 source branch as Ubuntu.
 # Final PR26 validation: both Ubuntu and Windows jobs checkout feature/adaptive-research-execution-v1 and print HEAD SHA.
+# PR27 adds adaptive walk-forward windows, fixed benchmark comparison, and 1.5x execution-cost sensitivity replay.
