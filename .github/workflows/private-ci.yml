@@ -58,6 +58,7 @@ on:
           - feature/statistical-validity-anti-overfit-v1
           - feature/immutable-research-trial-registry-v1
           - feature/registry-first-experiment-launch-v1
+          - feature/spawned-research-execution-provenance-v1
 
 permissions:
   contents: read
@@ -77,7 +78,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ inputs.private_ref || 'feature/registry-first-experiment-launch-v1' }}
+          ref: ${{ inputs.private_ref || 'feature/spawned-research-execution-provenance-v1' }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -109,7 +110,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ inputs.private_ref || 'feature/registry-first-experiment-launch-v1' }}
+          ref: ${{ inputs.private_ref || 'feature/spawned-research-execution-provenance-v1' }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -222,3 +223,5 @@ jobs:
 # PR30 validation: exercise sealed trial registry persistence, chain integrity, and statistical binding on both OS jobs.
 
 # PR30 rerun after correcting eager snapshot-tamper assertions; validate latest immutable trial registry head.
+
+# PR32 validates spawned-process isolation, worker timeout, source/bytecode identity and runtime binding on both operating systems.
