@@ -38,6 +38,7 @@ name: Private repository CI runner
 # PR43 adds explicit root_scope and ordered symbols to five/seven-root quality receipts.
 # PR44 verifies opt-in Linux Landlock enforcement in the actual spawned worker.
 # PR44 rerun after adding the missing socket import to the adversarial worker test.
+# PR45 wires seven-root raw-page quality validation into local capture and archives its digest.
 
 on:
   push:
@@ -48,7 +49,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '44b45e84cfdcd10d57324e967156ee841e8c920e'
+  PRIVATE_SOURCE_SHA: 'd0bd21c90d212e8bee632b306bc9a88ce0cdb3dd'
 
 concurrency:
   group: private-ci-${{ github.ref }}
