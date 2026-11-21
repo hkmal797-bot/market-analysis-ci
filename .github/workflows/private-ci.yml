@@ -234,3 +234,4 @@ jobs:
 # PR33 resource ceilings now accommodate bounded larger research workloads.
 # PR33 fixes unsealed trial return path and preserves safe worker exception class diagnostics.
 # PR33 exposes only allow-listed worker failure codes and strengthens concurrent startup assertions.
+# PR33 concurrency test now opens each SQLite connection in its owning thread.
