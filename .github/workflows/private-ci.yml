@@ -6,6 +6,7 @@ name: Private repository CI runner
 # Adaptive cycle tests bind selected decisions to append-only, linked prequential outcomes.
 # Shadow events use stable per-session fingerprints across extended historical replay.
 # Prequential records bind canonical event payloads, not shifting sequence hashes.
+# Frozen out-of-time tests require a future-only append and a durable single-use reservation.
 # Insufficient holdout tests retain observed sample counts for auditability.
 
 on:
@@ -102,6 +103,7 @@ jobs:
             "test_shadow_daily_cycle_v1.py",
             "test_adaptive_strategy_supervisor_v1.py",
             "test_adaptive_daily_cycle_v1.py",
+            "test_frozen_evaluation_v1.py",
             "test_cross_provider_session_evidence_v1.py",
             "test_eodhd_local_archive_recovery_cli.py",
             "test_local_archive_media_v1.py",
