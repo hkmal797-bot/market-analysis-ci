@@ -75,6 +75,10 @@ jobs:
           persist-credentials: false
           fetch-depth: 1
 
+      - name: Record exact private source commit
+        working-directory: private-source
+        run: git rev-parse HEAD
+
       - name: Set up Python
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
@@ -183,3 +187,4 @@ jobs:
 # PR26 source head revalidated after shadow status and chronology test refinements: 2026-11-21T13:20Z.
 # PR26 latest head includes higher-liquidity deterministic execution fixtures.
 # PR26 session-date binding now uses the observed selector as-of date, not the requested calendar end date.
+# Print the exact private-source checkout SHA in both OS job logs for PR head binding.
