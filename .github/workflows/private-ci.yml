@@ -18,6 +18,7 @@ name: Private repository CI runner
 # The verifier binds aggregate statuses and records non-equivalent IEX versus consolidated feed scope.
 # Historical SIP remains blocked by the tested account-specific 403; no SIP retry is performed.
 # Insufficient holdout tests retain observed sample counts for auditability.
+# EODHD split endpoint ratios are parsed as unclassified observations until action type and listing mapping are independently resolved.
 
 on:
   push:
