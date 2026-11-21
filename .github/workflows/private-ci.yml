@@ -22,6 +22,7 @@ name: Private repository CI runner
 # Split-adjustment consumers retain canonical record bytes and verify their SHA-256 before reconstruction.
 # The parity verifier replays the canonical split-evidence payload and checks its content digest.
 # Portfolio risk governance independently blocks concentration, turnover, drawdown and liquidity breaches.
+# Risk governor fixtures now model sector aggregation and incremental ADV consumption correctly.
 
 on:
   push:
