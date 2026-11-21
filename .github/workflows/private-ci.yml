@@ -4,6 +4,7 @@ name: Private repository CI runner
 # Final candidate selection is validated against a separate untouched holdout.
 # Daily cycle tests enforce the configured seven-calendar-day latest-bar freshness bound.
 # Adaptive cycle tests bind selected decisions to append-only, linked prequential outcomes.
+# Shadow events use stable per-session fingerprints across extended historical replay.
 # Insufficient holdout tests retain observed sample counts for auditability.
 
 on:
