@@ -44,7 +44,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '2585c9b92ac7a728cee3d6bbe34c2676e3336223'
+  PRIVATE_SOURCE_SHA: '42fd5e46c9cb9e288e0fb493cde22cd07f689b25'
 
 concurrency:
   group: private-ci-${{ github.ref }}
@@ -315,3 +315,5 @@ jobs:
 # PR38: expected quota-block test output is captured and asserted without polluting operational CI diagnostics.
 
 # PR40: seven-root bounded EODHD reference snapshot and exact five-root compatibility tests.
+
+# PR40 final revision: distinct five/seven-root provenance, exact receipt validation and clean adversarial quota diagnostics.
