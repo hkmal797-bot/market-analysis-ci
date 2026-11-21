@@ -51,6 +51,7 @@ on:
           - feature/adaptive-capital-risk-pipeline-v1
           - feature/adaptive-research-execution-v1
           - feature/adaptive-walk-forward-robustness-v1
+          - feature/statistical-validity-anti-overfit-v1
 
 permissions:
   contents: read
@@ -70,7 +71,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ inputs.private_ref || 'feature/adaptive-walk-forward-robustness-v1' }}
+          ref: ${{ inputs.private_ref || 'feature/statistical-validity-anti-overfit-v1' }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -102,7 +103,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ inputs.private_ref || 'feature/adaptive-walk-forward-robustness-v1' }}
+          ref: ${{ inputs.private_ref || 'feature/statistical-validity-anti-overfit-v1' }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -149,6 +150,7 @@ jobs:
             "test_adaptive_capital_risk_pipeline_v1.py",
             "test_adaptive_research_execution_v1.py",
             "test_adaptive_walk_forward_robustness_v1.py",
+            "test_statistical_validity_anti_overfit_v1.py",
             "test_eodhd_local_archive_recovery_cli.py",
             "test_local_archive_media_v1.py",
             "test_eodhd_free_seven_root_local_capture.py"
@@ -203,3 +205,4 @@ jobs:
 # PR27 adds adaptive walk-forward windows, fixed benchmark comparison, and 1.5x execution-cost sensitivity replay.
 # PR27 validation run: verify adaptive walk-forward fold integrity, benchmark parity, and cost-stress replay on Ubuntu and Windows.
 # PR27 fixes precise benchmark-universe validation; rerun both operating systems against the latest source SHA.
+# PR28 adds training-only candidate selection, Deflated Sharpe multiple-testing adjustment, and paired circular block-bootstrap OOS inference.
