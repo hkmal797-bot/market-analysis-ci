@@ -5,6 +5,7 @@ name: Private repository CI runner
 # Daily cycle tests enforce the configured seven-calendar-day latest-bar freshness bound.
 # Adaptive cycle tests bind selected decisions to append-only, linked prequential outcomes.
 # Shadow events use stable per-session fingerprints across extended historical replay.
+# Prequential records bind canonical event payloads, not shifting sequence hashes.
 # Insufficient holdout tests retain observed sample counts for auditability.
 
 on:
