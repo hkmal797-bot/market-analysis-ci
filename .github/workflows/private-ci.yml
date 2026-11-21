@@ -241,3 +241,4 @@ jobs:
 
 # PR34 adds fail-closed Windows Job Object process-tree containment and Linux no_new_privs/parent-death hardening; verify exact source SHA on both OS jobs.
 # PR34 rerun after correcting the Windows Job Object API integer signature and retaining safe exception-class diagnostics.
+# PR34 fixes Windows multiprocessing process-handle access via the spawned Popen object; rerun both platforms.
