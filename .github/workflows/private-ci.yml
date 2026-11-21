@@ -21,6 +21,7 @@ name: Private repository CI runner
 # EODHD split endpoint ratios are parsed as unclassified observations until action type and listing mapping are independently resolved.
 # Split-adjustment consumers retain canonical record bytes and verify their SHA-256 before reconstruction.
 # The parity verifier replays the canonical split-evidence payload and checks its content digest.
+# Portfolio risk governance independently blocks concentration, turnover, drawdown and liquidity breaches.
 
 on:
   push:
@@ -36,6 +37,7 @@ on:
           - feature/adaptive-daily-supervisor-cycle-v1
           - feature/adaptive-frozen-registry-enforcement-v1
           - feature/cross-provider-ohlcv-parity-v1
+          - feature/portfolio-risk-governor-v1
 
 permissions:
   contents: read
@@ -55,7 +57,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ inputs.private_ref || 'feature/cross-provider-ohlcv-parity-v1' }}
+          ref: ${{ inputs.private_ref || 'feature/portfolio-risk-governor-v1' }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -83,7 +85,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ inputs.private_ref || 'feature/cross-provider-ohlcv-parity-v1' }}
+          ref: ${{ inputs.private_ref || 'feature/portfolio-risk-governor-v1' }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -121,6 +123,7 @@ jobs:
             "test_frozen_evaluation_v1.py",
             "test_cross_provider_session_evidence_v1.py",
             "test_cross_provider_ohlcv_parity_v1.py",
+            "test_portfolio_risk_governor_v1.py",
             "test_eodhd_local_archive_recovery_cli.py",
             "test_local_archive_media_v1.py",
             "test_eodhd_free_seven_root_local_capture.py"
