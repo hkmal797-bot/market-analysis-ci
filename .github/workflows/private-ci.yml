@@ -206,3 +206,4 @@ jobs:
 # PR27 validation run: verify adaptive walk-forward fold integrity, benchmark parity, and cost-stress replay on Ubuntu and Windows.
 # PR27 fixes precise benchmark-universe validation; rerun both operating systems against the latest source SHA.
 # PR28 adds training-only candidate selection, Deflated Sharpe multiple-testing adjustment, and paired circular block-bootstrap OOS inference.
+# PR28 validation run: execute the exact statistical-validation source head on Ubuntu and Windows.
