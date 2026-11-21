@@ -10,6 +10,7 @@ name: Private repository CI runner
 # Registry integrity, retention gates and exclusion preflight are tested on both operating systems.
 # Registry-first launch tests prove declaration commit precedes execution and bind training calendars.
 # Re-run registry-first execution gates against the latest PR31 source head.
+# Final source revision includes strict event-type and snapshot-shape validation.
 # Frozen-registry tests explicitly close SQLite handles before Windows temp cleanup.
 # Frozen exclusions reject boundary labels and a missing registry cannot silently reset.
 # Provider-backed adaptive cycles require the durable registry and auto-load its exclusions.
