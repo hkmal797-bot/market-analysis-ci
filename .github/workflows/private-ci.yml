@@ -34,6 +34,7 @@ name: Private repository CI runner
 # Capital allocation binds quality and dated ADV evidence to capped, residual-cash target weights.
 # Adaptive capital-risk pipeline binds selection, allocation, risk, and final research decision receipts. Re-run after canonical memory-status field correction.
 # Revalidation after duplicate-ID fixture correction and adaptive-memory status binding.
+# Paper runtime Decimal arithmetic is independent of ambient caller context.
 
 on:
   push:
@@ -44,7 +45,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '42fd5e46c9cb9e288e0fb493cde22cd07f689b25'
+  PRIVATE_SOURCE_SHA: '8f2436704fc9e53d077a3848c7c58aaf1f09babb'
 
 concurrency:
   group: private-ci-${{ github.ref }}
