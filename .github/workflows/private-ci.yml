@@ -44,7 +44,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '92d077967128da954c422e27b3dcfa46ed969c14'
+  PRIVATE_SOURCE_SHA: '2585c9b92ac7a728cee3d6bbe34c2676e3336223'
 
 concurrency:
   group: private-ci-${{ github.ref }}
@@ -313,3 +313,5 @@ jobs:
 # Diagnostic-only probe of Linux user/mount/network namespaces and Windows AppContainer profile support; no executor is launched.
 
 # PR38: expected quota-block test output is captured and asserted without polluting operational CI diagnostics.
+
+# PR40: seven-root bounded EODHD reference snapshot and exact five-root compatibility tests.
