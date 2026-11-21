@@ -209,3 +209,4 @@ jobs:
 # PR28 validation run: execute the exact statistical-validation source head on Ubuntu and Windows.
 # PR28 rerun after replacing a fixture blocked by the upstream adaptive risk governor; source remains research-only.
 # PR28 validation after binding candidate identity to the adaptive selector, allocator, risk and execution policy fingerprint.
+# PR28 rerun: trial-count penalty test now holds the exact adaptive policy receipt constant while extending only the pre-registered trial ledger.
