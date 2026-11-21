@@ -236,3 +236,4 @@ jobs:
 # PR33 exposes only allow-listed worker failure codes and strengthens concurrent startup assertions.
 # PR33 concurrency test now opens each SQLite connection in its owning thread.
 # PR33 normalizes nested code-object filenames to bind the same executor across Windows and POSIX paths.
+# PR33 retains only the non-secret Windows OS architecture variables needed for stable runtime identity.
