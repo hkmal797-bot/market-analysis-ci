@@ -24,6 +24,7 @@ name: Private repository CI runner
 # Portfolio risk governance independently blocks concentration, turnover, drawdown and liquidity breaches.
 # Risk governor fixtures now model sector aggregation and incremental ADV consumption correctly.
 # Positive daily returns are non-loss observations; risk thresholds may explicitly be zero.
+# Malformed risk assessment receipts are rejected without verifier exceptions.
 
 on:
   push:
