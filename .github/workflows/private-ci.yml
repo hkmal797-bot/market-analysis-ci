@@ -101,7 +101,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ inputs.private_ref || 'feature/adaptive-capital-risk-pipeline-v1' }}
+          ref: ${{ inputs.private_ref || 'feature/adaptive-research-execution-v1' }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -192,3 +192,4 @@ jobs:
 # PR26 latest source includes post-execution risk replay and append-only prequential memory continuity.
 # PR26 fixture exposure reduced to preserve post-cost concentration headroom.
 # PR26 retains and replays blocked post-execution risk outcomes, cutting off later signals.
+# Windows job now checks out and records the same PR26 source branch as Ubuntu.
