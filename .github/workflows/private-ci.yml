@@ -14,6 +14,7 @@ name: Private repository CI runner
 # Cross-provider parity binds raw response hashes, adjustment bases and exact listing/session intersections.
 # Split-event fixture IDs use the canonical archive observation identifier format.
 # Canonical seven-root order and provider feed errors are asserted independently.
+# Split-event candidates outside the exact seven listing IDs are rejected.
 # Insufficient holdout tests retain observed sample counts for auditability.
 
 on:
