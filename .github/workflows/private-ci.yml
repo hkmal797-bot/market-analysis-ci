@@ -69,7 +69,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ inputs.private_ref || 'feature/adaptive-capital-risk-pipeline-v1' }}
+          ref: ${{ inputs.private_ref || 'feature/adaptive-research-execution-v1' }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -179,3 +179,4 @@ jobs:
 
 # PR25 adaptive capital risk pipeline rerun 2026-11-21T13:00Z
 # Adaptive research execution bridge binds chronological adaptive receipts to simulated state and next-session fills.
+# PR26 cross-platform validation target: feature/adaptive-research-execution-v1.
