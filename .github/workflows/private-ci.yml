@@ -174,3 +174,5 @@ jobs:
           }
           Write-Output "WINDOWS_PAPER_LAUNCHERS_SYNTAX=PASS"
           Write-Output "NO_ORDER_EXECUTED=TRUE"
+
+# PR25 adaptive capital risk pipeline rerun 2026-11-21T13:00Z
