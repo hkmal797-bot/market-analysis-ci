@@ -59,7 +59,7 @@ on:
           - feature/immutable-research-trial-registry-v1
           - feature/registry-first-experiment-launch-v1
           - feature/spawned-research-execution-provenance-v1
-          - feature/research-worker-job-cleanup-v1
+          - feature/trusted-executor-admission-gate-v1
 
 permissions:
   contents: read
@@ -79,7 +79,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ inputs.private_ref || 'feature/research-worker-job-cleanup-v1' }}
+          ref: ${{ inputs.private_ref || 'feature/trusted-executor-admission-gate-v1' }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -111,7 +111,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ inputs.private_ref || 'feature/research-worker-job-cleanup-v1' }}
+          ref: ${{ inputs.private_ref || 'feature/trusted-executor-admission-gate-v1' }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -244,3 +244,5 @@ jobs:
 # PR34 fixes Windows multiprocessing process-handle access via the spawned Popen object; rerun both platforms.
 
 # PR35 closes the Windows Job Object on every exit path and tests descendant cleanup after timeout.
+
+# PR36 requires explicit trusted-code acknowledgement before any research trial declaration or worker launch.
