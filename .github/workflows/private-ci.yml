@@ -1,5 +1,6 @@
 name: Private repository CI runner
 # Trusted main updates validate the allow-listed private feature branch on the public runner.
+# Archive replay and live ingestion share one canonical content-identity digest.
 
 on:
   push:
