@@ -13,6 +13,7 @@ name: Private repository CI runner
 # Provider-backed adaptive cycles require the durable registry and auto-load its exclusions.
 # Cross-provider parity binds raw response hashes, adjustment bases and exact listing/session intersections.
 # Split-event fixture IDs use the canonical archive observation identifier format.
+# Canonical seven-root order and provider feed errors are asserted independently.
 # Insufficient holdout tests retain observed sample counts for auditability.
 
 on:
