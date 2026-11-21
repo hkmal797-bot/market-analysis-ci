@@ -1,4 +1,5 @@
 name: Private repository CI runner
+# Trusted main updates validate the allow-listed private feature branch on the public runner.
 
 on:
   push:
