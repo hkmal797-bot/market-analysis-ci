@@ -23,6 +23,7 @@ name: Private repository CI runner
 # The parity verifier replays the canonical split-evidence payload and checks its content digest.
 # Portfolio risk governance independently blocks concentration, turnover, drawdown and liquidity breaches.
 # Risk governor fixtures now model sector aggregation and incremental ADV consumption correctly.
+# Positive daily returns are non-loss observations; risk thresholds may explicitly be zero.
 
 on:
   push:
