@@ -182,3 +182,4 @@ jobs:
 # PR26 cross-platform validation target: feature/adaptive-research-execution-v1.
 # PR26 source head revalidated after shadow status and chronology test refinements: 2026-11-21T13:20Z.
 # PR26 latest head includes higher-liquidity deterministic execution fixtures.
+# PR26 session-date binding now uses the observed selector as-of date, not the requested calendar end date.
