@@ -240,3 +240,4 @@ jobs:
 # PR33 explicitly closes the legacy SQLite fixture connection to avoid Windows file-lock leakage.
 
 # PR34 adds fail-closed Windows Job Object process-tree containment and Linux no_new_privs/parent-death hardening; verify exact source SHA on both OS jobs.
+# PR34 rerun after correcting the Windows Job Object API integer signature and retaining safe exception-class diagnostics.
