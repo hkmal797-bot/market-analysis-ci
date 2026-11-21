@@ -15,8 +15,8 @@ name: Private repository CI runner
 # Split-event fixture IDs use the canonical archive observation identifier format.
 # Canonical seven-root order and provider feed errors are asserted independently.
 # Split-event candidates outside the exact seven listing IDs are rejected.
-# The verifier binds aggregate statuses and records consolidated-feed methodology differences.
-# Historical SIP is used only with a conservative prior-UTC-date end guard.
+# The verifier binds aggregate statuses and records non-equivalent IEX versus consolidated feed scope.
+# Historical SIP remains blocked by the tested account-specific 403; no SIP retry is performed.
 # Insufficient holdout tests retain observed sample counts for auditability.
 
 on:
