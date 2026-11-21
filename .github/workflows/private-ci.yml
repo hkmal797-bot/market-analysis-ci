@@ -246,3 +246,4 @@ jobs:
 # PR35 closes the Windows Job Object on every exit path and tests descendant cleanup after timeout.
 
 # PR36 requires explicit trusted-code acknowledgement before any research trial declaration or worker launch.
+# PR36 rerun after fixing the statistical test fixture acknowledgement; validate the exact updated source head.
