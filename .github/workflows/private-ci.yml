@@ -28,6 +28,7 @@ name: Private repository CI runner
 # The canonical receipt verifier guard remains inside its fail-closed exception boundary.
 # Adaptive orchestration joins verified strategy selection to complete portfolio risk approval.
 # Capital allocation binds quality and dated ADV evidence to capped, residual-cash target weights.
+# Revalidation after duplicate-ID fixture correction and adaptive-memory status binding.
 
 on:
   push:
