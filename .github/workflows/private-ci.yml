@@ -52,6 +52,7 @@ on:
           - feature/adaptive-research-execution-v1
           - feature/adaptive-walk-forward-robustness-v1
           - feature/statistical-validity-anti-overfit-v1
+          - feature/immutable-research-trial-registry-v1
 
 permissions:
   contents: read
@@ -71,7 +72,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ inputs.private_ref || 'feature/statistical-validity-anti-overfit-v1' }}
+          ref: ${{ inputs.private_ref || 'feature/immutable-research-trial-registry-v1' }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -151,6 +152,7 @@ jobs:
             "test_adaptive_research_execution_v1.py",
             "test_adaptive_walk_forward_robustness_v1.py",
             "test_statistical_validity_anti_overfit_v1.py",
+            "test_research_trial_registry_v1.py",
             "test_eodhd_local_archive_recovery_cli.py",
             "test_local_archive_media_v1.py",
             "test_eodhd_free_seven_root_local_capture.py"
@@ -210,3 +212,6 @@ jobs:
 # PR28 rerun after replacing a fixture blocked by the upstream adaptive risk governor; source remains research-only.
 # PR28 validation after binding candidate identity to the adaptive selector, allocator, risk and execution policy fingerprint.
 # PR28 rerun: trial-count penalty test now holds the exact adaptive policy receipt constant while extending only the pre-registered trial ledger.
+
+# PR30 seals the exact multiple-testing candidate universe in a hash-chained append-only trial registry.
+# PR30 validation: exercise sealed trial registry persistence, chain integrity, and statistical binding on both OS jobs.
