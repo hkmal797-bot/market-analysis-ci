@@ -232,3 +232,4 @@ jobs:
 # PR33 worker containment: scrub inherited environment, apply POSIX limits, and terminate process-group descendants.
 # Re-run PR33 after final process-group cleanup and descendant teardown tests.
 # PR33 resource ceilings now accommodate bounded larger research workloads.
+# PR33 fixes unsealed trial return path and preserves safe worker exception class diagnostics.
