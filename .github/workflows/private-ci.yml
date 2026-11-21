@@ -35,6 +35,7 @@ name: Private repository CI runner
 # Adaptive capital-risk pipeline binds selection, allocation, risk, and final research decision receipts. Re-run after canonical memory-status field correction.
 # Revalidation after duplicate-ID fixture correction and adaptive-memory status binding.
 # Seven-root quality validation added; exact-source cross-platform CI.
+# PR43 adds explicit root_scope and ordered symbols to five/seven-root quality receipts.
 
 on:
   push:
@@ -45,7 +46,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '7bbf195a12d45bd82e213f346819c9ac0cb3fbce'
+  PRIVATE_SOURCE_SHA: '88b568b58192b50906f533b8cfcfd9f0fc2cc1a8'
 
 concurrency:
   group: private-ci-${{ github.ref }}
