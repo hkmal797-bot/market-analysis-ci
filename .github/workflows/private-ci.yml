@@ -144,18 +144,7 @@ jobs:
       - name: Probe Windows AppContainer primitives (diagnostic only)
         shell: pwsh
         run: |
-          $sig = @'
-          using System;
-          using System.Runtime.InteropServices;
-          public static class AppContainerProbe {
-            [DllImport("userenv.dll", CharSet=CharSet.Unicode)]
-            public static extern int CreateAppContainerProfile(string name, string displayName, string description, IntPtr capabilities, uint capabilityCount, out IntPtr sid);
-            [DllImport("userenv.dll", CharSet=CharSet.Unicode)]
-            public static extern int DeleteAppContainerProfile(string name);
-            [DllImport("kernel32.dll")]
-            public static extern IntPtr LocalFree(IntPtr memory);
-          }
-'@
+          $sig = 'using System;using System.Runtime.InteropServices;public static class AppContainerProbe{[DllImport("userenv.dll",CharSet=CharSet.Unicode)]public static extern int CreateAppContainerProfile(string name,string displayName,string description,IntPtr capabilities,uint capabilityCount,out IntPtr sid);[DllImport("userenv.dll",CharSet=CharSet.Unicode)]public static extern int DeleteAppContainerProfile(string name);[DllImport("kernel32.dll")]public static extern IntPtr LocalFree(IntPtr memory);}'
           Add-Type -TypeDefinition $sig
           $profile = "ChatGPTResearchProbe-" + [guid]::NewGuid().ToString("N")
           $sid = [IntPtr]::Zero
