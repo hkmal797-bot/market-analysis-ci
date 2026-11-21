@@ -201,3 +201,4 @@ jobs:
 # Windows job now checks out and records the same PR26 source branch as Ubuntu.
 # Final PR26 validation: both Ubuntu and Windows jobs checkout feature/adaptive-research-execution-v1 and print HEAD SHA.
 # PR27 adds adaptive walk-forward windows, fixed benchmark comparison, and 1.5x execution-cost sensitivity replay.
+# PR27 validation run: verify adaptive walk-forward fold integrity, benchmark parity, and cost-stress replay on Ubuntu and Windows.
