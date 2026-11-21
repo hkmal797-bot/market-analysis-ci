@@ -49,6 +49,7 @@ on:
           - feature/adaptive-portfolio-risk-orchestration-v1
           - feature/evidence-weighted-capital-allocation-v1
           - feature/adaptive-capital-risk-pipeline-v1
+          - feature/adaptive-research-execution-v1
 
 permissions:
   contents: read
@@ -137,6 +138,7 @@ jobs:
             "test_portfolio_risk_governor_v1.py",
             "test_capital_allocator_v1.py",
             "test_adaptive_capital_risk_pipeline_v1.py",
+            "test_adaptive_research_execution_v1.py",
             "test_eodhd_local_archive_recovery_cli.py",
             "test_local_archive_media_v1.py",
             "test_eodhd_free_seven_root_local_capture.py"
@@ -176,3 +178,4 @@ jobs:
           Write-Output "NO_ORDER_EXECUTED=TRUE"
 
 # PR25 adaptive capital risk pipeline rerun 2026-11-21T13:00Z
+# Adaptive research execution bridge binds chronological adaptive receipts to simulated state and next-session fills.
