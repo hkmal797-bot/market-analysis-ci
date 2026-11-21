@@ -15,6 +15,7 @@ name: Private repository CI runner
 # Split-event fixture IDs use the canonical archive observation identifier format.
 # Canonical seven-root order and provider feed errors are asserted independently.
 # Split-event candidates outside the exact seven listing IDs are rejected.
+# The verifier binds aggregate statuses and records the non-equivalent feed-scope limitation.
 # Insufficient holdout tests retain observed sample counts for auditability.
 
 on:
