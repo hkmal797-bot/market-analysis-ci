@@ -197,3 +197,4 @@ jobs:
 # PR26 fixture exposure reduced to preserve post-cost concentration headroom.
 # PR26 retains and replays blocked post-execution risk outcomes, cutting off later signals.
 # Windows job now checks out and records the same PR26 source branch as Ubuntu.
+# Final PR26 validation: both Ubuntu and Windows jobs checkout feature/adaptive-research-execution-v1 and print HEAD SHA.
