@@ -25,6 +25,7 @@ name: Private repository CI runner
 # Risk governor fixtures now model sector aggregation and incremental ADV consumption correctly.
 # Positive daily returns are non-loss observations; risk thresholds may explicitly be zero.
 # Malformed risk assessment receipts are rejected without verifier exceptions.
+# The canonical receipt verifier guard remains inside its fail-closed exception boundary.
 
 on:
   push:
