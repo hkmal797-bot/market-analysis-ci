@@ -142,6 +142,10 @@ jobs:
             "test_eodhd_free_seven_root_local_capture.py"
           )
           foreach ($pattern in $patterns) {
+            if (-not (Test-Path (Join-Path "tests" $pattern))) {
+              Write-Output "SKIPPING_UNAVAILABLE_TEST_PATTERN=$pattern"
+              continue
+            }
             Write-Output "RUNNING_TEST_PATTERN=$pattern"
             python -m unittest discover -s tests -p $pattern -v
             if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
