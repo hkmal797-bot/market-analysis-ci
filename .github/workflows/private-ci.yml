@@ -191,3 +191,4 @@ jobs:
 # PR26 now replays post-fill risk and verifies exact close holdings against upstream risk receipts.
 # PR26 latest source includes post-execution risk replay and append-only prequential memory continuity.
 # PR26 fixture exposure reduced to preserve post-cost concentration headroom.
+# PR26 retains and replays blocked post-execution risk outcomes, cutting off later signals.
