@@ -74,6 +74,9 @@ on:
   push:
     branches:
       - main
+  pull_request:
+    branches:
+      - main
   workflow_dispatch:
 permissions:
   contents: read
@@ -88,7 +91,7 @@ concurrency:
 jobs:
   unit-tests:
     name: Standard-library unit tests (Ubuntu)
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -181,7 +184,7 @@ jobs:
 
   windows-paper-safety:
     name: Windows Paper safety and adaptive-cycle tests
-    if: github.ref == 'refs/heads/main'
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
