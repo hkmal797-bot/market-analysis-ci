@@ -44,6 +44,7 @@ name: Private repository CI runner
 # PR24 final cross-platform validation passed; 256-candidate workload cap and one-pass sector aggregation.
 # PR25 refreshed stack passed CI #110 on Ubuntu and Windows; exact source SHA verified in both logs.
 # PR26 refreshed head: validates adaptive research execution on top of the refreshed PR25 pipeline.
+# PR27 refreshed head: walk-forward robustness now descends from the exact refreshed PR26 source SHA.
 
 on:
   push:
@@ -54,7 +55,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '72800475325a80d47783e36318327a97f6e4f482'
+  PRIVATE_SOURCE_SHA: '68ff39751a26e3338aa26919a15efe63366daed3'
 
 concurrency:
   group: private-ci-${{ github.ref }}
