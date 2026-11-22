@@ -68,6 +68,7 @@ name: Private repository CI runner
 # PR62 gates seven-root local capture on exact daily/action-page quality receipts and persists their digest.
 # PR63 binds canonical opt-in Landlock allowlists into immutable trial provenance and replay identity.
 # PR64 blocks Paper reconciliation when fill or non-trade activity windows are incomplete.
+# PR69 performs volume-identity preflight through existing ancestors before any destination directory creation.
 # PR63 retry: Linux-only policy-binding execution test is now correctly skipped on Windows.
 
 on:
@@ -83,7 +84,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '3f8aeb30d5d9cf450f21fb69d9e5c58b83f9c478'
+  PRIVATE_SOURCE_SHA: '5fd9eea41d11b4688b5062a13dbbe793b625f1c3'
 
 concurrency:
   group: private-ci-${{ github.ref }}
