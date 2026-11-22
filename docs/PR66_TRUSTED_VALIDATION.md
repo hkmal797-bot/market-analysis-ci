@@ -57,7 +57,7 @@ External CI is test evidence only. It does not certify provider authenticity, da
 The trusted validation branch now pins the follow-on archive-preflight correction:
 
 - Source repository PR: [PR69](https://github.com/hkmal797-bot/market-analysis-system/pull/69)
-- Exact source head: `5fd9eea41d11b4688b5062a13dbbe793b625f1c3`
+- Exact source head: `589f9005628686f4d8ecfa6ef5d264d4ff0b5bd1`
 - PR69 base is the unchanged PR68 head `3f8aeb30d5d9cf450f21fb69d9e5c58b83f9c478`.
 - PR69 changes only the archive recovery CLI and its CLI tests.
 - The source native CI was triggered on both push and pull-request events but still failed before steps; external trusted CI is being used for exact-source test evidence.
@@ -65,7 +65,7 @@ The trusted validation branch now pins the follow-on archive-preflight correctio
 
 PR69 defect and correction:
 - Previously, backup and restore created missing destination parent directories before the filesystem-separation check. A failed check could therefore leave empty directories behind.
-- The CLI now resolves each path's nearest existing ancestor and checks filesystem identity before creating any destination parent.
+- The CLI now resolves each path's nearest existing ancestor and checks filesystem identity before creating any destination parent. Missing ancestors are walked upward only for explicit not-found conditions; permission and I/O errors fail closed instead of being mistaken for missing paths.
 - Regression tests cover missing nested destination paths and assert that failed backup/restore volume preflight leaves destination directories absent.
 
-The PR69 validation run is pending at the time this document is authored. No PR69 test pass is claimed until both Ubuntu and Windows jobs complete and both logs verify the exact SHA above.
+An earlier intermediate PR69 revision was tested by external runs #153/#154, but those runs target the superseded head and do not count as evidence for the current revision. The final current-head validation is pending. No PR69 test pass is claimed until both Ubuntu and Windows jobs complete and both logs verify the exact SHA above.
