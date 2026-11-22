@@ -101,3 +101,18 @@ Windows reported 27 test-pattern invocations and 383 total executions across tho
 - Windows Paper/adaptive safety job: all 27 distinct test-pattern invocations completed successfully; EODHD archive CLI module ran once (21 tests) and local archive media module ran once (8 tests). Windows launcher syntax: `WINDOWS_PAPER_LAUNCHERS_SYNTAX=PASS`; `NO_ORDER_EXECUTED=TRUE`.
 - PR70 removes only duplicate invocations; no distinct test module was removed. No runtime, broker, Paper, or Live code changed.
 - Source repository native CI remains blocked before test execution by runner allocation/provisioning failure; root cause UNKNOWN. This external run is exact-source evidence, not native CI repair.
+
+
+---
+
+## Follow-on PR71 exact-source validation — in progress
+
+- Source repository PR: [market-analysis-system PR71](https://github.com/hkmal797-bot/market-analysis-system/pull/71)
+- Exact private source SHA pinned for this validation: `c1d5915637528c946e3ca2c4005958302350c5e2`.
+- PR71 is based directly on PR70 head `699c7ec8eb988d2e6ac3569d00bbd2ced2f27308`.
+- Scope is one documentation file only: append-only evidence addendum for PR69 and PR70. No runtime, workflow, broker, Paper, or Live source changes.
+- Trusted validation workflow was updated on this dedicated branch to pin the exact PR71 SHA in commit `6db73ae8c37f86a8d59a130927964a65ac536cc9`.
+- The workflow change triggers a fresh push validation. This section must be updated with the resulting run ID, both OS conclusions, exact-SHA proof, and safety markers before PR71 can be described as externally validated.
+- Do not reuse PR70 run #167 or any earlier run for PR71.
+- Default `main` remains unchanged and pinned to PR67. PR1 remains a separate validation-only PR; no merge or main-branch promotion is performed.
+- Acceptance requires Ubuntu and Windows to pass on the exact PR71 SHA, both logs to prove the same SHA, Windows launcher syntax to pass, and `NO_ORDER_EXECUTED=TRUE`. Native source CI status remains a separate unresolved issue.
