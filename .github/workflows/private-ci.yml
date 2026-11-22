@@ -39,6 +39,7 @@ name: Private repository CI runner
 # PR44 verifies opt-in Linux Landlock enforcement in the actual spawned worker.
 # PR44 rerun after adding the missing socket import to the adversarial worker test.
 # PR45 wires seven-root raw-page quality validation into local capture and archives its digest.
+# PR45 Windows cleanup fix: close the read-only SQLite receipt-verification connection explicitly.
 
 on:
   push:
@@ -49,7 +50,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: 'd0bd21c90d212e8bee632b306bc9a88ce0cdb3dd'
+  PRIVATE_SOURCE_SHA: '0e7dd487013846e9b3c2b64c3a3547ecd55f33fe'
 
 concurrency:
   group: private-ci-${{ github.ref }}
