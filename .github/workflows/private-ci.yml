@@ -56,6 +56,7 @@ name: Private repository CI runner
 # PR50 adds POSIX worker environment scrubbing, bounded resource limits, and process-group descendant cleanup.
 # PR51 adds Linux no_new_privs/parent-death hardening and fail-closed Windows Job Object process-tree containment.
 # PR52 validates Windows Job Object descendant cleanup after executor timeout and every exit path.
+# PR53 adds explicit trusted-code admission before executor fingerprinting, declaration, or worker startup.
 
 on:
   push:
@@ -66,7 +67,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '44dbaf4d06a91e0812902f6ad39d5d23606e21e7'
+  PRIVATE_SOURCE_SHA: '9d35b29064fa377b14812369219158aa966d1fe4'
 
 concurrency:
   group: private-ci-${{ github.ref }}
