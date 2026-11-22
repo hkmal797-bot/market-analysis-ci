@@ -78,3 +78,14 @@ The final current-head validation completed successfully in [run #159](https://g
 - Linux direct Landlock enforcement probe passed in the Ubuntu job.
 
 Windows reported 27 test-pattern invocations and 383 total executions across those invocations; this is not a count of 383 unique tests. Run #159 is the exact-head validation result; the earlier intermediate PR69 runs #153/#154 remain superseded and are not used as evidence.
+
+
+## Follow-on PR70 exact-source validation
+
+- Source repository PR: [PR70](https://github.com/hkmal797-bot/market-analysis-system/pull/70)
+- Exact source head: `699c7ec8eb988d2e6ac3569d00bbd2ced2f27308`
+- PR70 is based directly on PR69 head `589f9005628686f4d8ecfa6ef5d264d4ff0b5bd1`.
+- The workflow-only change removes two repeated Windows steps: a second invocation of `test_eodhd_local_archive_recovery_cli.py` and a second invocation of `test_local_archive_media_v1.py`. One invocation of each distinct test module remains.
+- No runtime, broker, Paper, or Live code changed. No orders executed.
+- Trusted branch workflow pin updated to the exact PR70 source SHA; default `main` remains pinned to PR67.
+- Accept only fresh Ubuntu and Windows runs whose logs prove the exact SHA above, both jobs pass, launcher syntax passes, and `NO_ORDER_EXECUTED=TRUE` is present. Pending fresh run evidence; do not reuse PR69 results for PR70.
