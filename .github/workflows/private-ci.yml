@@ -59,6 +59,7 @@ name: Private repository CI runner
 # PR53 adds explicit trusted-code admission before executor fingerprinting, declaration, or worker startup.
 # PR54 adds standalone Landlock rules with file-only execute grants; not integrated into the worker.
 # PR55 captures and asserts expected EODHD quota-block diagnostics in tests without leaking test tokens.
+# PR56 aligns README provider evidence and explicitly states that Landlock remains unintegrated.
 
 on:
   push:
@@ -69,7 +70,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '1faee77248fe5c4da04bd1616481bfd2848a6618'
+  PRIVATE_SOURCE_SHA: '59c163b2ddf66646fbabe3a68659976b52ec290a'
 
 concurrency:
   group: private-ci-${{ github.ref }}
