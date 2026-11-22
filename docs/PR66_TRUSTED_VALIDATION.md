@@ -117,10 +117,16 @@ Windows reported 27 test-pattern invocations and 383 total executions across tho
 - No PR70 or PR67 test result was reused for PR71. This is external exact-pin CI evidence only; native source CI remains a separate unresolved runner-allocation issue.
 - Default `main` remains unchanged and pinned to PR67. PR1 remains separate; no merge or main-branch promotion was performed.
 
-## Follow-on PR72 exact-source validation — pending
+## Follow-on PR72 exact-source validation — PASS
 
 - Source PR: [market-analysis-system PR72](https://github.com/hkmal797-bot/market-analysis-system/pull/72)
-- Exact source SHA: `289f1fe4fa88c7cf123e745648e9b25c0f267035`, based on PR71 head `c1d5915637528c946e3ca2c4005958302350c5e2`.
-- Change scope: archive volume preflight only. It resolves existing symlinks before choosing the volume anchor and passes canonical anchors to Windows BitLocker inspection.
-- New adversarial regressions cover an existing file symlink, a missing destination beneath a symlinked parent, and canonical paths passed to the Windows media inspector.
-- A fresh exact-SHA run is required. PR71 run #171 is not evidence for PR72.
+- Final exact source SHA: `7b2a267148c3e402cd56d9511ca8752db808cf79`, based on PR71 head `c1d5915637528c946e3ca2c4005958302350c5e2`. This includes the follow-up test-fixture correction; the earlier intermediate SHA `289f1fe4fa88c7cf123e745648e9b25c0f267035` is superseded and is not the validated revision.
+- The source change resolves existing symlinks before selecting the physical-volume anchor, resolves existing symlink ancestors for missing destinations without creating directories, and passes canonical anchors to the Windows media inspector.
+- Adversarial coverage includes existing file symlinks, missing destinations beneath symlinked parents without side effects, canonical Windows inspector arguments, and fail-closed inaccessible-ancestor handling.
+- Trusted workflow commit: `20291350a73fd0b9ef99f2c333446ce7054b7c16`; both jobs checked out the exact SHA above and ran a `git rev-parse HEAD` equality assertion against the pinned expected SHA.
+- External PR-triggered run [#179](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45054792783): Ubuntu and Windows jobs both completed SUCCESS.
+- Ubuntu full deterministic suite: 1,765 tests, `OK (skipped=9)`.
+- Windows Paper/adaptive safety test step: SUCCESS; Windows PowerShell Paper launcher syntax: `WINDOWS_PAPER_LAUNCHERS_SYNTAX=PASS`; safety marker: `NO_ORDER_EXECUTED=TRUE`.
+- The complete raw Ubuntu and Windows job logs were inspected. Both logs independently show the same checkout SHA and expected SHA. No previous PR71/PR70 test result was reused.
+- PR72 remains OPEN and Draft, unmerged, with its original base branch unchanged. No source PR was merged, no default branch was promoted, and no broker order was executed.
+- This is external exact-source test evidence only. Native source CI's earlier runner-allocation/provisioning failure remains a separate unresolved issue; its root cause is still UNKNOWN.
