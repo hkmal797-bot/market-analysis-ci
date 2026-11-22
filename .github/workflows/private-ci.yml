@@ -79,7 +79,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '33569b2725042819115625f802efea82d7fa0329'
+  PRIVATE_SOURCE_SHA: '43a734e0562e83a7f7fb6246c372ab1dbf028c8c'
 
 concurrency:
   group: private-ci-${{ github.ref }}
@@ -328,6 +328,7 @@ jobs:
 # PR64 adds complete fill/non-trade reconciliation evidence and strict reconciliation acceptance.
 # PR65 adds external HMAC archive checkpoint and preserves strict encrypted-media gating.
 # PR65 refresh: validate checkpoint-key syntax before OS media probes; keep both gates ahead of destination creation.
+# PR65 tests now provide valid keys when asserting the independent encrypted-media gate.
 
 # PR33 worker containment: scrub inherited environment, apply POSIX limits, and terminate process-group descendants.
 # Re-run PR33 after final process-group cleanup and descendant teardown tests.
