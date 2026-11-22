@@ -66,6 +66,7 @@ name: Private repository CI runner
 # PR60 binds exact FIVE_ROOT_LEGACY/SEVEN_ROOT scope and ordered symbols into quality receipts.
 # PR61 adds opt-in Landlock to the spawned worker; file-only execute paths, single-thread fail-closed check.
 # PR62 gates seven-root local capture on exact daily/action-page quality receipts and persists their digest.
+# PR63 binds canonical opt-in Landlock allowlists into immutable trial provenance and replay identity.
 
 on:
   push:
@@ -76,7 +77,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: 'a9475e06776260c1a7ba6809e84c8571f5492827'
+  PRIVATE_SOURCE_SHA: 'c7b3dc0cb2885a981fb3476ff070af5ae2e59ac6'
 
 concurrency:
   group: private-ci-${{ github.ref }}
