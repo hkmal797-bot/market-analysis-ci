@@ -105,14 +105,22 @@ Windows reported 27 test-pattern invocations and 383 total executions across tho
 
 ---
 
-## Follow-on PR71 exact-source validation — in progress
+## Follow-on PR71 exact-source validation — PASS
 
 - Source repository PR: [market-analysis-system PR71](https://github.com/hkmal797-bot/market-analysis-system/pull/71)
-- Exact private source SHA pinned for this validation: `c1d5915637528c946e3ca2c4005958302350c5e2`.
-- PR71 is based directly on PR70 head `699c7ec8eb988d2e6ac3569d00bbd2ced2f27308`.
-- Scope is one documentation file only: append-only evidence addendum for PR69 and PR70. No runtime, workflow, broker, Paper, or Live source changes.
-- Trusted validation workflow was updated on this dedicated branch to pin the exact PR71 SHA in commit `6db73ae8c37f86a8d59a130927964a65ac536cc9`.
-- The workflow change triggers a fresh push validation. This section must be updated with the resulting run ID, both OS conclusions, exact-SHA proof, and safety markers before PR71 can be described as externally validated.
-- Do not reuse PR70 run #167 or any earlier run for PR71.
-- Default `main` remains unchanged and pinned to PR67. PR1 remains a separate validation-only PR; no merge or main-branch promotion is performed.
-- Acceptance requires Ubuntu and Windows to pass on the exact PR71 SHA, both logs to prove the same SHA, Windows launcher syntax to pass, and `NO_ORDER_EXECUTED=TRUE`. Native source CI status remains a separate unresolved issue.
+- Exact private source SHA pinned by the workflow at its run commit: `c1d5915637528c946e3ca2c4005958302350c5e2`.
+- PR71 is based directly on PR70 head `699c7ec8eb988d2e6ac3569d00bbd2ced2f27308`; it changes one documentation file only.
+- Trusted workflow commit: `6db73ae8c37f86a8d59a130927964a65ac536cc9`. The run-time checkout step uses the pinned SHA, and the following shell step compares `git rev-parse HEAD` to the expected SHA and exits nonzero on mismatch.
+- External PR-triggered run [#171](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45052646289): overall SUCCESS; Ubuntu and Windows jobs both completed SUCCESS.
+- Ubuntu full deterministic test-suite step: SUCCESS. Windows Paper/adaptive safety test step: SUCCESS. PowerShell launcher syntax step: SUCCESS; the step also emits `WINDOWS_PAPER_LAUNCHERS_SYNTAX=PASS` and `NO_ORDER_EXECUTED=TRUE`.
+- The workflow log-download endpoint was unavailable through the connected GitHub interface during this inspection; the run's job/step conclusions and the immutable workflow pin/equality assertion are available. Do not represent the raw log text as independently inspected.
+- No PR70 or PR67 test result was reused for PR71. This is external exact-pin CI evidence only; native source CI remains a separate unresolved runner-allocation issue.
+- Default `main` remains unchanged and pinned to PR67. PR1 remains separate; no merge or main-branch promotion was performed.
+
+## Follow-on PR72 exact-source validation — pending
+
+- Source PR: [market-analysis-system PR72](https://github.com/hkmal797-bot/market-analysis-system/pull/72)
+- Exact source SHA: `289f1fe4fa88c7cf123e745648e9b25c0f267035`, based on PR71 head `c1d5915637528c946e3ca2c4005958302350c5e2`.
+- Change scope: archive volume preflight only. It resolves existing symlinks before choosing the volume anchor and passes canonical anchors to Windows BitLocker inspection.
+- New adversarial regressions cover an existing file symlink, a missing destination beneath a symlinked parent, and canonical paths passed to the Windows media inspector.
+- A fresh exact-SHA run is required. PR71 run #171 is not evidence for PR72.
