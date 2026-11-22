@@ -53,6 +53,7 @@ name: Private repository CI runner
 # PR48 regression fix: prioritize duplicate-ID rejection and anchor temporal leakage on the first realized evaluation return.
 # PR48 Windows cleanup: explicitly close read-only SQLite observer and legacy-schema fixture connections.
 # PR49 adds spawned-process executor identity/runtime provenance on the corrected registry-first base.
+# PR50 adds POSIX worker environment scrubbing, bounded resource limits, and process-group descendant cleanup.
 
 on:
   push:
@@ -63,7 +64,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: 'dcb854131171ea8bff6257c3f852cfbd83969995'
+  PRIVATE_SOURCE_SHA: '302557794c7940bf850db012d65a0e504450affe'
 
 concurrency:
   group: private-ci-${{ github.ref }}
