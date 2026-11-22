@@ -67,6 +67,7 @@ name: Private repository CI runner
 # PR61 adds opt-in Landlock to the spawned worker; file-only execute paths, single-thread fail-closed check.
 # PR62 gates seven-root local capture on exact daily/action-page quality receipts and persists their digest.
 # PR63 binds canonical opt-in Landlock allowlists into immutable trial provenance and replay identity.
+# PR64 blocks Paper reconciliation when fill or non-trade activity windows are incomplete.
 # PR63 retry: Linux-only policy-binding execution test is now correctly skipped on Windows.
 
 on:
@@ -78,7 +79,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: 'ea6203d3e1e9da5459eb5dfc5b52e63b7ea16551'
+  PRIVATE_SOURCE_SHA: '3d057412d51560db99ab939b94056502f019a5d6'
 
 concurrency:
   group: private-ci-${{ github.ref }}
