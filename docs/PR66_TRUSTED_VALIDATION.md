@@ -50,3 +50,22 @@ External run [#146](https://github.com/hkmal797-bot/market-analysis-ci/actions/r
 Accept a run only when both OS jobs complete successfully, both logs prove the same exact expected source SHA, all required integration tests execute, Windows launcher parsing passes, and `NO_ORDER_EXECUTED=TRUE` is present. Missing logs, missing SHA proof, skipped jobs, startup failures or incomplete jobs are not PASS.
 
 External CI is test evidence only. It does not certify provider authenticity, data rights, profitability, Paper activation, broker order authorization, production readiness or Live authorization. The source PR stack remains subject to its separate governance and approval gates.
+
+
+## Follow-on PR69 exact-source validation
+
+The trusted validation branch now pins the follow-on archive-preflight correction:
+
+- Source repository PR: [PR69](https://github.com/hkmal797-bot/market-analysis-system/pull/69)
+- Exact source head: `5fd9eea41d11b4688b5062a13dbbe793b625f1c3`
+- PR69 base is the unchanged PR68 head `3f8aeb30d5d9cf450f21fb69d9e5c58b83f9c478`.
+- PR69 changes only the archive recovery CLI and its CLI tests.
+- The source native CI was triggered on both push and pull-request events but still failed before steps; external trusted CI is being used for exact-source test evidence.
+- Workflow blob and source pin must be checked in the run logs before accepting any result.
+
+PR69 defect and correction:
+- Previously, backup and restore created missing destination parent directories before the filesystem-separation check. A failed check could therefore leave empty directories behind.
+- The CLI now resolves each path's nearest existing ancestor and checks filesystem identity before creating any destination parent.
+- Regression tests cover missing nested destination paths and assert that failed backup/restore volume preflight leaves destination directories absent.
+
+The PR69 validation run is pending at the time this document is authored. No PR69 test pass is claimed until both Ubuntu and Windows jobs complete and both logs verify the exact SHA above.
