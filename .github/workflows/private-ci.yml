@@ -58,6 +58,7 @@ name: Private repository CI runner
 # PR52 validates Windows Job Object descendant cleanup after executor timeout and every exit path.
 # PR53 adds explicit trusted-code admission before executor fingerprinting, declaration, or worker startup.
 # PR54 adds standalone Landlock rules with file-only execute grants; not integrated into the worker.
+# PR55 captures and asserts expected EODHD quota-block diagnostics in tests without leaking test tokens.
 
 on:
   push:
@@ -68,7 +69,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '7cfdc2556b062a423c2b4d7e7d14bc5ceafbe803'
+  PRIVATE_SOURCE_SHA: '1faee77248fe5c4da04bd1616481bfd2848a6618'
 
 concurrency:
   group: private-ci-${{ github.ref }}
