@@ -74,6 +74,7 @@ on:
   push:
     branches:
       - main
+      - validation/pr66-trusted-ci-observability
   pull_request:
     branches:
       - main
@@ -82,7 +83,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: 'ed8ab27dfe4dd2c43f5005b5f709f834fc3008b9'
+  PRIVATE_SOURCE_SHA: '3f8aeb30d5d9cf450f21fb69d9e5c58b83f9c478'
 
 concurrency:
   group: private-ci-${{ github.ref }}
@@ -91,7 +92,7 @@ concurrency:
 jobs:
   unit-tests:
     name: Standard-library unit tests (Ubuntu)
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'push' && github.ref == 'refs/heads/validation/pr66-trusted-ci-observability') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -184,7 +185,7 @@ jobs:
 
   windows-paper-safety:
     name: Windows Paper safety and adaptive-cycle tests
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'push' && github.ref == 'refs/heads/validation/pr66-trusted-ci-observability') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
