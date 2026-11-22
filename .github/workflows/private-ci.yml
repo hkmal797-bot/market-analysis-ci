@@ -79,7 +79,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '43a734e0562e83a7f7fb6246c372ab1dbf028c8c'
+  PRIVATE_SOURCE_SHA: 'ed8ab27dfe4dd2c43f5005b5f709f834fc3008b9'
 
 concurrency:
   group: private-ci-${{ github.ref }}
@@ -255,6 +255,7 @@ jobs:
             "test_capital_allocator_v1.py",
             "test_adaptive_capital_risk_pipeline_v1.py",
             "test_adaptive_research_execution_v1.py",
+            "test_system_research_to_paper_integration_v1.py",
             "test_adaptive_walk_forward_robustness_v1.py",
             "test_statistical_validity_anti_overfit_v1.py",
             "test_research_trial_registry_v1.py",
