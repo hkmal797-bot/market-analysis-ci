@@ -42,7 +42,8 @@ name: Private repository CI runner
 # PR45 Windows cleanup fix: close the read-only SQLite receipt-verification connection explicitly.
 # PR46 binds the opt-in worker Landlock policy into immutable registry trial provenance.
 # PR24 final cross-platform validation passed; 256-candidate workload cap and one-pass sector aggregation.
-# PR25 rebased by merge-preserving the updated PR24 head; exact refreshed pipeline SHA is validated below.
+# PR25 refreshed stack passed CI #110 on Ubuntu and Windows; exact source SHA verified in both logs.
+# PR26 refreshed head: validates adaptive research execution on top of the refreshed PR25 pipeline.
 
 on:
   push:
@@ -53,7 +54,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '83412b3ff3f49c1d023c0cba85541af456256e36'
+  PRIVATE_SOURCE_SHA: '72800475325a80d47783e36318327a97f6e4f482'
 
 concurrency:
   group: private-ci-${{ github.ref }}
