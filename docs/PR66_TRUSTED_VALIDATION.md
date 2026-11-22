@@ -89,3 +89,15 @@ Windows reported 27 test-pattern invocations and 383 total executions across tho
 - No runtime, broker, Paper, or Live code changed. No orders executed.
 - Trusted branch workflow pin updated to the exact PR70 source SHA; default `main` remains pinned to PR67.
 - Accept only fresh Ubuntu and Windows runs whose logs prove the exact SHA above, both jobs pass, launcher syntax passes, and `NO_ORDER_EXECUTED=TRUE` is present. Pending fresh run evidence; do not reuse PR69 results for PR70.
+
+
+## PR70 exact-source validation — completed
+
+- Source PR: [market-analysis-system PR70](https://github.com/hkmal797-bot/market-analysis-system/pull/70)
+- Exact source SHA: `699c7ec8eb988d2e6ac3569d00bbd2ced2f27308`
+- External PR-triggered run [#167](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45046883622): Ubuntu and Windows jobs both PASS.
+- Both job logs verify checkout of the exact immutable PR70 SHA. Windows reports `PRIVATE_SOURCE_SHA_VERIFIED=699c7ec8eb988d2e6ac3569d00bbd2ced2f27308`.
+- Ubuntu full deterministic suite: 1,762 tests, `OK (skipped=9)`.
+- Windows Paper/adaptive safety job: all 27 distinct test-pattern invocations completed successfully; EODHD archive CLI module ran once (21 tests) and local archive media module ran once (8 tests). Windows launcher syntax: `WINDOWS_PAPER_LAUNCHERS_SYNTAX=PASS`; `NO_ORDER_EXECUTED=TRUE`.
+- PR70 removes only duplicate invocations; no distinct test module was removed. No runtime, broker, Paper, or Live code changed.
+- Source repository native CI remains blocked before test execution by runner allocation/provisioning failure; root cause UNKNOWN. This external run is exact-source evidence, not native CI repair.
