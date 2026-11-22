@@ -79,7 +79,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '3d057412d51560db99ab939b94056502f019a5d6'
+  PRIVATE_SOURCE_SHA: 'c9fa27e1bc03672615acb591015db0d9018c9ce9'
 
 concurrency:
   group: private-ci-${{ github.ref }}
@@ -325,7 +325,8 @@ jobs:
 
 # PR32 validates spawned-process isolation, worker timeout, source/bytecode identity and runtime binding on both operating systems.
 
-# PR32 rerun after provenance assertion cleanup; source head recorded in PR metadata.
+# PR64 adds complete fill/non-trade reconciliation evidence and strict reconciliation acceptance.
+# PR65 adds external HMAC archive checkpoint and preserves strict encrypted-media gating.
 
 # PR33 worker containment: scrub inherited environment, apply POSIX limits, and terminate process-group descendants.
 # Re-run PR33 after final process-group cleanup and descendant teardown tests.
