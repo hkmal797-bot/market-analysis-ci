@@ -46,6 +46,7 @@ name: Private repository CI runner
 # PR26 refreshed head: validates adaptive research execution on top of the refreshed PR25 pipeline.
 # PR27 refreshed head: walk-forward robustness now descends from the exact refreshed PR26 source SHA.
 # PR28 refreshed head: statistical validity now descends from the refreshed PR27 walk-forward stack.
+# PR28 correction: exclude the initial equity valuation anchor from statistical return samples; revalidate exact corrected source.
 
 on:
   push:
@@ -56,7 +57,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '7ea51234957bc563114cd0d09a5ccb741bbcace0'
+  PRIVATE_SOURCE_SHA: 'ef830c5f8a1a5e50f417db6d7784840197d0fa6f'
 
 concurrency:
   group: private-ci-${{ github.ref }}
