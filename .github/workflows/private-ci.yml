@@ -65,6 +65,7 @@ name: Private repository CI runner
 # PR59 requires UTC-normalized receipt timestamps for exact seven-root corporate-action quality batches.
 # PR60 binds exact FIVE_ROOT_LEGACY/SEVEN_ROOT scope and ordered symbols into quality receipts.
 # PR61 adds opt-in Landlock to the spawned worker; file-only execute paths, single-thread fail-closed check.
+# PR62 gates seven-root local capture on exact daily/action-page quality receipts and persists their digest.
 
 on:
   push:
@@ -75,7 +76,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '9b4ac07ef0143018da412f3347c28998730982b1'
+  PRIVATE_SOURCE_SHA: 'a9475e06776260c1a7ba6809e84c8571f5492827'
 
 concurrency:
   group: private-ci-${{ github.ref }}
