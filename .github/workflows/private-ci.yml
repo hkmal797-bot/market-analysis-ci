@@ -61,6 +61,7 @@ name: Private repository CI runner
 # PR55 captures and asserts expected EODHD quota-block diagnostics in tests without leaking test tokens.
 # PR56 aligns README provider evidence and explicitly states that Landlock remains unintegrated.
 # PR57 extends the bounded unresolved EODHD reference snapshot from the legacy five roots to the exact seven-root set.
+# PR58 makes Paper portfolio/risk accounting independent of ambient Decimal context.
 
 on:
   push:
@@ -71,7 +72,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: 'a0b662b9fc04910e912ad7316862576a658b1ee8'
+  PRIVATE_SOURCE_SHA: 'a754fcf0afe6c52c5167fb3f45dae4f75b76c091'
 
 concurrency:
   group: private-ci-${{ github.ref }}
