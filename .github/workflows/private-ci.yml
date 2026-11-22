@@ -41,7 +41,8 @@ name: Private repository CI runner
 # PR45 wires seven-root raw-page quality validation into local capture and archives its digest.
 # PR45 Windows cleanup fix: close the read-only SQLite receipt-verification connection explicitly.
 # PR46 binds the opt-in worker Landlock policy into immutable registry trial provenance.
-# PR24 first cross-platform validation passed; this rerun adds a 256-candidate bound and efficient sector aggregation.
+# PR24 final cross-platform validation passed; 256-candidate workload cap and one-pass sector aggregation.
+# PR25 rebased by merge-preserving the updated PR24 head; exact refreshed pipeline SHA is validated below.
 
 on:
   push:
@@ -52,7 +53,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: 'e2cf71b790840d47d8adf06f949c50bcb0a4a9f3'
+  PRIVATE_SOURCE_SHA: '83412b3ff3f49c1d023c0cba85541af456256e36'
 
 concurrency:
   group: private-ci-${{ github.ref }}
