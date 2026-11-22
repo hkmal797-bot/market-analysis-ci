@@ -49,6 +49,7 @@ name: Private repository CI runner
 # PR28 correction: exclude the initial equity valuation anchor from statistical return samples; revalidate exact corrected source.
 # PR28 regression correction: temporal-leakage test now targets the first realized evaluation return date, not the pre-return valuation anchor.
 # PR48 refresh: registry-first declaration-before-execution is rebased on PR47 and retains initial-anchor exclusion.
+# PR48 correction: return the just-completed trial without requiring a sealed snapshot; SQLite concurrency fixture owns its connection per thread.
 
 on:
   push:
@@ -59,7 +60,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: 'a282191c43bdf89d57b2dc6fb6ac1213750317bb'
+  PRIVATE_SOURCE_SHA: '52b41838af478910ecc9720f9eccba57ba9e4320'
 
 concurrency:
   group: private-ci-${{ github.ref }}
