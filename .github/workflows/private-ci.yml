@@ -63,6 +63,7 @@ name: Private repository CI runner
 # PR57 extends the bounded unresolved EODHD reference snapshot from the legacy five roots to the exact seven-root set.
 # PR58 makes Paper portfolio/risk accounting independent of ambient Decimal context.
 # PR59 requires UTC-normalized receipt timestamps for exact seven-root corporate-action quality batches.
+# PR60 binds exact FIVE_ROOT_LEGACY/SEVEN_ROOT scope and ordered symbols into quality receipts.
 
 on:
   push:
@@ -73,7 +74,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: 'faedfcc7ccba2c191147fa21e304fbf8d0c7603e'
+  PRIVATE_SOURCE_SHA: '036fef7a41f632f3bd8ee0baad44067c26b306a6'
 
 concurrency:
   group: private-ci-${{ github.ref }}
