@@ -1,4 +1,4 @@
-# Trusted external CI validation — PR68 exact source pin
+# Trusted external CI validation — PR68 / PR69 exact-source evidence
 
 The private-source workflow in this separate repository validates one exact immutable source revision. The dedicated validation branch and the default branch intentionally have different source pins; never infer which source was tested from branch names alone.
 
@@ -6,11 +6,11 @@ The private-source workflow in this separate repository validates one exact immu
 
 - Repository: `hkmal797-bot/market-analysis-ci`
 - Branch: `validation/pr66-trusted-ci-observability`
-- Workflow blob SHA: `4e29ea8da9db9408c4a8689de93d21518f270408`
-- Private source pin: PR68 head `3f8aeb30d5d9cf450f21fb69d9e5c58b83f9c478`
+- Workflow blob SHA: `9822ba9e801b33d51c7e9c0679cea5ec947b3aea`
+- Current private source pin: PR69 head `589f9005628686f4d8ecfa6ef5d264d4ff0b5bd1`
 - Dedicated push trigger is restricted to this exact branch.
 - The branch was synchronized with `main` commit `1738d4f4041d7adeb6428732f50da2d7a337dfe6` by merge commit `b7e7017c802c930f90b36f9d014275d374abfa90`, preserving the PR68 workflow tree. The branch is now ahead of `main` with zero commits behind; PR1 remains open and unmerged.
-- Default branch `main` still pins PR67 source SHA `58ded9fa67ba9cb7c512e4642868060e3ca41f07`; PR68 validation remains on this dedicated branch and has not been promoted to `main`.
+- Default branch `main` still pins PR67 source SHA `58ded9fa67ba9cb7c512e4642868060e3ca41f07`; PR68/PR69 follow-on validation remains on this dedicated branch and has not been promoted to `main`.
 
 ## Exact PR68 external validation evidence
 
