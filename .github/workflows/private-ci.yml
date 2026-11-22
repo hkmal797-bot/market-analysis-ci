@@ -62,6 +62,7 @@ name: Private repository CI runner
 # PR56 aligns README provider evidence and explicitly states that Landlock remains unintegrated.
 # PR57 extends the bounded unresolved EODHD reference snapshot from the legacy five roots to the exact seven-root set.
 # PR58 makes Paper portfolio/risk accounting independent of ambient Decimal context.
+# PR59 requires UTC-normalized receipt timestamps for exact seven-root corporate-action quality batches.
 
 on:
   push:
@@ -72,7 +73,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: 'a754fcf0afe6c52c5167fb3f45dae4f75b76c091'
+  PRIVATE_SOURCE_SHA: 'faedfcc7ccba2c191147fa21e304fbf8d0c7603e'
 
 concurrency:
   group: private-ci-${{ github.ref }}
