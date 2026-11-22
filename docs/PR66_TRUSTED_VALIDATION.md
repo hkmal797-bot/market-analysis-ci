@@ -68,4 +68,13 @@ PR69 defect and correction:
 - The CLI now resolves each path's nearest existing ancestor and checks filesystem identity before creating any destination parent. Missing ancestors are walked upward only for explicit not-found conditions; permission and I/O errors fail closed instead of being mistaken for missing paths.
 - Regression tests cover missing nested destination paths and assert that failed backup/restore volume preflight leaves destination directories absent.
 
-An earlier intermediate PR69 revision was tested by external runs #153/#154, but those runs target the superseded head and do not count as evidence for the current revision. The final current-head validation is pending. No PR69 test pass is claimed until both Ubuntu and Windows jobs complete and both logs verify the exact SHA above.
+The final current-head validation completed successfully in [run #159](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45039190136). Both Ubuntu and Windows logs independently verify exact source SHA `589f9005628686f4d8ecfa6ef5d264d4ff0b5bd1`.
+
+- Ubuntu: full suite completed; `OK (skipped=9)`.
+- Windows: Paper/adaptive safety suite completed; `OK (skipped=9)`.
+- All four new archive-preflight regression tests passed on both OSes.
+- Windows launcher parsing: `WINDOWS_PAPER_LAUNCHERS_SYNTAX=PASS`.
+- Safety marker: `NO_ORDER_EXECUTED=TRUE`.
+- Linux direct Landlock enforcement probe passed in the Ubuntu job.
+
+Windows reported 27 test-pattern invocations and 383 total executions across those invocations; this is not a count of 383 unique tests. Run #159 is the exact-head validation result; the earlier intermediate PR69 runs #153/#154 remain superseded and are not used as evidence.
