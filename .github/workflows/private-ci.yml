@@ -57,6 +57,7 @@ name: Private repository CI runner
 # PR51 adds Linux no_new_privs/parent-death hardening and fail-closed Windows Job Object process-tree containment.
 # PR52 validates Windows Job Object descendant cleanup after executor timeout and every exit path.
 # PR53 adds explicit trusted-code admission before executor fingerprinting, declaration, or worker startup.
+# PR54 adds standalone Landlock rules with file-only execute grants; not integrated into the worker.
 
 on:
   push:
@@ -67,7 +68,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '9d35b29064fa377b14812369219158aa966d1fe4'
+  PRIVATE_SOURCE_SHA: '7cfdc2556b062a423c2b4d7e7d14bc5ceafbe803'
 
 concurrency:
   group: private-ci-${{ github.ref }}
