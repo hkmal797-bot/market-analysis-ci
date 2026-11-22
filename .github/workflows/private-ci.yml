@@ -51,6 +51,7 @@ name: Private repository CI runner
 # PR48 refresh: registry-first declaration-before-execution is rebased on PR47 and retains initial-anchor exclusion.
 # PR48 correction: return the just-completed trial without requiring a sealed snapshot; SQLite concurrency fixture owns its connection per thread.
 # PR48 regression fix: prioritize duplicate-ID rejection and anchor temporal leakage on the first realized evaluation return.
+# PR48 Windows cleanup: explicitly close read-only SQLite observer and legacy-schema fixture connections.
 
 on:
   push:
@@ -61,7 +62,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: 'c72a2f88558ae7415ecffc3935b50a426879ca71'
+  PRIVATE_SOURCE_SHA: '2e736de8e7c78822c75182a06ada79b65c1db7dd'
 
 concurrency:
   group: private-ci-${{ github.ref }}
