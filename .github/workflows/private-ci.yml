@@ -60,6 +60,7 @@ name: Private repository CI runner
 # PR54 adds standalone Landlock rules with file-only execute grants; not integrated into the worker.
 # PR55 captures and asserts expected EODHD quota-block diagnostics in tests without leaking test tokens.
 # PR56 aligns README provider evidence and explicitly states that Landlock remains unintegrated.
+# PR57 extends the bounded unresolved EODHD reference snapshot from the legacy five roots to the exact seven-root set.
 
 on:
   push:
@@ -70,7 +71,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '59c163b2ddf66646fbabe3a68659976b52ec290a'
+  PRIVATE_SOURCE_SHA: 'a0b662b9fc04910e912ad7316862576a658b1ee8'
 
 concurrency:
   group: private-ci-${{ github.ref }}
