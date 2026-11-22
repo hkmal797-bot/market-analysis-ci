@@ -54,6 +54,7 @@ name: Private repository CI runner
 # PR48 Windows cleanup: explicitly close read-only SQLite observer and legacy-schema fixture connections.
 # PR49 adds spawned-process executor identity/runtime provenance on the corrected registry-first base.
 # PR50 adds POSIX worker environment scrubbing, bounded resource limits, and process-group descendant cleanup.
+# PR51 adds Linux no_new_privs/parent-death hardening and fail-closed Windows Job Object process-tree containment.
 
 on:
   push:
@@ -64,7 +65,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '302557794c7940bf850db012d65a0e504450affe'
+  PRIVATE_SOURCE_SHA: '44603ad9fe749459b420dcbb6e69b7f1ea1e6347'
 
 concurrency:
   group: private-ci-${{ github.ref }}
