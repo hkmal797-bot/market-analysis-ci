@@ -101,3 +101,14 @@ is pending; it is not accepted until both operating-system jobs pass and
 verify the exact source SHA.
 
 The PR83 candidate was extended with an explicit API-boundary note: manifest-only verification checks self-contained structure and hash consistency, while full upstream freeze/plan/decision reconstruction requires the complete envelope object. The exact finalized source head is now `8d407d8a497c378f8dddea461348dcfc39ef239f`; its cross-platform validation is pending.
+
+
+## PR83 Windows raw-byte checkout correction
+
+The first Windows validation of the PR83 branch exposed a pre-existing
+checkout normalization issue in SEC raw archive files. The branch did not
+inherit the raw-file attribute rule introduced separately in PR88. PR83 now
+includes `.gitattributes` with `data/**/raw/** -text`, preserving the exact
+archived bytes on Windows. The new immutable source pin is
+`26b90bcfb3cfdaedcbbcd2b68f47df12a2160819`; both OS jobs must pass on this
+head before PR83 validation is accepted.
