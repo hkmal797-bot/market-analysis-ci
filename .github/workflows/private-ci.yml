@@ -76,6 +76,7 @@ name: Private repository CI runner
 # Validate the stacked seven-root full-window calendar audit source head on Ubuntu and Windows.
 # Re-run after correcting the requested-window fixture across every root.
 # Validate seven-root freeze/calendar evidence binding against the exact stacked source head.
+# Validate unified four-gate evidence snapshot against the exact source commit.
 
 on:
   push:
@@ -95,7 +96,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || '71362964282bfbc205fadd76450f1f38b9d3dc5a' }}
+  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || 'd058c2b45b1b01f51829f6ed9f0cc390b58ebc90' }}
 
 concurrency:
   group: private-ci-${{ github.ref }}
