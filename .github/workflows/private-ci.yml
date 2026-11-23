@@ -75,6 +75,7 @@ name: Private repository CI runner
 # Manual dispatch accepts an explicit immutable private-source SHA for reusable exact-source validation.
 # Validate the stacked seven-root full-window calendar audit source head on Ubuntu and Windows.
 # Re-run after correcting the requested-window fixture across every root.
+# Validate seven-root freeze/calendar evidence binding against the exact stacked source head.
 
 on:
   push:
@@ -94,7 +95,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || '7d8ed16c8fda8c569a50d035fdde88309d4475ab' }}
+  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || '71362964282bfbc205fadd76450f1f38b9d3dc5a' }}
 
 concurrency:
   group: private-ci-${{ github.ref }}
