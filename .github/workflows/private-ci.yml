@@ -95,9 +95,9 @@ jobs:
       fail-fast: false
       matrix:
         source:
-          - name: eight-arm-evidence-stack
-            sha: 88b8c9119c53c3f42d60c047d42e0532cc36cc38
-          - name: strategy-robustness
+          - name: integrated-evidence-admission-robustness
+            sha: 78ba3898ae4a520ec8d0dcdf6f8bac38c8f9627e
+          - name: standalone-robustness-matrix
             sha: f4fd39dc368482e5367ceaa424d1a111a56d22f8
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -211,9 +211,9 @@ jobs:
       fail-fast: false
       matrix:
         source:
-          - name: eight-arm-evidence-stack
-            sha: 88b8c9119c53c3f42d60c047d42e0532cc36cc38
-          - name: strategy-robustness
+          - name: integrated-evidence-admission-robustness
+            sha: 78ba3898ae4a520ec8d0dcdf6f8bac38c8f9627e
+          - name: standalone-robustness-matrix
             sha: f4fd39dc368482e5367ceaa424d1a111a56d22f8
     runs-on: windows-latest
     timeout-minutes: 20
@@ -408,5 +408,5 @@ jobs:
 # PR40 final revision: distinct five/seven-root provenance, exact receipt validation and clean adversarial quota diagnostics.
 # Validate bounded EODHD post-capture quota settlement retry on the exact private source head.
 
-# PR82-PR84: validate the eight-arm data evidence, exact research-admission envelope, and parallel strategy robustness stack on Windows.
+# PR82-PR90: validate the integrated eight-arm evidence/admission/robustness stack and standalone robustness branch in parallel on both operating systems.
 # Parallel immutable source matrix validates the PR82/83/89 evidence stack and PR88 robustness stack on both operating systems.
