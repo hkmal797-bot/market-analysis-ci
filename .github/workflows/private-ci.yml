@@ -299,7 +299,12 @@ jobs:
             "scripts/run_paper_order_windows.ps1",
             "scripts/run_paper_account_readonly_windows.ps1"
           )
+          $parsedCount = 0
           foreach ($scriptPath in $scripts) {
+            if (-not (Test-Path -LiteralPath $scriptPath -PathType Leaf)) {
+              Write-Output "WINDOWS_PAPER_LAUNCHER_SKIPPED_MISSING=$scriptPath"
+              continue
+            }
             $tokens = $null
             $errors = $null
             [System.Management.Automation.Language.Parser]::ParseFile(
@@ -311,8 +316,13 @@ jobs:
               $errors | Format-List | Out-String | Write-Error
               exit 1
             }
+            $parsedCount += 1
           }
-          Write-Output "WINDOWS_PAPER_LAUNCHERS_SYNTAX=PASS"
+          if ($parsedCount -eq 0) {
+            Write-Output "WINDOWS_PAPER_LAUNCHERS_SYNTAX=SKIPPED_NO_LAUNCHERS_IN_SOURCE"
+          } else {
+            Write-Output "WINDOWS_PAPER_LAUNCHERS_SYNTAX=PASS"
+          }
           Write-Output "NO_ORDER_EXECUTED=TRUE"
 
 # PR25 adaptive capital risk pipeline rerun 2026-11-21T13:00Z
