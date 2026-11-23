@@ -154,3 +154,18 @@ Windows reported 27 test-pattern invocations and 383 total executions across tho
 - Windows Paper/adaptive safety suite: 30 research-trial-registry tests and 24 archive-recovery CLI tests passed, plus the remaining configured safety patterns; archive backup and restore fixtures emitted PASS. Windows launcher parsing emitted `WINDOWS_PAPER_LAUNCHERS_SYNTAX=PASS`; safety marker: `NO_ORDER_EXECUTED=TRUE`.
 - No source code or source PR changed in this workflow enhancement. PR73 remains OPEN and Draft, unmerged. No broker order was executed and Live remains disabled.
 - Evidence boundary: the workflow's manual-dispatch configuration is committed and read back, but end-to-end dispatch with a caller-supplied SHA remains unverified. Native source CI runner-allocation failure remains a separate unresolved issue.
+
+
+
+## Follow-on PR75 exact-source validation — PASS
+
+- Source PR: [market-analysis-system PR75](https://github.com/hkmal797-bot/market-analysis-system/pull/75)
+- Exact private source SHA: `7d8ed16c8fda8c569a50d035fdde88309d4475ab`; PR75 is stacked directly on PR74 head `12dbbaccf541a13f637abbf230fb99d43116feea`.
+- PR75 adds the seven-root calendar batch audit and its focused tests; it remains OPEN and Draft, unmerged.
+- Trusted external run [#192](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45099244390): Ubuntu and Windows jobs both completed SUCCESS.
+- Both complete raw job logs were inspected. Each independently checks out the exact source SHA above and emits `PRIVATE_SOURCE_SHA_VERIFIED=7d8ed16c8fda8c569a50d035fdde88309d4475ab`.
+- Ubuntu full deterministic suite: 1,778 tests, `OK (skipped=9)`.
+- Windows Paper/adaptive safety job: SUCCESS; the focused archive-recovery and local-capture patterns passed. Windows launcher parsing emitted `WINDOWS_PAPER_LAUNCHERS_SYNTAX=PASS`; safety marker: `NO_ORDER_EXECUTED=TRUE`.
+- The run is exact-source external test evidence only. It does not establish source-provider authenticity, venue/identity verification, calendar certification, data rights, research-data acceptance, profitability, production readiness, or Live authorization.
+- Native source CI run [#177?](https://github.com/hkmal797-bot/market-analysis-system/actions) is a separate failure; its cause and execution boundary must be assessed from its own job metadata/logs. External CI does not repair native CI.
+- PR75 remains based on PR74; PR74 and PR75 are both OPEN and Draft. No merge, promotion, broker order, or Live enablement occurred.
