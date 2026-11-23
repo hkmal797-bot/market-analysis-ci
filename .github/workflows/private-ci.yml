@@ -97,9 +97,9 @@ jobs:
       fail-fast: false
       matrix:
         source:
-          - name: integrated-admission-diagnostic-bundle
-            sha: 93957c5cf8b197860a960ec6de5d00c940f222ed
-          - name: standalone-robustness-matrix
+          - name: detached-ledger-manifest-verifier
+            sha: 8c2fecd61f6acb154539f8bfa6509cf9b0c53014
+          - name: append-only-ledger-control
             sha: 8780937ba25477419d28c1e8fb1286b29be8b9ea
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -213,9 +213,9 @@ jobs:
       fail-fast: false
       matrix:
         source:
-          - name: integrated-admission-diagnostic-bundle
-            sha: 93957c5cf8b197860a960ec6de5d00c940f222ed
-          - name: standalone-robustness-matrix
+          - name: detached-ledger-manifest-verifier
+            sha: 8c2fecd61f6acb154539f8bfa6509cf9b0c53014
+          - name: append-only-ledger-control
             sha: 8780937ba25477419d28c1e8fb1286b29be8b9ea
     runs-on: windows-latest
     timeout-minutes: 20
@@ -410,5 +410,5 @@ jobs:
 # PR40 final revision: distinct five/seven-root provenance, exact receipt validation and clean adversarial quota diagnostics.
 # Validate bounded EODHD post-capture quota settlement retry on the exact private source head.
 
-# PR91 validates the append-only diagnostic ledger on the integrated PR90 evidence/admission/robustness stack; PR90 remains the control source.
-# Parallel immutable source matrix validates PR91 ledger integration and PR90 control source on both operating systems.
+# PR92 validates detached ledger-manifest verification on PR91; PR91 is the append-only-ledger control source.
+# Parallel immutable source matrix validates detached-ledger verification and its PR91 append-only control on both operating systems.
