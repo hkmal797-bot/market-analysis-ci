@@ -11,3 +11,5 @@
 - Revalidated source head: 76db224af83b4c24aeb2092a1eac0a0a4691f56b.
 
 - Latest corrected source SHA: 87fa0694968a4bfbd8f67ddaa7222ff12ef09321.
+
+- Windows launcher parser now skips only absent launchers and validates any present file.
