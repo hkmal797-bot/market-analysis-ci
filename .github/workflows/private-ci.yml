@@ -192,8 +192,8 @@ jobs:
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
           if [ -z "${TIGRIS_ACCESS_KEY_ID:-}" ] || [ -z "${TIGRIS_SECRET_ACCESS_KEY:-}" ]; then
-            echo "TIGRIS_RAW_CONTENT_PROBE=SKIPPED_REQUIRED_SECRETS_UNAVAILABLE"
-            exit 0
+            echo "TIGRIS_RAW_CONTENT_PROBE=BLOCKED_REQUIRED_CREDENTIALS_UNAVAILABLE" >&2
+            exit 2
           fi
           python scripts/tigris_raw_content_probe.py
 
