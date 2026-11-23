@@ -100,7 +100,7 @@ jobs:
           - name: detached-ledger-manifest-verifier
             sha: 8c2fecd61f6acb154539f8bfa6509cf9b0c53014
           - name: append-only-ledger-control
-            sha: 8780937ba25477419d28c1e8fb1286b29be8b9ea
+            sha: 93957c5cf8b197860a960ec6de5d00c940f222ed
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -216,7 +216,7 @@ jobs:
           - name: detached-ledger-manifest-verifier
             sha: 8c2fecd61f6acb154539f8bfa6509cf9b0c53014
           - name: append-only-ledger-control
-            sha: 8780937ba25477419d28c1e8fb1286b29be8b9ea
+            sha: 93957c5cf8b197860a960ec6de5d00c940f222ed
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
