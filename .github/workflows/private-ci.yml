@@ -71,6 +71,7 @@ name: Private repository CI runner
 # PR69 performs volume-identity preflight through existing ancestors before any destination directory creation, failing closed on inaccessible ancestors.
 # PR70 removes duplicate Windows test-pattern invocations without reducing distinct coverage.
 # PR63 retry: Linux-only policy-binding execution test is now correctly skipped on Windows.
+# PR73 adds append-only exact-source PR71/PR72 evidence to the stacked acceptance gate; revalidate this documentation head.
 
 on:
   push:
@@ -85,7 +86,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '7b2a267148c3e402cd56d9511ca8752db808cf79'
+  PRIVATE_SOURCE_SHA: '2bd1b9f9f30959034cb7695ada726d66049cd258'
 
 concurrency:
   group: private-ci-${{ github.ref }}
