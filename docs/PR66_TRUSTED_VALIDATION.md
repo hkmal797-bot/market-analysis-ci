@@ -181,3 +181,10 @@ Windows reported 27 test-pattern invocations and 383 total executions across tho
 - The exact-source run proves cross-platform test behavior only. It does not verify provider authenticity, data rights, listing/venue identity, authoritative calendar status, corporate-action completeness, permanent archive recovery, dataset acceptance, profitability, production readiness, or Live authorization.
 - Native source CI for the same source SHA [run 45101123720](https://github.com/hkmal797-bot/market-analysis-system/actions/runs/45101123720) failed before exposing test steps; both jobs have no step records. Root cause remains UNKNOWN; this is not evidence of a source test assertion failure. External CI does not replace native CI.
 - PR76 remains OPEN, Draft, unmerged, based on PR75. No canonical promotion, broker order, or Live enablement occurred.
+
+
+### PR76 duplicate external confirmation and native CI retry
+
+- A second independent exact-source trusted run, [#199](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45101139441), also completed SUCCESS on Ubuntu and Windows for the same private source SHA `71362964282bfbc205fadd76450f1f38b9d3dc5a`.
+- Its Ubuntu suite again reported **1,787 tests, 9 skipped**; its Windows job verified the exact source SHA, completed Paper/adaptive safety tests, parsed PowerShell launchers successfully, and emitted `NO_ORDER_EXECUTED=TRUE`.
+- Native source CI run [#1777, attempt 2](https://github.com/hkmal797-bot/market-analysis-system/actions/runs/45101123720) was retried without changing source. Both jobs again failed with no step records. The native runner/execution failure remains unresolved and its root cause is UNKNOWN; no source-test failure can be inferred from the absent steps.
