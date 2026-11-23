@@ -78,6 +78,7 @@ name: Private repository CI runner
 # Validate seven-root freeze/calendar evidence binding against the exact stacked source head.
 # Validate unified four-gate evidence snapshot against the exact source commit.
 # PR79 adds four independent fail-closed data-layer verifiers and a tamper-evident four-gate composition report; validate exact source SHA on Ubuntu and Windows.
+# PR81 adds six-arm composition: four data-layer gates plus point-in-time dataset freeze and seven-root OHLCV parity; validate exact source SHA on both operating systems.
 
 on:
   push:
@@ -97,7 +98,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || 'b6b3e5471c2502000eaa7cd068ce066c0a9e787a' }}
+  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || 'e4a210ad8db83df09525a7251a57f2f9bb309d96' }}
 
 concurrency:
   group: private-ci-${{ github.ref }}
@@ -282,6 +283,7 @@ jobs:
             "test_eodhd_free_seven_root_local_capture.py",
             "test_data_layer_gate_verifiers_v1.py",
             "test_data_layer_evidence_pipeline_v1.py"
+            "test_data_layer_evidence_pipeline_v2.py"
           )
           foreach ($pattern in $patterns) {
             if (-not (Test-Path (Join-Path "tests" $pattern))) {
