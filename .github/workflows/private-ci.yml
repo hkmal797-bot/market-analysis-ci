@@ -73,6 +73,7 @@ name: Private repository CI runner
 # PR63 retry: Linux-only policy-binding execution test is now correctly skipped on Windows.
 # PR73 adds append-only exact-source PR71/PR72 evidence to the stacked acceptance gate; revalidate this documentation head.
 # Manual dispatch accepts an explicit immutable private-source SHA for reusable exact-source validation.
+# Validate the stacked seven-root full-window calendar audit source head on Ubuntu and Windows.
 
 on:
   push:
@@ -92,7 +93,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || '2bd1b9f9f30959034cb7695ada726d66049cd258' }}
+  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || '1570ef0ec36a4dc7b2b53a3cd47dd98d0423ec53' }}
 
 concurrency:
   group: private-ci-${{ github.ref }}
