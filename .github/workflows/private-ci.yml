@@ -195,6 +195,45 @@ jobs:
             echo "TIGRIS_RAW_CONTENT_PROBE=BLOCKED_REQUIRED_CREDENTIALS_UNAVAILABLE" >&2
             exit 2
           fi
+          python - <<'PY'
+          import os
+          import re
+          import shutil
+          import subprocess
+
+          aws = shutil.which("aws")
+          if not aws:
+              print("TIGRIS_AWS_CLI_DIAGNOSTIC=UNAVAILABLE")
+          else:
+              env = os.environ.copy()
+              env["AWS_ACCESS_KEY_ID"] = env["TIGRIS_ACCESS_KEY_ID"]
+              env["AWS_SECRET_ACCESS_KEY"] = env["TIGRIS_SECRET_ACCESS_KEY"]
+              env["AWS_DEFAULT_REGION"] = env["TIGRIS_REGION"]
+              base = [
+                  aws, "s3api", "--endpoint-url", env["TIGRIS_ENDPOINT_URL"],
+                  "--region", env["TIGRIS_REGION"],
+              ]
+              checks = (
+                  ("HEAD_BUCKET", base + ["head-bucket", "--bucket", "marketanalysis-ai-raw-primary"]),
+                  ("LIST_OBJECTS_V2", base + ["list-objects-v2", "--bucket", "marketanalysis-ai-raw-primary", "--max-keys", "1", "--query", "KeyCount", "--output", "text"]),
+              )
+              allowed = {
+                  "AccessDenied", "AllAccessDisabled", "AuthorizationHeaderMalformed",
+                  "ExpiredToken", "InvalidAccessKeyId", "InvalidToken",
+                  "RequestTimeTooSkewed", "SignatureDoesNotMatch",
+              }
+              failed = False
+              for label, command in checks:
+                  result = subprocess.run(command, env=env, capture_output=True, text=True, timeout=30)
+                  if result.returncode == 0:
+                      print(f"TIGRIS_AWS_CLI_{label}=PASS")
+                  else:
+                      failed = True
+                      match = re.search(r"An error occurred \\(([^)]+)\\)", result.stderr)
+                      code = match.group(1) if match and match.group(1) in allowed else "WITHHELD"
+                      print(f"TIGRIS_AWS_CLI_{label}=FAIL service_error={code}")
+              print(f"TIGRIS_AWS_CLI_READ_DIAGNOSTIC={'FAIL' if failed else 'PASS'}")
+          PY
           python scripts/tigris_raw_content_probe.py
 
   windows-paper-safety:
