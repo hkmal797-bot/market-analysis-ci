@@ -74,6 +74,7 @@ name: Private repository CI runner
 # PR73 adds append-only exact-source PR71/PR72 evidence to the stacked acceptance gate; revalidate this documentation head.
 # Manual dispatch accepts an explicit immutable private-source SHA for reusable exact-source validation.
 # Validate the stacked seven-root full-window calendar audit source head on Ubuntu and Windows.
+# Re-run after correcting the requested-window fixture across every root.
 
 on:
   push:
@@ -93,7 +94,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || '1570ef0ec36a4dc7b2b53a3cd47dd98d0423ec53' }}
+  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || '7d8ed16c8fda8c569a50d035fdde88309d4475ab' }}
 
 concurrency:
   group: private-ci-${{ github.ref }}
