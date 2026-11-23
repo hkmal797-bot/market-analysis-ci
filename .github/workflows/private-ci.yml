@@ -69,6 +69,7 @@ name: Private repository CI runner
 # PR63 binds canonical opt-in Landlock allowlists into immutable trial provenance and replay identity.
 # PR64 blocks Paper reconciliation when fill or non-trade activity windows are incomplete.
 # PR63 retry: Linux-only policy-binding execution test is now correctly skipped on Windows.
+# PR88 hardens re-sealed robustness manifests and preserves exact raw archive bytes on Windows.
 
 on:
   push:
@@ -82,7 +83,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '469f7d8b3be0d89c3f050f6575d124bb0e97a8f7'
+  PRIVATE_SOURCE_SHA: '8b6c177c94b2c34eb0ecc1717d419d0d991c74e7'
 
 concurrency:
   # Each immutable commit gets its own concurrency lane; independent source SHAs can validate in parallel.
