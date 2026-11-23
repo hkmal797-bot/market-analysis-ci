@@ -182,7 +182,7 @@ jobs:
           PYTHONDONTWRITEBYTECODE: "1"
         run: python -m unittest discover -s tests -v
       - name: Read-only Tigris raw-content probe (explicit validation PR only)
-        if: github.event_name == 'pull_request' && startsWith(github.event.pull_request.title, '[RUN_TIGRIS_PROBE]')
+        if: (github.event_name == 'pull_request' && startsWith(github.event.pull_request.title, '[RUN_TIGRIS_PROBE]')) || (github.event_name == 'push' && github.ref == 'refs/heads/main' && env.PRIVATE_SOURCE_SHA == 'b794281e0653d5ccf20adb3ba51575f20e853350')
         working-directory: private-source
         env:
           TIGRIS_ACCESS_KEY_ID: ${{ secrets.TIGRIS_ACCESS_KEY_ID }}
