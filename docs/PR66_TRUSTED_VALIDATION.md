@@ -188,3 +188,17 @@ Windows reported 27 test-pattern invocations and 383 total executions across tho
 - A second independent exact-source trusted run, [#199](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45101139441), also completed SUCCESS on Ubuntu and Windows for the same private source SHA `71362964282bfbc205fadd76450f1f38b9d3dc5a`.
 - Its Ubuntu suite again reported **1,787 tests, 9 skipped**; its Windows job verified the exact source SHA, completed Paper/adaptive safety tests, parsed PowerShell launchers successfully, and emitted `NO_ORDER_EXECUTED=TRUE`.
 - Native source CI run [#1777, attempt 2](https://github.com/hkmal797-bot/market-analysis-system/actions/runs/45101123720) was retried without changing source. Both jobs again failed with no step records. The native runner/execution failure remains unresolved and its root cause is UNKNOWN; no source-test failure can be inferred from the absent steps.
+
+
+## PR77 unified four-gate evidence snapshot — exact-source external validation PASS
+
+- Source PR: [market-analysis-system PR77](https://github.com/hkmal797-bot/market-analysis-system/pull/77); corrected exact source SHA: `b18895c73bead5b11ea7d468a65a8204f055c68e`.
+- PR77 adds the unified deterministic evidence inventory for the four data-layer gates and binds it to the exact V2 research freeze and PR76 freeze/calendar binding. It is still OPEN and Draft, unmerged.
+- Trusted external run [#207](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45104234334) completed SUCCESS on Ubuntu and Windows. Both job logs independently verified `PRIVATE_SOURCE_SHA_VERIFIED=b18895c73bead5b11ea7d468a65a8204f055c68e`.
+- Ubuntu complete deterministic suite: **1,796 tests**, `OK (skipped=9)`.
+- Windows Paper/adaptive safety job: SUCCESS; Windows launcher parsing emitted `WINDOWS_PAPER_LAUNCHERS_SYNTAX=PASS`; safety marker: `NO_ORDER_EXECUTED=TRUE`. All configured Windows safety groups completed successfully.
+- Earlier runs [#204](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45102820717) and [#205](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45102825161) correctly exposed one test-harness error: duplicate evidence IDs were rejected during value-object construction, while the test asserted at snapshot assembly. The test was corrected to assert the constructor boundary; no production behavior was weakened.
+- The duplicate exact-source confirmation [#206](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45104229748) has completed Ubuntu successfully (1,796 tests, 9 skipped); its Windows safety job remains in progress at the time of this record, so no second full cross-platform pass is claimed.
+- Native source CI [run #1782](https://github.com/hkmal797-bot/market-analysis-system/actions/runs/45104216714) again failed immediately with both jobs reporting `runner_id=0`, empty runner names, and `steps=[]`; both jobs were created and completed within one second. This is strong evidence of a runner allocation/provisioning failure before execution, not source test failure. The precise underlying GitHub cause remains UNKNOWN. Trusted external CI does not repair native CI.
+- The evidence snapshot is intentionally **not** a data-layer acceptance engine: each gate remains `independently_verified=false`; caller-reported ACCEPTED labels cannot promote it. Data layer remains NOT_ACCEPTED / BLOCKED; strategy tests and Live trading remain disabled.
+- No provider API requests, archive writes, broker orders, merges or canonical promotions occurred.
