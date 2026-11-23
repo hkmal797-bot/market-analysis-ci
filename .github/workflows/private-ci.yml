@@ -181,6 +181,21 @@ jobs:
           PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
         run: python -m unittest discover -s tests -v
+      - name: Read-only Tigris raw-content probe (explicit validation PR only)
+        if: github.event_name == 'pull_request' && startsWith(github.event.pull_request.title, '[RUN_TIGRIS_PROBE]')
+        working-directory: private-source
+        env:
+          TIGRIS_ACCESS_KEY_ID: ${{ secrets.TIGRIS_ACCESS_KEY_ID }}
+          TIGRIS_SECRET_ACCESS_KEY: ${{ secrets.TIGRIS_SECRET_ACCESS_KEY }}
+          TIGRIS_ENDPOINT_URL: ${{ secrets.TIGRIS_ENDPOINT_URL }}
+          TIGRIS_REGION: ${{ secrets.TIGRIS_REGION }}
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          if [ -z "${TIGRIS_ACCESS_KEY_ID:-}" ] || [ -z "${TIGRIS_SECRET_ACCESS_KEY:-}" ] || [ -z "${TIGRIS_ENDPOINT_URL:-}" ] || [ -z "${TIGRIS_REGION:-}" ]; then
+            echo "TIGRIS_RAW_CONTENT_PROBE=SKIPPED_REQUIRED_SECRETS_UNAVAILABLE"
+            exit 0
+          fi
+          python scripts/tigris_raw_content_probe.py
 
   windows-paper-safety:
     name: Windows Paper safety and adaptive-cycle tests
