@@ -67,3 +67,25 @@ PR88 source head
 - PowerShell Paper launcher parsing passed.
 
 Run: https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45236330012
+
+
+## Follow-up exact-source validation (2026-11-23)
+
+The restored workflow and the operations-documentation update each completed
+successfully on both operating systems. Both runs checked out and logged the
+same immutable source SHA:
+
+`f4fd39dc368482e5367ceaa424d1a111a56d22f8`
+
+- Run #342: [workflow run](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45244639732)
+  - Ubuntu: 1,902 tests; 9 skipped.
+  - Windows: configured safety/integrity suites passed; the Decimal-equivalent
+    cost-axis adversarial test and PowerShell launcher parsing passed.
+- Run #343: [workflow run](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45244712975)
+  - Ubuntu: 1,902 tests; 9 skipped.
+  - Windows: configured safety/integrity suites passed; the Decimal-equivalent
+    cost-axis adversarial test and PowerShell launcher parsing passed.
+
+Both operating-system logs explicitly contain
+`PRIVATE_SOURCE_SHA_VERIFIED=f4fd39dc368482e5367ceaa424d1a111a56d22f8`.
+The Tigris probe was skipped in both runs, as expected for routine CI.
