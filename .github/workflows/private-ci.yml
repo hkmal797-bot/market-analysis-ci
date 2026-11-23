@@ -85,7 +85,8 @@ env:
   PRIVATE_SOURCE_SHA: 'e2cf71b790840d47d8adf06f949c50bcb0a4a9f3'
 
 concurrency:
-  group: private-ci-${{ github.ref }}
+  # Each immutable commit gets its own concurrency lane; independent source SHAs can validate in parallel.
+  group: private-ci-${{ github.sha }}
   cancel-in-progress: false
 
 jobs:
