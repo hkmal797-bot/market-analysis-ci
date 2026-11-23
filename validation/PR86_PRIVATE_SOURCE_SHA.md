@@ -9,3 +9,5 @@
 - Opt-in Tigris payload probe: this validation PR is explicitly marked to run the bounded GET/LIST-only probe.
 
 - Revalidated source head: 76db224af83b4c24aeb2092a1eac0a0a4691f56b.
+
+- Latest corrected source SHA: 87fa0694968a4bfbd8f67ddaa7222ff12ef09321.
