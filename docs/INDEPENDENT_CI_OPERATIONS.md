@@ -157,7 +157,7 @@ the other's result:
 
 | Matrix source | Immutable source SHA | Scope |
 |---|---|---|
-| Eight-arm evidence + admission + deep verifier (PR82 → PR83 → PR89) | `c0f9fd1386fd8cb88bcb95b3a619f1c3b5fa381d` | Full Ubuntu suite and Windows safety/evidence suites |
+| Eight-arm evidence + admission + deep verifier (PR82 → PR83 → PR89) | `6f58b522627b6ac6b70f655b191d94510a591346` | Full Ubuntu suite and Windows safety/evidence suites |
 | Strategy robustness verifier (PR88) | `f4fd39dc368482e5367ceaa424d1a111a56d22f8` | Full Ubuntu suite and Windows safety/evidence suites |
 
 This produces four independently reported jobs per run. Each job must print
