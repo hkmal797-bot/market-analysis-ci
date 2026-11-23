@@ -80,6 +80,7 @@ name: Private repository CI runner
 # PR79 adds four independent fail-closed data-layer verifiers and a tamper-evident four-gate composition report; validate exact source SHA on Ubuntu and Windows.
 # PR81 adds six-arm composition: four data-layer gates plus point-in-time dataset freeze and seven-root OHLCV parity; validate exact source SHA on both operating systems.
 # PR82 extends to eight arms with historical identity coverage and EODHD/Alpaca session evidence; validate exact source SHA on Ubuntu and Windows.
+# PR83 binds the eight-arm report to the exact V2 freeze, strategy plan, cost model and derived research decision; validate on both operating systems.
 
 on:
   push:
@@ -99,7 +100,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || '2a224da453c81d2988847c0b8e4ca1f1834990a5' }}
+  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || 'd4f57c485cd5e8483ab800b1157aa350c605f50d' }}
 
 concurrency:
   group: private-ci-${{ github.ref }}
@@ -294,6 +295,7 @@ jobs:
             "test_data_layer_evidence_pipeline_v1.py"
             "test_data_layer_evidence_pipeline_v2.py"
             "test_data_layer_evidence_pipeline_v3.py"
+            "test_research_admission_envelope_v1.py"
           )
           foreach ($pattern in $patterns) {
             if (-not (Test-Path (Join-Path "tests" $pattern))) {
