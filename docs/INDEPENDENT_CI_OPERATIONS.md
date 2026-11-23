@@ -112,3 +112,28 @@ includes `.gitattributes` with `data/**/raw/** -text`, preserving the exact
 archived bytes on Windows. The new immutable source pin is
 `26b90bcfb3cfdaedcbbcd2b68f47df12a2160819`; both OS jobs must pass on this
 head before PR83 validation is accepted.
+
+
+## PR83 exact-source validation accepted
+
+The finalized PR83 source head
+`26b90bcfb3cfdaedcbbcd2b68f47df12a2160819` passed both operating-system jobs
+in [run #349](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45251588575):
+
+- Ubuntu: 1,892 tests; 9 skipped. The resealed float-alias gate-count test passed.
+- Windows: all configured safety/integrity suites passed, including the new
+  manifest regression test and PowerShell launcher parsing. SEC raw archive
+  reconstruction passed without the earlier Windows byte-normalization error.
+- Both logs verified the exact PR83 source SHA.
+
+Earlier PR83 runs #345–#348 failed on Windows because the PR82-based branch
+lacked the raw-file checkout attribute. The correction is committed in PR83
+as `.gitattributes: data/**/raw/** -text`; run #349 is the accepted final
+validation. PR83 remains a Draft PR, not merged.
+
+## Default pin restored
+
+The workflow default pin is restored to the separately validated PR88 source
+head `f4fd39dc368482e5367ceaa424d1a111a56d22f8`. This keeps the routine
+independent runner aligned with the current primary source review while
+retaining PR83's exact-head validation as recorded evidence.
