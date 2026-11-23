@@ -68,21 +68,39 @@ name: Private repository CI runner
 # PR62 gates seven-root local capture on exact daily/action-page quality receipts and persists their digest.
 # PR63 binds canonical opt-in Landlock allowlists into immutable trial provenance and replay identity.
 # PR64 blocks Paper reconciliation when fill or non-trade activity windows are incomplete.
+# PR69 performs volume-identity preflight through existing ancestors before any destination directory creation, failing closed on inaccessible ancestors.
+# PR70 removes duplicate Windows test-pattern invocations without reducing distinct coverage.
 # PR63 retry: Linux-only policy-binding execution test is now correctly skipped on Windows.
+# PR73 adds append-only exact-source PR71/PR72 evidence to the stacked acceptance gate; revalidate this documentation head.
+# Manual dispatch accepts an explicit immutable private-source SHA for reusable exact-source validation.
+# Validate the stacked seven-root full-window calendar audit source head on Ubuntu and Windows.
+# Re-run after correcting the requested-window fixture across every root.
+# Validate seven-root freeze/calendar evidence binding against the exact stacked source head.
+# Validate unified four-gate evidence snapshot against the exact source commit.
+# PR79 adds four independent fail-closed data-layer verifiers and a tamper-evident four-gate composition report; validate exact source SHA on Ubuntu and Windows.
+# PR81 adds six-arm composition: four data-layer gates plus point-in-time dataset freeze and seven-root OHLCV parity; validate exact source SHA on both operating systems.
+# PR82 extends to eight arms with historical identity coverage and EODHD/Alpaca session evidence; validate exact source SHA on Ubuntu and Windows.
+# PR83 binds the eight-arm report to the exact V2 freeze, strategy plan, cost model and derived research decision; validate on both operating systems.
 
 on:
   push:
     branches:
       - main
+      - validation/pr66-trusted-ci-observability
   pull_request:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      private_source_sha:
+        description: 'Exact 40-character commit SHA from hkmal797-bot/market-analysis-system'
+        required: true
+        type: string
 permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '58ded9fa67ba9cb7c512e4642868060e3ca41f07'
+  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || '469f7d8b3be0d89c3f050f6575d124bb0e97a8f7' }}
 
 concurrency:
   group: private-ci-${{ github.ref }}
@@ -91,7 +109,7 @@ concurrency:
 jobs:
   unit-tests:
     name: Standard-library unit tests (Ubuntu)
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'push' && github.ref == 'refs/heads/validation/pr66-trusted-ci-observability') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/validation/pr66-trusted-ci-observability')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -184,10 +202,18 @@ jobs:
 
   windows-paper-safety:
     name: Windows Paper safety and adaptive-cycle tests
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'push' && github.ref == 'refs/heads/validation/pr66-trusted-ci-observability') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/validation/pr66-trusted-ci-observability')
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
+      - name: Disable Git line-ending conversion for byte-verified archive
+        shell: pwsh
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+          $actual = (git config --global --get core.autocrlf).Trim()
+          if ($actual -ne "false") { throw "GIT_AUTocrlf_NOT_DISABLED" }
+
       - name: Checkout private source (read-only token; credentials not persisted)
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -264,7 +290,13 @@ jobs:
             "test_research_trial_registry_v1.py",
             "test_eodhd_local_archive_recovery_cli.py",
             "test_local_archive_media_v1.py",
-            "test_eodhd_free_seven_root_local_capture.py"
+            "test_eodhd_free_seven_root_local_capture.py",
+            "test_data_layer_gate_verifiers_v1.py",
+            "test_data_layer_evidence_pipeline_v1.py"
+            "test_data_layer_evidence_pipeline_v2.py"
+            "test_data_layer_evidence_pipeline_v3.py"
+            "test_research_admission_envelope_v1.py"
+            "test_strategy_robustness_matrix_v1.py"
           )
           foreach ($pattern in $patterns) {
             if (-not (Test-Path (Join-Path "tests" $pattern))) {
