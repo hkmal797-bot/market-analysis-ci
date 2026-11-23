@@ -279,7 +279,9 @@ jobs:
             "test_research_trial_registry_v1.py",
             "test_eodhd_local_archive_recovery_cli.py",
             "test_local_archive_media_v1.py",
-            "test_eodhd_free_seven_root_local_capture.py"
+            "test_eodhd_free_seven_root_local_capture.py",
+            "test_data_layer_gate_verifiers_v1.py",
+            "test_data_layer_evidence_pipeline_v1.py"
           )
           foreach ($pattern in $patterns) {
             if (-not (Test-Path (Join-Path "tests" $pattern))) {
