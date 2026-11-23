@@ -130,3 +130,15 @@ Windows reported 27 test-pattern invocations and 383 total executions across tho
 - The complete raw Ubuntu and Windows job logs were inspected. Both logs independently show the same checkout SHA and expected SHA. No previous PR71/PR70 test result was reused.
 - PR72 remains OPEN and Draft, unmerged, with its original base branch unchanged. No source PR was merged, no default branch was promoted, and no broker order was executed.
 - This is external exact-source test evidence only. Native source CI's earlier runner-allocation/provisioning failure remains a separate unresolved issue; its root cause is still UNKNOWN.
+
+
+## Follow-on PR73 exact-source validation — PASS
+
+- Source repository PR: [market-analysis-system PR73](https://github.com/hkmal797-bot/market-analysis-system/pull/73)
+- Exact private source SHA: `2bd1b9f9f30959034cb7695ada726d66049cd258`; PR73 is a documentation-only append to the stacked acceptance-gate evidence and is based directly on PR72 head `7b2a267148c3e402cd56d9511ca8752db808cf79`.
+- Trusted external workflow commit: `9101bcf8c86e761cb6e9762a4bc7d64af2a6931d`; its private-source pin was updated to the PR73 SHA. Both Ubuntu and Windows logs independently report `PRIVATE_SOURCE_SHA_VERIFIED=2bd1b9f9f30959034cb7695ada726d66049cd258` after the checkout/equality assertion.
+- External push run [#182](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45088476383): overall SUCCESS; both Ubuntu and Windows jobs completed SUCCESS.
+- Ubuntu full deterministic suite: 1,765 tests, `OK (skipped=9)`. Linux fixture archive backup and restore checks both emitted PASS; free-tier preflight remained read-only with zero calls used in the fixture evidence.
+- Windows Paper/adaptive safety test job: all test-pattern invocations completed successfully; archive backup/restore fixtures emitted PASS. Windows launcher parsing emitted `WINDOWS_PAPER_LAUNCHERS_SYNTAX=PASS`; safety marker: `NO_ORDER_EXECUTED=TRUE`.
+- The complete raw Ubuntu and Windows job logs were inspected. This is exact-source external CI evidence only: it does not prove a real physical-media/BitLocker drill, data-provider authenticity, profitability, or production readiness.
+- PR73 remains OPEN and Draft, unmerged. No source default branch was promoted, no broker order was executed, and no Live capability was enabled. Native source-repository CI remains a separate unresolved runner-allocation/provisioning issue; external CI does not repair or resolve it.
