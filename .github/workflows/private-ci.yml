@@ -82,7 +82,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '1b8da185de59a6db0ccee7c8d5ec9498063a3e2d'
+  PRIVATE_SOURCE_SHA: 'c512f55ea9053cc6f0125e92fe21577aae816e5c'
 
 concurrency:
   group: private-ci-${{ github.ref }}
@@ -384,3 +384,4 @@ jobs:
 # PR40: seven-root bounded EODHD reference snapshot and exact five-root compatibility tests.
 
 # PR40 final revision: distinct five/seven-root provenance, exact receipt validation and clean adversarial quota diagnostics.
+# Validate bounded EODHD post-capture quota settlement retry on the exact private source head.
