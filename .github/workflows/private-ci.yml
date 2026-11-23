@@ -72,6 +72,7 @@ name: Private repository CI runner
 # PR70 removes duplicate Windows test-pattern invocations without reducing distinct coverage.
 # PR63 retry: Linux-only policy-binding execution test is now correctly skipped on Windows.
 # PR73 adds append-only exact-source PR71/PR72 evidence to the stacked acceptance gate; revalidate this documentation head.
+# Manual dispatch accepts an explicit immutable private-source SHA for reusable exact-source validation.
 
 on:
   push:
@@ -82,11 +83,16 @@ on:
     branches:
       - main
   workflow_dispatch:
+    inputs:
+      private_source_sha:
+        description: 'Exact 40-character commit SHA from hkmal797-bot/market-analysis-system'
+        required: true
+        type: string
 permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '2bd1b9f9f30959034cb7695ada726d66049cd258'
+  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || '2bd1b9f9f30959034cb7695ada726d66049cd258' }}
 
 concurrency:
   group: private-ci-${{ github.ref }}
@@ -95,7 +101,7 @@ concurrency:
 jobs:
   unit-tests:
     name: Standard-library unit tests (Ubuntu)
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'push' && github.ref == 'refs/heads/validation/pr66-trusted-ci-observability') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'push' && github.ref == 'refs/heads/validation/pr66-trusted-ci-observability') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/validation/pr66-trusted-ci-observability')
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -188,7 +194,7 @@ jobs:
 
   windows-paper-safety:
     name: Windows Paper safety and adaptive-cycle tests
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'push' && github.ref == 'refs/heads/validation/pr66-trusted-ci-observability') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'push' && github.ref == 'refs/heads/validation/pr66-trusted-ci-observability') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci') || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/validation/pr66-trusted-ci-observability')
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
