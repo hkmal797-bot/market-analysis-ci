@@ -296,6 +296,7 @@ jobs:
             "test_data_layer_evidence_pipeline_v2.py"
             "test_data_layer_evidence_pipeline_v3.py"
             "test_research_admission_envelope_v1.py"
+            "test_strategy_robustness_matrix_v1.py"
           )
           foreach ($pattern in $patterns) {
             if (-not (Test-Path (Join-Path "tests" $pattern))) {
