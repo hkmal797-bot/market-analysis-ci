@@ -98,7 +98,7 @@ jobs:
       matrix:
         source:
           - name: integrated-admission-diagnostic-bundle
-            sha: 8780937ba25477419d28c1e8fb1286b29be8b9ea
+            sha: d8817864a913ef9fe3a89320dbd1b1eb19425d54
           - name: standalone-robustness-matrix
             sha: f4fd39dc368482e5367ceaa424d1a111a56d22f8
     runs-on: ubuntu-latest
@@ -214,7 +214,7 @@ jobs:
       matrix:
         source:
           - name: integrated-admission-diagnostic-bundle
-            sha: 8780937ba25477419d28c1e8fb1286b29be8b9ea
+            sha: d8817864a913ef9fe3a89320dbd1b1eb19425d54
           - name: standalone-robustness-matrix
             sha: f4fd39dc368482e5367ceaa424d1a111a56d22f8
     runs-on: windows-latest
@@ -410,5 +410,5 @@ jobs:
 # PR40 final revision: distinct five/seven-root provenance, exact receipt validation and clean adversarial quota diagnostics.
 # Validate bounded EODHD post-capture quota settlement retry on the exact private source head.
 
-# PR82-PR90: validate the integrated eight-arm evidence/admission/robustness stack and standalone robustness branch in parallel on both operating systems.
-# Parallel immutable source matrix validates the PR82/83/89 evidence stack and PR88 robustness stack on both operating systems.
+# PR91 validates the append-only diagnostic ledger on the integrated PR90 evidence/admission/robustness stack; PR90 remains the control source.
+# Parallel immutable source matrix validates PR91 ledger integration and PR90 control source on both operating systems.
