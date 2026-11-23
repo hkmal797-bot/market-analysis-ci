@@ -142,3 +142,15 @@ Windows reported 27 test-pattern invocations and 383 total executions across tho
 - Windows Paper/adaptive safety test job: all test-pattern invocations completed successfully; archive backup/restore fixtures emitted PASS. Windows launcher parsing emitted `WINDOWS_PAPER_LAUNCHERS_SYNTAX=PASS`; safety marker: `NO_ORDER_EXECUTED=TRUE`.
 - The complete raw Ubuntu and Windows job logs were inspected. This is exact-source external CI evidence only: it does not prove a real physical-media/BitLocker drill, data-provider authenticity, profitability, or production readiness.
 - PR73 remains OPEN and Draft, unmerged. No source default branch was promoted, no broker order was executed, and no Live capability was enabled. Native source-repository CI remains a separate unresolved runner-allocation/provisioning issue; external CI does not repair or resolve it.
+
+
+## PR73 exact-source validation after manual-dispatch workflow enhancement — PASS
+
+- External workflow enhancement commit: `2a07344bc73b35301be7e896ef09e8aad8fd722b`.
+- The trusted workflow now declares a `workflow_dispatch` input named `private_source_sha` and permits manual dispatch only on `validation/pr66-trusted-ci-observability`; the supplied value is used as the immutable private-source checkout SHA. Push and same-repository PR paths retain their existing pinned/default behavior.
+- External push run [#186](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45090313399) completed SUCCESS on both Ubuntu and Windows. This run exercised the push path and the default pinned source SHA; it did **not** exercise the manual-dispatch input path.
+- Both complete raw job logs independently prove checkout and equality verification of exact private source SHA `2bd1b9f9f30959034cb7695ada726d66049cd258`.
+- Ubuntu full deterministic suite: 1,765 tests, `OK (skipped=9)`.
+- Windows Paper/adaptive safety suite: 30 research-trial-registry tests and 24 archive-recovery CLI tests passed, plus the remaining configured safety patterns; archive backup and restore fixtures emitted PASS. Windows launcher parsing emitted `WINDOWS_PAPER_LAUNCHERS_SYNTAX=PASS`; safety marker: `NO_ORDER_EXECUTED=TRUE`.
+- No source code or source PR changed in this workflow enhancement. PR73 remains OPEN and Draft, unmerged. No broker order was executed and Live remains disabled.
+- Evidence boundary: the workflow's manual-dispatch configuration is committed and read back, but end-to-end dispatch with a caller-supplied SHA remains unverified. Native source CI runner-allocation failure remains a separate unresolved issue.
