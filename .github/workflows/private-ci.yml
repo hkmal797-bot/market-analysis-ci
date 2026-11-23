@@ -97,7 +97,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || '1391f077af50706ffbbecf76a6544033d79207a3' }}
+  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || '4503c815edae7e6b60041eba70201d5a28896680' }}
 
 concurrency:
   group: private-ci-${{ github.ref }}
