@@ -99,3 +99,5 @@ resealed-manifest regression test against the float alias `8.0`. The
 independent workflow is pinned to this immutable candidate while validation
 is pending; it is not accepted until both operating-system jobs pass and
 verify the exact source SHA.
+
+The PR83 candidate was extended with an explicit API-boundary note: manifest-only verification checks self-contained structure and hash consistency, while full upstream freeze/plan/decision reconstruction requires the complete envelope object. The exact finalized source head is now `8d407d8a497c378f8dddea461348dcfc39ef239f`; its cross-platform validation is pending.
