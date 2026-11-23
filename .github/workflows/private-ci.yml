@@ -98,7 +98,7 @@ jobs:
       matrix:
         source:
           - name: integrated-admission-diagnostic-bundle
-            sha: d8817864a913ef9fe3a89320dbd1b1eb19425d54
+            sha: 93957c5cf8b197860a960ec6de5d00c940f222ed
           - name: standalone-robustness-matrix
             sha: 8780937ba25477419d28c1e8fb1286b29be8b9ea
     runs-on: ubuntu-latest
@@ -214,7 +214,7 @@ jobs:
       matrix:
         source:
           - name: integrated-admission-diagnostic-bundle
-            sha: d8817864a913ef9fe3a89320dbd1b1eb19425d54
+            sha: 93957c5cf8b197860a960ec6de5d00c940f222ed
           - name: standalone-robustness-matrix
             sha: 8780937ba25477419d28c1e8fb1286b29be8b9ea
     runs-on: windows-latest
