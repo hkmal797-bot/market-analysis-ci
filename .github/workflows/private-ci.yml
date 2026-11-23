@@ -384,3 +384,5 @@ jobs:
 # PR40: seven-root bounded EODHD reference snapshot and exact five-root compatibility tests.
 
 # PR40 final revision: distinct five/seven-root provenance, exact receipt validation and clean adversarial quota diagnostics.
+
+# Explicit Tigris live-probe validation requested after read-only credentials were configured.
