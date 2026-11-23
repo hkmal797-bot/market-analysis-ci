@@ -95,8 +95,8 @@ jobs:
       fail-fast: false
       matrix:
         source:
-          - name: integrated-evidence-admission-robustness
-            sha: 78ba3898ae4a520ec8d0dcdf6f8bac38c8f9627e
+          - name: integrated-admission-diagnostic-bundle
+            sha: 8780937ba25477419d28c1e8fb1286b29be8b9ea
           - name: standalone-robustness-matrix
             sha: f4fd39dc368482e5367ceaa424d1a111a56d22f8
     runs-on: ubuntu-latest
@@ -211,8 +211,8 @@ jobs:
       fail-fast: false
       matrix:
         source:
-          - name: integrated-evidence-admission-robustness
-            sha: 78ba3898ae4a520ec8d0dcdf6f8bac38c8f9627e
+          - name: integrated-admission-diagnostic-bundle
+            sha: 8780937ba25477419d28c1e8fb1286b29be8b9ea
           - name: standalone-robustness-matrix
             sha: f4fd39dc368482e5367ceaa424d1a111a56d22f8
     runs-on: windows-latest

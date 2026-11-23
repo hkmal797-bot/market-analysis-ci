@@ -142,7 +142,7 @@ retaining PR83's exact-head validation as recorded evidence.
 ## PR89 deep evidence-verifier candidate
 
 The independent workflow is temporarily pinned to exact PR89 source head
-`78ba3898ae4a520ec8d0dcdf6f8bac38c8f9627e` to validate strict seven-root
+`8780937ba25477419d28c1e8fb1286b29be8b9ea` to validate strict seven-root
 identity receipt reconstruction and resealed-manifest adversarial tests. This
 candidate is not accepted until both Ubuntu and Windows jobs pass and each
 job log verifies the exact source SHA. The routine Tigris probe remains
@@ -157,7 +157,7 @@ the other's result:
 
 | Matrix source | Immutable source SHA | Scope |
 |---|---|---|
-| Integrated evidence + admission + robustness (PR82 → PR83 → PR89 → PR90) | `88b8c9119c53c3f42d60c047d42e0532cc36cc38` | Full Ubuntu suite and Windows safety/evidence suites |
+| Integrated evidence + admission + synthetic diagnostic bundle (PR82 → PR83 → PR89 → PR90) | `88b8c9119c53c3f42d60c047d42e0532cc36cc38` | Full Ubuntu suite and Windows safety/evidence suites |
 | Standalone strategy robustness verifier (PR88) | `f4fd39dc368482e5367ceaa424d1a111a56d22f8` | Full Ubuntu suite and Windows safety/evidence suites |
 
 This produces four independently reported jobs per run. Each job must print
