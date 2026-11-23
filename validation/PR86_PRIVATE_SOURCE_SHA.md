@@ -13,3 +13,5 @@
 - Latest corrected source SHA: 87fa0694968a4bfbd8f67ddaa7222ff12ef09321.
 
 - Windows launcher parser now skips only absent launchers and validates any present file.
+
+- Final exact PR86 source SHA for this run: 1b8da185de59a6db0ccee7c8d5ec9498063a3e2d.
