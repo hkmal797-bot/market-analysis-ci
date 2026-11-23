@@ -77,7 +77,7 @@ name: Private repository CI runner
 # Re-run after correcting the requested-window fixture across every root.
 # Validate seven-root freeze/calendar evidence binding against the exact stacked source head.
 # Validate unified four-gate evidence snapshot against the exact source commit.
-# PR79 adds four independent fail-closed data-layer verifiers; validate exact source SHA on Ubuntu and Windows.
+# PR79 adds four independent fail-closed data-layer verifiers and a tamper-evident four-gate composition report; validate exact source SHA on Ubuntu and Windows.
 
 on:
   push:
@@ -97,7 +97,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || 'eca78dc966aaf38a0203d3054c17bd63dc415c3a' }}
+  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || '68c9a6e7027b692a592af92037c7fcd5281011b0' }}
 
 concurrency:
   group: private-ci-${{ github.ref }}
