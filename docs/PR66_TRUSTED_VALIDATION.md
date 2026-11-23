@@ -202,3 +202,11 @@ Windows reported 27 test-pattern invocations and 383 total executions across tho
 - Native source CI [run #1782](https://github.com/hkmal797-bot/market-analysis-system/actions/runs/45104216714) again failed immediately with both jobs reporting `runner_id=0`, empty runner names, and `steps=[]`; both jobs were created and completed within one second. This is strong evidence of a runner allocation/provisioning failure before execution, not source test failure. The precise underlying GitHub cause remains UNKNOWN. Trusted external CI does not repair native CI.
 - The evidence snapshot is intentionally **not** a data-layer acceptance engine: each gate remains `independently_verified=false`; caller-reported ACCEPTED labels cannot promote it. Data layer remains NOT_ACCEPTED / BLOCKED; strategy tests and Live trading remain disabled.
 - No provider API requests, archive writes, broker orders, merges or canonical promotions occurred.
+
+
+### PR77 duplicate exact-source confirmation — PASS
+
+- Trusted external run [#206](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45104229748) completed SUCCESS on Ubuntu and Windows for the same exact private source SHA `b18895c73bead5b11ea7d468a65a8204f055c68e`. Both raw job logs independently emitted `PRIVATE_SOURCE_SHA_VERIFIED` with that exact SHA.
+- Ubuntu full deterministic suite: **1,796 tests**, `OK (skipped=9)`.
+- Windows Paper/adaptive safety job: SUCCESS; launcher parsing emitted `WINDOWS_PAPER_LAUNCHERS_SYNTAX=PASS`; safety marker: `NO_ORDER_EXECUTED=TRUE`.
+- Together with run #207, PR77 now has two independent, exact-source, cross-platform external CI passes.
