@@ -7,3 +7,5 @@
 - This file contains no credentials or market-data payloads.
 
 - Opt-in Tigris payload probe: this validation PR is explicitly marked to run the bounded GET/LIST-only probe.
+
+- Revalidated source head: 76db224af83b4c24aeb2092a1eac0a0a4691f56b.
