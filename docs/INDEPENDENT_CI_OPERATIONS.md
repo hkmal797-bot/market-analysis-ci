@@ -89,3 +89,13 @@ same immutable source SHA:
 Both operating-system logs explicitly contain
 `PRIVATE_SOURCE_SHA_VERIFIED=f4fd39dc368482e5367ceaa424d1a111a56d22f8`.
 The Tigris probe was skipped in both runs, as expected for routine CI.
+
+
+## PR83 verifier hardening candidate
+
+Candidate source commit: `a9c6294acc7280d7974374938e624d96748cc863`.
+This revision adds an exact-integer type check for the eight-gate count and a
+resealed-manifest regression test against the float alias `8.0`. The
+independent workflow is pinned to this immutable candidate while validation
+is pending; it is not accepted until both operating-system jobs pass and
+verify the exact source SHA.
