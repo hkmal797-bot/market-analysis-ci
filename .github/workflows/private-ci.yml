@@ -82,9 +82,6 @@ on:
 permissions:
   contents: read
 
-env:
-  PRIVATE_SOURCE_SHA: 'c0f9fd1386fd8cb88bcb95b3a619f1c3b5fa381d'
-
 concurrency:
   # Each immutable commit gets its own concurrency lane; independent source SHAs can validate in parallel.
   group: private-ci-${{ github.sha }}
@@ -92,8 +89,16 @@ concurrency:
 
 jobs:
   unit-tests:
-    name: Standard-library unit tests (Ubuntu)
+    name: Standard-library unit tests (Ubuntu) — ${{ matrix.source.name }}
     if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    strategy:
+      fail-fast: false
+      matrix:
+        source:
+          - name: eight-arm-evidence-stack
+            sha: c0f9fd1386fd8cb88bcb95b3a619f1c3b5fa381d
+          - name: strategy-robustness
+            sha: f4fd39dc368482e5367ceaa424d1a111a56d22f8
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -101,7 +106,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ env.PRIVATE_SOURCE_SHA }}
+          ref: ${{ matrix.source.sha }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -110,7 +115,7 @@ jobs:
       - name: Record exact private source commit
         working-directory: private-source
         env:
-          EXPECTED_PRIVATE_SOURCE_SHA: ${{ env.PRIVATE_SOURCE_SHA }}
+          EXPECTED_PRIVATE_SOURCE_SHA: ${{ matrix.source.sha }}
         run: |
           actual="$(git rev-parse HEAD)"
           test "$actual" = "$EXPECTED_PRIVATE_SOURCE_SHA"
@@ -184,7 +189,7 @@ jobs:
           PYTHONDONTWRITEBYTECODE: "1"
         run: python -m unittest discover -s tests -v
       - name: Read-only Tigris raw-content probe (explicit validation PR only)
-        if: (github.event_name == 'pull_request' && startsWith(github.event.pull_request.title, '[RUN_TIGRIS_PROBE]')) || (github.event_name == 'push' && github.ref == 'refs/heads/main' && env.PRIVATE_SOURCE_SHA == 'b794281e0653d5ccf20adb3ba51575f20e853350')
+        if: (github.event_name == 'pull_request' && startsWith(github.event.pull_request.title, '[RUN_TIGRIS_PROBE]')) || (github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.source.sha == 'b794281e0653d5ccf20adb3ba51575f20e853350')
         working-directory: private-source
         env:
           TIGRIS_ACCESS_KEY_ID: ${{ secrets.TIGRIS_ACCESS_KEY_ID }}
@@ -200,8 +205,16 @@ jobs:
           python scripts/tigris_raw_content_probe.py
 
   windows-paper-safety:
-    name: Windows Paper safety and adaptive-cycle tests
+    name: Windows Paper safety and adaptive-cycle tests — ${{ matrix.source.name }}
     if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    strategy:
+      fail-fast: false
+      matrix:
+        source:
+          - name: eight-arm-evidence-stack
+            sha: c0f9fd1386fd8cb88bcb95b3a619f1c3b5fa381d
+          - name: strategy-robustness
+            sha: f4fd39dc368482e5367ceaa424d1a111a56d22f8
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -209,7 +222,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: ${{ env.PRIVATE_SOURCE_SHA }}
+          ref: ${{ matrix.source.sha }}
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -218,7 +231,7 @@ jobs:
       - name: Record exact private source commit
         working-directory: private-source
         env:
-          EXPECTED_PRIVATE_SOURCE_SHA: ${{ env.PRIVATE_SOURCE_SHA }}
+          EXPECTED_PRIVATE_SOURCE_SHA: ${{ matrix.source.sha }}
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
@@ -396,4 +409,4 @@ jobs:
 # Validate bounded EODHD post-capture quota settlement retry on the exact private source head.
 
 # PR82-PR84: validate the eight-arm data evidence, exact research-admission envelope, and parallel strategy robustness stack on Windows.
-# Current trusted source pin is the integrated PR84 head; Ubuntu runs the full suite, Windows runs focused new-stack plus Paper/adaptive safety modules.
+# Parallel immutable source matrix validates the PR82/83/89 evidence stack and PR88 robustness stack on both operating systems.
