@@ -82,7 +82,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '469f7d8b3be0d89c3f050f6575d124bb0e97a8f7'
+  PRIVATE_SOURCE_SHA: 'b794281e0653d5ccf20adb3ba51575f20e853350'
 
 concurrency:
   group: private-ci-${{ github.ref }}
@@ -279,7 +279,8 @@ jobs:
             "test_research_trial_registry_v1.py",
             "test_eodhd_local_archive_recovery_cli.py",
             "test_local_archive_media_v1.py",
-            "test_eodhd_free_seven_root_local_capture.py"
+            "test_eodhd_free_seven_root_local_capture.py",
+            "test_tigris_raw_content_probe.py"
           )
           foreach ($pattern in $patterns) {
             if (-not (Test-Path (Join-Path "tests" $pattern))) {
