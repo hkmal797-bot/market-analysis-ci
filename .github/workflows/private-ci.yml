@@ -205,6 +205,14 @@ jobs:
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
+      - name: Disable Git line-ending conversion for byte-verified archive
+        shell: pwsh
+        run: |
+          git config --global core.autocrlf false
+          git config --global core.eol lf
+          $actual = (git config --global --get core.autocrlf).Trim()
+          if ($actual -ne "false") { throw "GIT_AUTocrlf_NOT_DISABLED" }
+
       - name: Checkout private source (read-only token; credentials not persisted)
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
