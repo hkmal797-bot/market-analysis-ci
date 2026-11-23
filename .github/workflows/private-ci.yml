@@ -100,7 +100,7 @@ jobs:
           - name: integrated-admission-diagnostic-bundle
             sha: d8817864a913ef9fe3a89320dbd1b1eb19425d54
           - name: standalone-robustness-matrix
-            sha: f4fd39dc368482e5367ceaa424d1a111a56d22f8
+            sha: 8780937ba25477419d28c1e8fb1286b29be8b9ea
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -216,7 +216,7 @@ jobs:
           - name: integrated-admission-diagnostic-bundle
             sha: d8817864a913ef9fe3a89320dbd1b1eb19425d54
           - name: standalone-robustness-matrix
-            sha: f4fd39dc368482e5367ceaa424d1a111a56d22f8
+            sha: 8780937ba25477419d28c1e8fb1286b29be8b9ea
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
