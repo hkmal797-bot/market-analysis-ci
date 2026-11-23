@@ -137,3 +137,13 @@ The workflow default pin is restored to the separately validated PR88 source
 head `f4fd39dc368482e5367ceaa424d1a111a56d22f8`. This keeps the routine
 independent runner aligned with the current primary source review while
 retaining PR83's exact-head validation as recorded evidence.
+
+
+## PR89 deep evidence-verifier candidate
+
+The independent workflow is temporarily pinned to exact PR89 source head
+`c0f9fd1386fd8cb88bcb95b3a619f1c3b5fa381d` to validate strict seven-root
+identity receipt reconstruction and resealed-manifest adversarial tests. This
+candidate is not accepted until both Ubuntu and Windows jobs pass and each
+job log verifies the exact source SHA. The routine Tigris probe remains
+skipped and untouched.
