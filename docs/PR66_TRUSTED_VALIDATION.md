@@ -169,3 +169,15 @@ Windows reported 27 test-pattern invocations and 383 total executions across tho
 - The run is exact-source external test evidence only. It does not establish source-provider authenticity, venue/identity verification, calendar certification, data rights, research-data acceptance, profitability, production readiness, or Live authorization.
 - Native source CI run [#1770](https://github.com/hkmal797-bot/market-analysis-system/actions/runs/45099237295) failed on the exact same source SHA. Both jobs completed as failure but exposed no steps (`steps=[]`); job-log retrieval returned 404. This is consistent with a pre-step runner/provisioning failure, but the root cause remains UNKNOWN and is not evidence that source tests failed. External CI does not repair native CI.
 - PR75 remains based on PR74; PR74 and PR75 are both OPEN and Draft. No merge, promotion, broker order, or Live enablement occurred.
+
+
+## PR76 seven-root freeze/calendar binding — exact-source external validation PASS
+
+- Source PR: [market-analysis-system PR76](https://github.com/hkmal797-bot/market-analysis-system/pull/76), exact source SHA `71362964282bfbc205fadd76450f1f38b9d3dc5a`.
+- PR76 is stacked directly on PR75 source SHA `7d8ed16c8fda8c569a50d035fdde88309d4475ab`; it adds the offline binding of the V2 research freeze's seven exact session sequences to the seven-root candidate-calendar batch audit.
+- Trusted external run [#198](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45101134833) completed SUCCESS on Ubuntu and Windows. Both raw job logs were inspected and independently verified `PRIVATE_SOURCE_SHA_VERIFIED=71362964282bfbc205fadd76450f1f38b9d3dc5a`.
+- Ubuntu complete deterministic suite: **1,787 tests**, `OK (skipped=9)`.
+- Windows Paper/adaptive safety job: SUCCESS; Windows PowerShell launcher parsing: `WINDOWS_PAPER_LAUNCHERS_SYNTAX=PASS`; safety marker: `NO_ORDER_EXECUTED=TRUE`. The Windows run also completed its safety test groups with `OK (skipped=9)`.
+- The exact-source run proves cross-platform test behavior only. It does not verify provider authenticity, data rights, listing/venue identity, authoritative calendar status, corporate-action completeness, permanent archive recovery, dataset acceptance, profitability, production readiness, or Live authorization.
+- Native source CI for the same source SHA [run 45101123720](https://github.com/hkmal797-bot/market-analysis-system/actions/runs/45101123720) failed before exposing test steps; both jobs have no step records. Root cause remains UNKNOWN; this is not evidence of a source test assertion failure. External CI does not replace native CI.
+- PR76 remains OPEN, Draft, unmerged, based on PR75. No canonical promotion, broker order, or Live enablement occurred.
