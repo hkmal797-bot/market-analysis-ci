@@ -89,7 +89,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: ${{ inputs.source_sha || 'f4fd39dc368482e5367ceaa424d1a111a56d22f8' }}
+  PRIVATE_SOURCE_SHA: ${{ github.event.inputs.source_sha || 'f4fd39dc368482e5367ceaa424d1a111a56d22f8' }}
 
 concurrency:
   # Each immutable commit gets its own concurrency lane; independent source SHAs can validate in parallel.
