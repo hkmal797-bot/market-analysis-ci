@@ -147,3 +147,20 @@ identity receipt reconstruction and resealed-manifest adversarial tests. This
 candidate is not accepted until both Ubuntu and Windows jobs pass and each
 job log verifies the exact source SHA. The routine Tigris probe remains
 skipped and untouched.
+
+
+## Parallel immutable-source validation matrix
+
+The workflow now validates two independent source stacks in one run, across
+both Ubuntu and Windows, with `fail-fast: false` so one branch cannot mask
+the other's result:
+
+| Matrix source | Immutable source SHA | Scope |
+|---|---|---|
+| Eight-arm evidence + admission + deep verifier (PR82 → PR83 → PR89) | `c0f9fd1386fd8cb88bcb95b3a619f1c3b5fa381d` | Full Ubuntu suite and Windows safety/evidence suites |
+| Strategy robustness verifier (PR88) | `f4fd39dc368482e5367ceaa424d1a111a56d22f8` | Full Ubuntu suite and Windows safety/evidence suites |
+
+This produces four independently reported jobs per run. Each job must print
+and match its matrix source SHA. This matrix verifies two separate feature
+stacks in parallel; it does not merge them or claim that their PR branches
+are already integrated into the default branch.
