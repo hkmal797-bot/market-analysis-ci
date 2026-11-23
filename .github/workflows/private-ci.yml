@@ -75,6 +75,8 @@ on:
   push:
     branches:
       - main
+    paths:
+      - .github/workflows/private-ci.yml
   pull_request:
     branches:
       - main

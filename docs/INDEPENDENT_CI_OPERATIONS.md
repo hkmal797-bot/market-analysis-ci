@@ -164,3 +164,28 @@ This produces four independently reported jobs per run. Each job must print
 and match its matrix source SHA. This matrix verifies two separate feature
 stacks in parallel; it does not merge them or claim that their PR branches
 are already integrated into the default branch.
+
+
+## Integrated stack acceptance — run #361
+
+The final integrated source head
+`8780937ba25477419d28c1e8fb1286b29be8b9ea` passed the four-job matrix in
+[run #361](https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45255166197):
+
+- Integrated evidence/admission/diagnostic bundle: Ubuntu **1,906 tests**;
+  Windows **494 tests across 33 suites**. The new public bundle integration
+  test passed and the PowerShell launcher parser passed.
+- Standalone robustness verifier: Ubuntu **1,902 tests**; Windows **490 tests
+  across 33 suites**. The robustness adversarial tests and PowerShell launcher
+  parser passed.
+- Every job logged the exact immutable source SHA it was assigned. No test
+  failures were reported.
+- The routine Tigris probe was skipped; no Tigris object was classified or
+  modified by these runs.
+
+## CI trigger efficiency
+
+Push-triggered validation now runs only when `.github/workflows/private-ci.yml`
+changes. Runbook-only documentation updates no longer launch the four-job
+matrix. Manual `workflow_dispatch` and trusted same-repository pull-request
+validation remain available.
