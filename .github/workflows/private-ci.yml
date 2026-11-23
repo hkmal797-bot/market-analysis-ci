@@ -83,7 +83,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: 'f6c4723ba28220a65c7ff7639c84aa3ddd7078b0'
+  PRIVATE_SOURCE_SHA: '5f580bb447131bd34b88dfcc61eb57c9ef13e048'
 
 concurrency:
   # Each immutable commit gets its own concurrency lane; independent source SHAs can validate in parallel.
