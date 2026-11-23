@@ -82,7 +82,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: '882d11b897f5862e6c0fec8601e55f95a032ef96'
+  PRIVATE_SOURCE_SHA: '469f7d8b3be0d89c3f050f6575d124bb0e97a8f7'
 
 concurrency:
   # Each immutable commit gets its own concurrency lane; independent source SHAs can validate in parallel.
@@ -281,6 +281,12 @@ jobs:
             "test_eodhd_local_archive_recovery_cli.py",
             "test_local_archive_media_v1.py",
             "test_eodhd_free_seven_root_local_capture.py",
+            "test_data_layer_gate_verifiers_v1.py",
+            "test_data_layer_evidence_pipeline_v1.py",
+            "test_data_layer_evidence_pipeline_v2.py",
+            "test_data_layer_evidence_pipeline_v3.py",
+            "test_research_admission_envelope_v1.py",
+            "test_strategy_robustness_matrix_v1.py",
             "test_tigris_raw_content_probe.py"
           )
           foreach ($pattern in $patterns) {
@@ -387,3 +393,6 @@ jobs:
 
 # PR40 final revision: distinct five/seven-root provenance, exact receipt validation and clean adversarial quota diagnostics.
 # Validate bounded EODHD post-capture quota settlement retry on the exact private source head.
+
+# PR82-PR84: validate the eight-arm data evidence, exact research-admission envelope, and parallel strategy robustness stack on Windows.
+# Current trusted source pin is the integrated PR84 head; Ubuntu runs the full suite, Windows runs focused new-stack plus Paper/adaptive safety modules.
