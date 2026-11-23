@@ -79,6 +79,7 @@ name: Private repository CI runner
 # Validate unified four-gate evidence snapshot against the exact source commit.
 # PR79 adds four independent fail-closed data-layer verifiers and a tamper-evident four-gate composition report; validate exact source SHA on Ubuntu and Windows.
 # PR81 adds six-arm composition: four data-layer gates plus point-in-time dataset freeze and seven-root OHLCV parity; validate exact source SHA on both operating systems.
+# PR82 extends to eight arms with historical identity coverage and EODHD/Alpaca session evidence; validate exact source SHA on Ubuntu and Windows.
 
 on:
   push:
@@ -98,7 +99,7 @@ permissions:
   contents: read
 
 env:
-  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || '1aefe34ecc4e214a71fdaa196518ff7f86b6e888' }}
+  PRIVATE_SOURCE_SHA: ${{ inputs.private_source_sha || 'c1557721b990790a3f8ecb4691b21b1d0dba34ea' }}
 
 concurrency:
   group: private-ci-${{ github.ref }}
@@ -284,6 +285,7 @@ jobs:
             "test_data_layer_gate_verifiers_v1.py",
             "test_data_layer_evidence_pipeline_v1.py"
             "test_data_layer_evidence_pipeline_v2.py"
+            "test_data_layer_evidence_pipeline_v3.py"
           )
           foreach ($pattern in $patterns) {
             if (-not (Test-Path (Join-Path "tests" $pattern))) {
