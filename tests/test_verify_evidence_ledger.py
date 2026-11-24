@@ -44,6 +44,37 @@ class EvidenceLedgerTests(unittest.TestCase):
         self.mutate_entry(lambda e: e.update(receipt_path="../../outside.json"))
         with self.assertRaisesRegex(LedgerError, "EVIDENCE_PATH_INVALID"):
             self.verify()
+    def test_rejects_duplicate_run_even_with_valid_chain(self):
+        p = self.root / "evidence-ledger/entries.jsonl"
+        first = json.loads(p.read_text().splitlines()[0])
+        second = dict(first)
+        second["sequence"] = 2
+        second["previous_entry_hash"] = first["entry_hash"]
+        second.pop("entry_hash")
+        second["entry_hash"] = hashlib.sha256(canonical(second)).hexdigest()
+        p.write_bytes(canonical(first) + b"\n" + canonical(second) + b"\n")
+        (self.root / "evidence-ledger/HEAD.json").write_bytes(canonical({"schema":"EVIDENCE_LEDGER_HEAD_V1","sequence":2,"entry_hash":second["entry_hash"]}))
+        with self.assertRaisesRegex(LedgerError, "DUPLICATE_WORKFLOW_RUN"):
+            self.verify()
+    def test_rejects_resealed_receipt_test_substitution(self):
+        ledger = self.root / "evidence-ledger"
+        receipt_path = ledger / "receipts/45314423192.json"
+        r = json.loads(receipt_path.read_bytes())
+        r["tests"][0]["test"] = "attacker.substituted.test"
+        body = dict(r)
+        body.pop("receipt_payload_sha256")
+        r["receipt_payload_sha256"] = hashlib.sha256(canonical(body)).hexdigest()
+        receipt_raw = canonical(r)
+        receipt_path.write_bytes(receipt_raw)
+        buf = io.BytesIO()
+        with zipfile.ZipFile(buf, "w", compression=zipfile.ZIP_DEFLATED) as z:
+            z.writestr("evidence-lifecycle-acceptance.json", receipt_raw)
+        artifact_raw = buf.getvalue()
+        transport = base64.b64encode(artifact_raw)
+        (ledger / "artifacts/45314423192.zip.b64").write_bytes(transport)
+        self.mutate_entry(lambda e: e.update(receipt_sha256=hashlib.sha256(receipt_raw).hexdigest(), artifact_zip_sha256=hashlib.sha256(artifact_raw).hexdigest(), artifact_transport_sha256=hashlib.sha256(transport).hexdigest(), receipt_payload_sha256=r["receipt_payload_sha256"]))
+        with self.assertRaisesRegex(LedgerError, "RECEIPT_PAYLOAD_NOT_PINNED"):
+            self.verify()
     def test_rejects_wrong_head(self):
         p = self.root / "evidence-ledger/HEAD.json"
         h = json.loads(p.read_text())
@@ -72,13 +103,13 @@ class EvidenceLedgerTests(unittest.TestCase):
         r["receipt_payload_sha256"] = hashlib.sha256(canonical(b)).hexdigest()
         receipt_raw = canonical(r)
         receipt_path.write_bytes(receipt_raw)
-        artifact_path = ledger / "artifacts/45314423192.zip.b64"
         buf = io.BytesIO()
         with zipfile.ZipFile(buf, "w", compression=zipfile.ZIP_DEFLATED) as z:
             z.writestr("evidence-lifecycle-acceptance.json", receipt_raw)
-        artifact_transport = base64.b64encode(buf.getvalue())
-        artifact_path.write_bytes(artifact_transport)
-        self.mutate_entry(lambda e: e.update(receipt_sha256=hashlib.sha256(receipt_raw).hexdigest(), artifact_zip_sha256=hashlib.sha256(buf.getvalue()).hexdigest(), artifact_transport_sha256=hashlib.sha256(artifact_transport).hexdigest(), receipt_payload_sha256=r["receipt_payload_sha256"]))
+        artifact_raw = buf.getvalue()
+        transport = base64.b64encode(artifact_raw)
+        (ledger / "artifacts/45314423192.zip.b64").write_bytes(transport)
+        self.mutate_entry(lambda e: e.update(receipt_sha256=hashlib.sha256(receipt_raw).hexdigest(), artifact_zip_sha256=hashlib.sha256(artifact_raw).hexdigest(), artifact_transport_sha256=hashlib.sha256(transport).hexdigest(), receipt_payload_sha256=r["receipt_payload_sha256"]))
         with self.assertRaisesRegex(LedgerError, "SAFETY_INVARIANTS_CHANGED"):
             self.verify()
     def test_rejects_entry_reordering_or_duplication(self):
