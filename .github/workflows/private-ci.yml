@@ -70,6 +70,7 @@ name: Private repository CI runner
 # PR64 blocks Paper reconciliation when fill or non-trade activity windows are incomplete.
 # PR63 retry: Linux-only policy-binding execution test is now correctly skipped on Windows.
 # PR88 hardens re-sealed robustness manifests and preserves exact raw archive bytes on Windows.
+# Phase 01–02 adds deterministic Control Center evidence inventory and phase-lock tests.
 
 on:
   push:
@@ -97,8 +98,8 @@ jobs:
       fail-fast: false
       matrix:
         source:
-          - name: external-hmac-checkpoint
-            sha: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
+          - name: phase-01-02-control-center
+            sha: f71ea96b7d02c7dc4539030b823151f3c2773886
           - name: archive-recovery-control
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
     runs-on: ubuntu-latest
@@ -235,8 +236,8 @@ jobs:
       fail-fast: false
       matrix:
         source:
-          - name: external-hmac-checkpoint
-            sha: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
+          - name: phase-01-02-control-center
+            sha: f71ea96b7d02c7dc4539030b823151f3c2773886
           - name: archive-recovery-control
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
     runs-on: windows-latest
@@ -293,6 +294,7 @@ jobs:
         run: |
           $patterns = @(
             "test_paper_trading_v1.py",
+            "test_control_center_v1.py",
             "test_windows_paper_launcher.py",
             "test_windows_paper_readonly_launcher.py",
             "test_daily_backtest_v1.py",
