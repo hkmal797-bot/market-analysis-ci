@@ -97,9 +97,9 @@ jobs:
       fail-fast: false
       matrix:
         source:
-          - name: diagnostic-archive-discovery
+          - name: archive-recovery-and-catalog
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
-          - name: content-addressed-archive-control
+          - name: content-addressed-archive-base
             sha: 90b8546b3030c57c37a6fb9c2774760adfd0a8c0
     runs-on: ubuntu-latest
     timeout-minutes: 15
@@ -213,9 +213,9 @@ jobs:
       fail-fast: false
       matrix:
         source:
-          - name: diagnostic-archive-discovery
+          - name: archive-recovery-and-catalog
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
-          - name: content-addressed-archive-control
+          - name: content-addressed-archive-base
             sha: 90b8546b3030c57c37a6fb9c2774760adfd0a8c0
     runs-on: windows-latest
     timeout-minutes: 20
