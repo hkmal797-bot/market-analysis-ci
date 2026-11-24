@@ -22,7 +22,7 @@ class EvidenceLedgerTests(unittest.TestCase):
         body = dict(e)
         body.pop("entry_hash", None)
         e["entry_hash"] = hashlib.sha256(canonical(body)).hexdigest()
-        p.write_bytes(canonical(e) + b"\\n")
+        p.write_bytes(canonical(e) + b"\n")
         (self.root / "evidence-ledger/HEAD.json").write_bytes(canonical({"schema":"EVIDENCE_LEDGER_HEAD_V1","sequence":1,"entry_hash":e["entry_hash"]}))
     def test_accepts_exact_initial_ledger(self):
         self.assertEqual(self.verify()["entries"], 1)
@@ -39,6 +39,10 @@ class EvidenceLedgerTests(unittest.TestCase):
     def test_rejects_resealed_entry_identity_substitution(self):
         self.mutate_entry(lambda e: e.update(source_commit_sha="1" * 40))
         with self.assertRaisesRegex(LedgerError, "SOURCE_SHA_MISMATCH"):
+            self.verify()
+    def test_rejects_path_traversal_even_when_entry_resealed(self):
+        self.mutate_entry(lambda e: e.update(receipt_path="../../outside.json"))
+        with self.assertRaisesRegex(LedgerError, "EVIDENCE_PATH_INVALID"):
             self.verify()
     def test_rejects_wrong_head(self):
         p = self.root / "evidence-ledger/HEAD.json"
@@ -83,7 +87,7 @@ class EvidenceLedgerTests(unittest.TestCase):
     def test_rejects_noncanonical_entry(self):
         p = self.root / "evidence-ledger/entries.jsonl"
         e = json.loads(p.read_text())
-        p.write_bytes(json.dumps(dict(reversed(list(e.items()))), separators=(",", ":")).encode() + b"\\n")
+        p.write_bytes(json.dumps(dict(reversed(list(e.items()))), separators=(",", ":")).encode() + b"\n")
         with self.assertRaisesRegex(LedgerError, "ENTRY_NOT_CANONICAL"):
             self.verify()
 
