@@ -72,7 +72,7 @@ def main() -> int:
     actual_sha = os.environ.get("PRIVATE_SOURCE_SHA", "")
     run_id = os.environ.get("GITHUB_RUN_ID", "")
     run_attempt = os.environ.get("GITHUB_RUN_ATTEMPT", "")
-    workflow_sha = os.environ.get("GITHUB_SHA", "")
+    workflow_sha = os.environ.get("CI_HEAD_SHA", "")
 
     if len(expected_sha) != 40 or actual_sha != expected_sha:
         raise SystemExit("SOURCE_IDENTITY_GATE_FAILED")
@@ -143,7 +143,7 @@ def main() -> int:
     }
     payload = canonical_json(receipt)
     digest = hashlib.sha256(payload).hexdigest()
-    receipt["receipt_sha256"] = digest
+    receipt["receipt_payload_sha256"] = digest
     final_payload = canonical_json(receipt)
 
     output = Path("artifacts/evidence-lifecycle-acceptance.json")
