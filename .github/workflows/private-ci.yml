@@ -101,6 +101,18 @@ jobs:
             sha: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
           - name: archive-recovery-control
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
+          - name: pr93-content-addressed-archive
+            sha: 90b8546b3030c57c37a6fb9c2774760adfd0a8c0
+          - name: pr92-detached-ledger-verifier
+            sha: 8c2fecd61f6acb154539f8bfa6509cf9b0c53014
+          - name: pr91-hash-chained-ledger
+            sha: 93957c5cf8b197860a960ec6de5d00c940f222ed
+          - name: pr90-eight-arm-integration
+            sha: 8780937ba25477419d28c1e8fb1286b29be8b9ea
+          - name: pr89-eight-arm-verifier
+            sha: 88b8c9119c53c3f42d60c047d42e0532cc36cc38
+          - name: pr88-robustness-verifier-hardening
+            sha: f4fd39dc368482e5367ceaa424d1a111a56d22f8
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -217,6 +229,18 @@ jobs:
             sha: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
           - name: archive-recovery-control
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
+          - name: pr93-content-addressed-archive
+            sha: 90b8546b3030c57c37a6fb9c2774760adfd0a8c0
+          - name: pr92-detached-ledger-verifier
+            sha: 8c2fecd61f6acb154539f8bfa6509cf9b0c53014
+          - name: pr91-hash-chained-ledger
+            sha: 93957c5cf8b197860a960ec6de5d00c940f222ed
+          - name: pr90-eight-arm-integration
+            sha: 8780937ba25477419d28c1e8fb1286b29be8b9ea
+          - name: pr89-eight-arm-verifier
+            sha: 88b8c9119c53c3f42d60c047d42e0532cc36cc38
+          - name: pr88-robustness-verifier-hardening
+            sha: f4fd39dc368482e5367ceaa424d1a111a56d22f8
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
