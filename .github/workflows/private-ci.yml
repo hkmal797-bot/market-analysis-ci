@@ -213,21 +213,22 @@ jobs:
           print(f"UNIT_TESTS_SKIPPED={skipped.group(1) if skipped else '0'}")
           raise SystemExit(status)
           PY
-      - name: Read-only Tigris raw-content probe (explicit validation PR only)
+      - name: Read-only Tigris bucket authentication and listing preflight (explicit validation PR only)
         if: (github.event_name == 'pull_request' && startsWith(github.event.pull_request.title, '[RUN_TIGRIS_PROBE]')) || (github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.source.sha == 'b794281e0653d5ccf20adb3ba51575f20e853350')
         working-directory: private-source
         env:
           TIGRIS_ACCESS_KEY_ID: ${{ secrets.TIGRIS_ACCESS_KEY_ID }}
           TIGRIS_SECRET_ACCESS_KEY: ${{ secrets.TIGRIS_SECRET_ACCESS_KEY }}
-          TIGRIS_ENDPOINT_URL: https://t3.storage.dev
-          TIGRIS_REGION: auto
+          TIGRIS_ENDPOINT_URL: ${{ secrets.TIGRIS_ENDPOINT_URL }}
+          TIGRIS_REGION: ${{ secrets.TIGRIS_REGION }}
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
-          if [ -z "${TIGRIS_ACCESS_KEY_ID:-}" ] || [ -z "${TIGRIS_SECRET_ACCESS_KEY:-}" ]; then
-            echo "TIGRIS_RAW_CONTENT_PROBE=SKIPPED_REQUIRED_SECRETS_UNAVAILABLE"
+          if [ -z "${TIGRIS_ACCESS_KEY_ID:-}" ] || [ -z "${TIGRIS_SECRET_ACCESS_KEY:-}" ] || [ -z "${TIGRIS_ENDPOINT_URL:-}" ] || [ -z "${TIGRIS_REGION:-}" ]; then
+            echo "TIGRIS_PREFLIGHT=SKIPPED_REQUIRED_SECRETS_UNAVAILABLE"
             exit 0
           fi
-          python scripts/tigris_raw_content_probe.py
+          python -m pip install --disable-pip-version-check --no-cache-dir "boto3==1.44.3"
+          python scripts/tigris_read_only_preflight.py
 
   windows-paper-safety:
     name: Windows Paper safety and adaptive-cycle tests — ${{ matrix.source.name }}
