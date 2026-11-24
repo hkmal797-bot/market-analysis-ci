@@ -94,7 +94,7 @@ def main() -> int:
         test = loader.loadTestsFromName(f"{class_name}.{test_name}", lifecycle_tests)
         if test.countTestCases() != 1:
             raise SystemExit(f"TEST_DISCOVERY_CARDINALITY_INVALID:{test_name}")
-        suite.addTests(test)
+        suite.addTest(test)
 
     stream = io.StringIO()
     runner = unittest.TextTestRunner(
