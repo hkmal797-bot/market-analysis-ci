@@ -1,6 +1,6 @@
 # Evidence acceptance ledger
 
-This directory stores independently re-checked CI acceptance receipts as Git-tracked evidence.
+This directory is the bootstrap ledger inside the CI repository (not a separately provisioned GitHub repository). It stores independently re-checked CI acceptance receipts as Git-tracked evidence.
 
 ## Integrity model
 
