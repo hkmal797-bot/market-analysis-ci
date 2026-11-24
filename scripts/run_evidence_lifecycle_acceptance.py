@@ -122,7 +122,7 @@ def main() -> int:
         "source_repository": "hkmal797-bot/market-analysis-system",
         "source_commit_sha": actual_sha,
         "ci_repository": "hkmal797-bot/market-analysis-ci",
-        "ci_commit_sha": workflow_sha,
+        "ci_head_sha": workflow_sha,
         "workflow_run_id": run_id,
         "workflow_run_attempt": run_attempt,
         "generated_at_utc": datetime.now(timezone.utc).isoformat(),
@@ -155,7 +155,7 @@ def main() -> int:
     temporary.replace(output)
 
     reread = output.read_bytes()
-    if reread != final_payload or hashlib.sha256(payload).hexdigest() != receipt["receipt_sha256"]:
+    if reread != final_payload or hashlib.sha256(payload).hexdigest() != receipt["receipt_payload_sha256"]:
         raise SystemExit("ACCEPTANCE_RECEIPT_READ_AFTER_WRITE_FAILED")
     print(f"LIFECYCLE_RECEIPT_SHA256={hashlib.sha256(reread).hexdigest()}")
     print(f"LIFECYCLE_RECEIPT_PATH={output.as_posix()}")
