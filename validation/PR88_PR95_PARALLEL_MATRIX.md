@@ -53,6 +53,6 @@ The independent verifier enforces:
 - Exact workflow run ID/attempt, CI head SHA, private-source repository and immutable source SHA.
 - Exact 23-test identity set, ordering, uniqueness, PASS-only outcomes, and zero failure/error/skip counters.
 - Time-zone-aware generation timestamp and all safety invariants remaining false.
-- A 17-case adversarial verifier suite covering duplicate keys, serialization, digest, identity substitution, schema drift, test omission/duplication, non-PASS outcomes, counter drift, safety promotion, and timestamp errors.
+- A 17-case verifier suite (one valid fixture plus 16 adversarial cases) covering duplicate keys, serialization, digest, identity substitution, schema drift, test omission/duplication, non-PASS outcomes, counter drift, safety promotion, and timestamp errors.
 
 The acceptance graph now contains 16 immutable-source matrix jobs, one receipt producer, and one independent artifact consumer (18 jobs total). The consumer is a distinct GitHub Actions job with an explicit dependency on the producer; it cannot run if the producer fails. This remains software/evidence-integrity validation only and does not confer data trust, research admission, strategy approval, order submission, broker routing, or Live permission.
