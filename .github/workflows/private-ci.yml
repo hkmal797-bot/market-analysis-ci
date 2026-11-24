@@ -97,10 +97,10 @@ jobs:
       fail-fast: false
       matrix:
         source:
-          - name: content-addressed-ledger-archive
+          - name: diagnostic-archive-discovery
+            sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
+          - name: content-addressed-archive-control
             sha: 90b8546b3030c57c37a6fb9c2774760adfd0a8c0
-          - name: detached-ledger-verifier-control
-            sha: 8c2fecd61f6acb154539f8bfa6509cf9b0c53014
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -213,10 +213,10 @@ jobs:
       fail-fast: false
       matrix:
         source:
-          - name: content-addressed-ledger-archive
+          - name: diagnostic-archive-discovery
+            sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
+          - name: content-addressed-archive-control
             sha: 90b8546b3030c57c37a6fb9c2774760adfd0a8c0
-          - name: detached-ledger-verifier-control
-            sha: 8c2fecd61f6acb154539f8bfa6509cf9b0c53014
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -410,5 +410,5 @@ jobs:
 # PR40 final revision: distinct five/seven-root provenance, exact receipt validation and clean adversarial quota diagnostics.
 # Validate bounded EODHD post-capture quota settlement retry on the exact private source head.
 
-# PR93 validates immutable ledger archive persistence on PR92; PR92 is the detached-ledger verifier control source.
-# Parallel immutable source matrix validates content-addressed archive storage and its PR92 detached-verifier control on both operating systems.
+# PR94 validates restart discovery and detached ledger recovery on PR93; PR93 is the content-addressed archive control source.
+# Parallel immutable source matrix validates archive discovery/recovery and its PR93 content-addressed archive control on both operating systems.
