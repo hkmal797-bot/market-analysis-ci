@@ -71,6 +71,7 @@ name: Private repository CI runner
 # PR63 retry: Linux-only policy-binding execution test is now correctly skipped on Windows.
 # PR88 hardens re-sealed robustness manifests and preserves exact raw archive bytes on Windows.
 # Phase 01–02 adds deterministic Control Center evidence inventory and phase-lock tests.
+# PR96 makes Linux Landlock default-deny mandatory for every spawned research worker; revalidate exact source on both OS jobs.
 
 on:
   push:
@@ -99,7 +100,7 @@ jobs:
       matrix:
         source:
           - name: phase-01-02-control-center
-            sha: acce967cae61b68a87c515b2f8858906e6b8618e
+            sha: 71624a79c37e010a0817d33dd275e50acb32173b
           - name: archive-recovery-control
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
     runs-on: ubuntu-latest
@@ -238,7 +239,7 @@ jobs:
       matrix:
         source:
           - name: phase-01-02-control-center
-            sha: acce967cae61b68a87c515b2f8858906e6b8618e
+            sha: 71624a79c37e010a0817d33dd275e50acb32173b
           - name: archive-recovery-control
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
     runs-on: windows-latest
