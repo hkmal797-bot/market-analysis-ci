@@ -436,3 +436,51 @@ jobs:
 
 # PR95 validates HMAC archive checkpoints on PR94; PR94 is the archive discovery/recovery control source.
 # Parallel immutable source matrix validates external HMAC checkpoints and its PR94 archive discovery/recovery control on both operating systems.
+
+  evidence-lifecycle-acceptance:
+    name: End-to-end evidence lifecycle acceptance — PR95 exact source
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact private source (read-only token; credentials not persisted)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Verify immutable source identity
+        working-directory: private-source
+        env:
+          EXPECTED_PRIVATE_SOURCE_SHA: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "$EXPECTED_PRIVATE_SOURCE_SHA"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+          echo "PRIVATE_SOURCE_SHA=$actual" >> "$GITHUB_ENV"
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+
+      - name: Run adversarial end-to-end lifecycle acceptance
+        env:
+          EXPECTED_PRIVATE_SOURCE_SHA: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
+          PYTHONPATH: private-source/src:private-source/tests
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python scripts/run_evidence_lifecycle_acceptance.py
+
+      - name: Upload immutable lifecycle acceptance receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: evidence-lifecycle-acceptance-${{ github.run_id }}
+          path: artifacts/evidence-lifecycle-acceptance.json
+          if-no-files-found: error
+          retention-days: 30
