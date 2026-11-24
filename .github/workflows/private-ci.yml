@@ -473,6 +473,7 @@ jobs:
       - name: Run adversarial end-to-end lifecycle acceptance
         env:
           EXPECTED_PRIVATE_SOURCE_SHA: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
+          CI_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
           PYTHONPATH: private-source/src:private-source/tests
           PYTHONDONTWRITEBYTECODE: "1"
         run: python scripts/run_evidence_lifecycle_acceptance.py
