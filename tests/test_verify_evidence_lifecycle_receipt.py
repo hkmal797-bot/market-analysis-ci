@@ -5,6 +5,9 @@ import json
 import tempfile
 import unittest
 from pathlib import Path
+import sys
+
+sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 from verify_evidence_lifecycle_receipt import (
     EXPECTED_KEYS, EXPECTED_SAFETY, EXPECTED_TESTS, VerificationError,
