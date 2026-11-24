@@ -32,7 +32,7 @@ The parallel 16-job matrix is complemented by one focused Ubuntu acceptance lane
 - Runs 23 named tests from `tests/test_research_admission_envelope_v1.py`.
 - Covers evidence-envelope binding, eight-gate preservation, exact freeze/plan/cost binding, deterministic orchestration, diagnostic bundle construction, hash-chained ledger append and detached verification, content-addressed archive idempotency and read-after-write, no-overwrite/tamper detection, archive discovery/recovery without the original receipt, corrupt-descriptor rejection, external HMAC authentication, wrong-key/key-ID rejection, archive-splice rejection, and release-promotion rejection.
 - The runner verifies the exact source SHA before test discovery and refuses to overwrite an existing receipt.
-- It emits a canonical JSON acceptance receipt with the source SHA, CI run identity, per-test outcomes, safety invariants, and a SHA-256 digest; it reads the receipt back and verifies the bytes before exit.
+- It emits a canonical JSON acceptance receipt with the source SHA, CI run identity and exact CI head SHA, per-test outcomes, safety invariants, and a SHA-256 digest over the canonical receipt body; it reads the receipt back and verifies the bytes before exit.
 - The receipt is uploaded as a GitHub Actions artifact for 30 days.
 
 ### Acceptance gate
