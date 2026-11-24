@@ -101,6 +101,18 @@ jobs:
             sha: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
           - name: archive-recovery-control
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
+          - name: pr93-content-addressed-archive
+            sha: 90b8546b3030c57c37a6fb9c2774760adfd0a8c0
+          - name: pr92-detached-ledger-verifier
+            sha: 8c2fecd61f6acb154539f8bfa6509cf9b0c53014
+          - name: pr91-hash-chained-ledger
+            sha: 93957c5cf8b197860a960ec6de5d00c940f222ed
+          - name: pr90-eight-arm-integration
+            sha: 8780937ba25477419d28c1e8fb1286b29be8b9ea
+          - name: pr89-eight-arm-verifier
+            sha: 88b8c9119c53c3f42d60c047d42e0532cc36cc38
+          - name: pr88-robustness-verifier-hardening
+            sha: f4fd39dc368482e5367ceaa424d1a111a56d22f8
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -217,6 +229,18 @@ jobs:
             sha: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
           - name: archive-recovery-control
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
+          - name: pr93-content-addressed-archive
+            sha: 90b8546b3030c57c37a6fb9c2774760adfd0a8c0
+          - name: pr92-detached-ledger-verifier
+            sha: 8c2fecd61f6acb154539f8bfa6509cf9b0c53014
+          - name: pr91-hash-chained-ledger
+            sha: 93957c5cf8b197860a960ec6de5d00c940f222ed
+          - name: pr90-eight-arm-integration
+            sha: 8780937ba25477419d28c1e8fb1286b29be8b9ea
+          - name: pr89-eight-arm-verifier
+            sha: 88b8c9119c53c3f42d60c047d42e0532cc36cc38
+          - name: pr88-robustness-verifier-hardening
+            sha: f4fd39dc368482e5367ceaa424d1a111a56d22f8
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -412,3 +436,103 @@ jobs:
 
 # PR95 validates HMAC archive checkpoints on PR94; PR94 is the archive discovery/recovery control source.
 # Parallel immutable source matrix validates external HMAC checkpoints and its PR94 archive discovery/recovery control on both operating systems.
+
+  evidence-lifecycle-acceptance:
+    name: End-to-end evidence lifecycle acceptance — PR95 exact source
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout isolated CI harness (read-only; credentials not persisted)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: ci-runner
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Checkout exact private source (read-only token; credentials not persisted)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Verify immutable source identity
+        working-directory: private-source
+        env:
+          EXPECTED_PRIVATE_SOURCE_SHA: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
+        shell: bash
+        run: |
+          set -euo pipefail
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "$EXPECTED_PRIVATE_SOURCE_SHA"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+          echo "PRIVATE_SOURCE_SHA=$actual" >> "$GITHUB_ENV"
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+
+      - name: Run adversarial end-to-end lifecycle acceptance
+        env:
+          EXPECTED_PRIVATE_SOURCE_SHA: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
+          CI_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          PYTHONPATH: private-source/src:private-source/tests
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python ci-runner/scripts/run_evidence_lifecycle_acceptance.py
+
+      - name: Upload immutable lifecycle acceptance receipt
+        uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
+        with:
+          name: evidence-lifecycle-acceptance-${{ github.run_id }}
+          path: artifacts/evidence-lifecycle-acceptance.json
+          if-no-files-found: error
+          retention-days: 30
+
+  independent-evidence-receipt-verification:
+    name: Independent downloaded receipt verification
+    needs: evidence-lifecycle-acceptance
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout isolated verifier harness (read-only; credentials not persisted)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: ci-verifier
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+
+      - name: Test verifier against adversarial receipt fixtures
+        working-directory: ci-verifier
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests -p "test_verify_evidence_lifecycle_receipt.py" -v
+
+      - name: Download producer artifact as an independent consumer
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: evidence-lifecycle-acceptance-${{ github.run_id }}
+          path: received-artifact
+
+      - name: Verify downloaded receipt without producer workspace or outputs
+        working-directory: ci-verifier
+        env:
+          EXPECTED_WORKFLOW_RUN_ID: ${{ github.run_id }}
+          EXPECTED_WORKFLOW_RUN_ATTEMPT: ${{ github.run_attempt }}
+          EXPECTED_CI_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
+          EXPECTED_PRIVATE_SOURCE_SHA: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
+        run: python scripts/verify_evidence_lifecycle_receipt.py ../received-artifact/evidence-lifecycle-acceptance.json
+
