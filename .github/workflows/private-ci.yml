@@ -97,10 +97,10 @@ jobs:
       fail-fast: false
       matrix:
         source:
-          - name: detached-ledger-manifest-verifier
+          - name: content-addressed-ledger-archive
+            sha: 90b8546b3030c57c37a6fb9c2774760adfd0a8c0
+          - name: detached-ledger-verifier-control
             sha: 8c2fecd61f6acb154539f8bfa6509cf9b0c53014
-          - name: append-only-ledger-control
-            sha: 93957c5cf8b197860a960ec6de5d00c940f222ed
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -213,10 +213,10 @@ jobs:
       fail-fast: false
       matrix:
         source:
-          - name: detached-ledger-manifest-verifier
+          - name: content-addressed-ledger-archive
+            sha: 90b8546b3030c57c37a6fb9c2774760adfd0a8c0
+          - name: detached-ledger-verifier-control
             sha: 8c2fecd61f6acb154539f8bfa6509cf9b0c53014
-          - name: append-only-ledger-control
-            sha: 93957c5cf8b197860a960ec6de5d00c940f222ed
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -410,5 +410,5 @@ jobs:
 # PR40 final revision: distinct five/seven-root provenance, exact receipt validation and clean adversarial quota diagnostics.
 # Validate bounded EODHD post-capture quota settlement retry on the exact private source head.
 
-# PR92 validates detached ledger-manifest verification on PR91; PR91 is the append-only-ledger control source.
-# Parallel immutable source matrix validates detached-ledger verification and its PR91 append-only control on both operating systems.
+# PR93 validates immutable ledger archive persistence on PR92; PR92 is the detached-ledger verifier control source.
+# Parallel immutable source matrix validates content-addressed archive storage and its PR92 detached-verifier control on both operating systems.
