@@ -24,3 +24,21 @@ Purpose: validate the eight pinned immutable revisions that form the robustness/
 ## Safety and interpretation
 
 This is validation of software behavior and artifact-integrity controls only. It does not establish market-data source trust, research admission, strategy profitability, Paper order permission, broker routing, or Live authorization. No private-source PR is merged. Tigris remains an opt-in read-only probe and is not part of this matrix unless its explicit trigger condition is met.
+
+## End-to-end evidence lifecycle acceptance lane
+
+The parallel 16-job matrix is complemented by one focused Ubuntu acceptance lane against the exact PR95 source SHA `d0fa1a333f0c1f46626a750aeb8324a26339fbdb`. This lane does not replace the matrix; it composes the highest-value lifecycle and adversarial tests into one separately reported execution.
+
+- Runs 23 named tests from `tests/test_research_admission_envelope_v1.py`.
+- Covers evidence-envelope binding, eight-gate preservation, exact freeze/plan/cost binding, deterministic orchestration, diagnostic bundle construction, hash-chained ledger append and detached verification, content-addressed archive idempotency and read-after-write, no-overwrite/tamper detection, archive discovery/recovery without the original receipt, corrupt-descriptor rejection, external HMAC authentication, wrong-key/key-ID rejection, archive-splice rejection, and release-promotion rejection.
+- The runner verifies the exact source SHA before test discovery and refuses to overwrite an existing receipt.
+- It emits a canonical JSON acceptance receipt with the source SHA, CI run identity, per-test outcomes, safety invariants, and a SHA-256 digest; it reads the receipt back and verifies the bytes before exit.
+- The receipt is uploaded as a GitHub Actions artifact for 30 days.
+
+### Acceptance gate
+
+All 23 tests must execute exactly once and pass; failures, errors, skips, test-discovery drift, source-SHA mismatch, missing CI identity, receipt overwrite, or read-after-write mismatch fail the job. The artifact is evidence of this CI run only; it is not an independent release attestation and does not change research or trading permissions.
+
+### Safety boundary
+
+The runner uses a read-only checkout token with checkout credentials not persisted. It does not install packages, access market-data providers, call a broker, submit Paper orders, or enable Live trading. The expected terminal state remains source-unverified / research-not-admitted / strategy-not-approved / Paper submission disabled / Live trading disabled.
