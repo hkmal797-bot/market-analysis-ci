@@ -443,6 +443,13 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 20
     steps:
+      - name: Checkout isolated CI harness (read-only; credentials not persisted)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: ci-runner
+          persist-credentials: false
+          fetch-depth: 1
+
       - name: Checkout exact private source (read-only token; credentials not persisted)
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
@@ -476,7 +483,7 @@ jobs:
           CI_HEAD_SHA: ${{ github.event.pull_request.head.sha || github.sha }}
           PYTHONPATH: private-source/src:private-source/tests
           PYTHONDONTWRITEBYTECODE: "1"
-        run: python scripts/run_evidence_lifecycle_acceptance.py
+        run: python ci-runner/scripts/run_evidence_lifecycle_acceptance.py
 
       - name: Upload immutable lifecycle acceptance receipt
         uses: actions/upload-artifact@ea165f8d65b6e75b540449e92b4886f43607fa02 # v4.6.2
