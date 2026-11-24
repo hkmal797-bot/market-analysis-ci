@@ -8,6 +8,9 @@ from typing import Any
 ROOT = Path(__file__).resolve().parents[1]
 ZERO_HASH = "0" * 64
 EXPECTED_SOURCE = "d0fa1a333f0c1f46626a750aeb8324a26339fbdb"
+EXPECTED_CI_HEAD_SHA = "97df33bda148eaf5d89cfeeb2fd970d92a1c4923"
+EXPECTED_WORKFLOW_RUN_ID = 45314423192
+EXPECTED_RECEIPT_PAYLOAD_SHA256 = "00d443fd4b1fc44dab25647e0afaf9d0c688dd42005044843fb3f8ad2c28302d"
 EXPECTED_CI_REPO = "hkmal797-bot/market-analysis-ci"
 EXPECTED_SOURCE_REPO = "hkmal797-bot/market-analysis-system"
 EXPECTED_SCHEMA = "EVIDENCE_LIFECYCLE_ACCEPTANCE_RECEIPT_V1"
@@ -81,6 +84,8 @@ def verify_receipt(receipt_raw: bytes, entry: dict[str, Any]) -> None:
         raise LedgerError("RECEIPT_TEST_DUPLICATE")
     if receipt["safety_invariants"] != EXPECTED_SAFETY:
         raise LedgerError("RECEIPT_SAFETY_INVARIANTS_CHANGED")
+    if receipt["receipt_payload_sha256"] != EXPECTED_RECEIPT_PAYLOAD_SHA256:
+        raise LedgerError("RECEIPT_PAYLOAD_NOT_PINNED")
     if receipt["receipt_payload_sha256"] != entry["receipt_payload_sha256"]:
         raise LedgerError("RECEIPT_DIGEST_ENTRY_MISMATCH")
 
@@ -94,7 +99,7 @@ def verify_ledger(root: Path = ROOT) -> dict[str, Any]:
     lines = (ledger / "entries.jsonl").read_bytes().splitlines()
     if not lines:
         raise LedgerError("LEDGER_EMPTY")
-    entries, previous = [], ZERO_HASH
+    entries, previous, seen_runs = [], ZERO_HASH, set()
     required_entry = {
         "sequence", "previous_entry_hash", "recorded_at_utc", "workflow_run_id", "workflow_run_attempt",
         "ci_repository", "ci_head_sha", "source_repository", "source_commit_sha", "artifact_id",
@@ -116,6 +121,11 @@ def verify_ledger(root: Path = ROOT) -> dict[str, Any]:
             raise LedgerError("LEDGER_ENTRY_HASH_MISMATCH")
         if entry.get("source_commit_sha") != EXPECTED_SOURCE:
             raise LedgerError("LEDGER_SOURCE_SHA_MISMATCH")
+        if entry.get("workflow_run_id") != EXPECTED_WORKFLOW_RUN_ID or entry.get("ci_head_sha") != EXPECTED_CI_HEAD_SHA:
+            raise LedgerError("LEDGER_RUN_IDENTITY_NOT_PINNED")
+        if entry["workflow_run_id"] in seen_runs:
+            raise LedgerError("LEDGER_DUPLICATE_WORKFLOW_RUN")
+        seen_runs.add(entry["workflow_run_id"])
         run_id = str(entry["workflow_run_id"])
         if entry.get("ci_repository") != EXPECTED_CI_REPO or entry.get("source_repository") != EXPECTED_SOURCE_REPO:
             raise LedgerError("LEDGER_REPOSITORY_IDENTITY_MISMATCH")
