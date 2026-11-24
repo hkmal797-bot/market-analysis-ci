@@ -51,13 +51,16 @@ class EvidenceLedgerTests(unittest.TestCase):
         p.write_bytes(canonical(h))
         with self.assertRaisesRegex(LedgerError, "HEAD_MISMATCH"):
             self.verify()
-    def test_rejects_receipt_artifact_mismatch(self):
+    def test_rejects_receipt_artifact_mismatch_after_archive_resealing(self):
         p = self.root / "evidence-ledger/artifacts/45314423192.zip.b64"
         buf = io.BytesIO()
         with zipfile.ZipFile(buf, "w") as z:
             z.writestr("evidence-lifecycle-acceptance.json", b"{}")
-        p.write_text(base64.b64encode(buf.getvalue()).decode())
-        with self.assertRaisesRegex(LedgerError, "ARTIFACT_TRANSPORT_SHA256_MISMATCH"):
+        raw = buf.getvalue()
+        transport = base64.b64encode(raw)
+        p.write_bytes(transport)
+        self.mutate_entry(lambda e: e.update(artifact_zip_sha256=hashlib.sha256(raw).hexdigest(), artifact_transport_sha256=hashlib.sha256(transport).hexdigest()))
+        with self.assertRaisesRegex(LedgerError, "ARTIFACT_RECEIPT_BYTES_MISMATCH"):
             self.verify()
     def test_rejects_safety_promotion_even_when_all_hashes_are_resealed(self):
         ledger = self.root / "evidence-ledger"
