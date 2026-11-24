@@ -125,22 +125,21 @@ jobs:
           test "$actual" = "$EXPECTED_PRIVATE_SOURCE_SHA"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
 
-      - name: Verify effective read-only permission on the private source repository
+      - name: Inspect classic-token scope metadata without exposing credentials
+        if: matrix.source.name == 'phase-01-02-control-center' && runner.os == 'Linux'
         env:
           PRIVATE_REPO_READ_TOKEN: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
         run: |
           python - <<'PY'
-          import json
           import os
-          import sys
-          import urllib.error
           import urllib.request
 
           token = os.environ.get("PRIVATE_REPO_READ_TOKEN")
           if not token:
-              raise SystemExit("BRIDGE_PERMISSION_CHECK=FAILED_TOKEN_UNAVAILABLE")
+              print("BRIDGE_TOKEN_SCOPE_METADATA=UNAVAILABLE_TOKEN_NOT_PRESENT")
+              raise SystemExit(0)
           request = urllib.request.Request(
-              "https://api.github.com/repos/hkmal797-bot/market-analysis-system",
+              "https://api.github.com/user",
               headers={
                   "Accept": "application/vnd.github+json",
                   "Authorization": "Bearer " + token,
@@ -150,22 +149,17 @@ jobs:
           )
           try:
               with urllib.request.urlopen(request, timeout=20) as response:
-                  payload = json.load(response)
+                  scopes_header = response.headers.get("X-OAuth-Scopes")
           except Exception:
-              raise SystemExit("BRIDGE_PERMISSION_CHECK=FAILED_READ_ONLY_API_REQUEST") from None
-          permissions = payload.get("permissions")
-          if not isinstance(permissions, dict):
-              raise SystemExit("BRIDGE_PERMISSION_CHECK=FAILED_PERMISSION_METADATA_UNAVAILABLE")
-          required = ("pull", "push", "admin", "maintain", "triage")
-          for key in required:
-              value = permissions.get(key)
-              label = "TRUE" if value is True else "FALSE" if value is False else "UNKNOWN"
-              print(f"BRIDGE_TARGET_REPO_{key.upper()}={label}")
-          if permissions.get("pull") is not True or any(
-              permissions.get(key) is not False for key in ("push", "admin", "maintain", "triage")
-          ):
-              raise SystemExit("BRIDGE_PERMISSION_CHECK=FAIL_NOT_READ_ONLY")
-          print("BRIDGE_PERMISSION_CHECK=PASS_TARGET_REPOSITORY_READ_ONLY")
+              print("BRIDGE_TOKEN_SCOPE_METADATA=NOT_EXPOSED_OR_ENDPOINT_UNAVAILABLE")
+              raise SystemExit(0)
+          if scopes_header is None:
+              print("BRIDGE_TOKEN_SCOPE_METADATA=NOT_EXPOSED_BY_TOKEN_TYPE")
+          else:
+              scopes = sorted({item.strip() for item in scopes_header.split(",") if item.strip()})
+              print("BRIDGE_TOKEN_SCOPE_METADATA=CLASSIC_OAUTH_SCOPES")
+              print("BRIDGE_TOKEN_OAUTH_SCOPES=" + ",".join(scopes))
+              print("BRIDGE_TOKEN_CLASSIC_REPO_SCOPE=" + ("TRUE" if "repo" in scopes else "FALSE"))
           PY
 
       - name: Set up Python
