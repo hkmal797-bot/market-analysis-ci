@@ -186,6 +186,24 @@ jobs:
           print(f"LANDLOCK_PROBE_PROCESS_EXIT={p.returncode}")
           PY
 
+      - name: Focused Linux worker and Phase 02 gate diagnostics (current source only)
+        if: matrix.source.name == 'phase-01-02-control-center'
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          set +e
+          python -m unittest discover -s tests -p test_research_trial_registry_v1.py >"$RUNNER_TEMP/worker-tests.log" 2>&1
+          worker_status=$?
+          python -m unittest discover -s tests -p test_operational_foundation_v1.py >"$RUNNER_TEMP/operational-tests.log" 2>&1
+          operational_status=$?
+          echo "FOCUSED_WORKER_TEST_STATUS=$worker_status"
+          cat "$RUNNER_TEMP/worker-tests.log"
+          echo "FOCUSED_OPERATIONAL_TEST_STATUS=$operational_status"
+          cat "$RUNNER_TEMP/operational-tests.log"
+          test "$worker_status" -eq 0 && test "$operational_status" -eq 0
+
       - name: Run complete deterministic unit-test suite
         working-directory: private-source
         env:
