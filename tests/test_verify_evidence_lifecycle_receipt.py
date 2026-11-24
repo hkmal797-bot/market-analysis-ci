@@ -10,7 +10,7 @@ import sys
 sys.path.insert(0, str(Path(__file__).resolve().parents[1] / "scripts"))
 
 from verify_evidence_lifecycle_receipt import (
-    EXPECTED_KEYS, EXPECTED_SAFETY, EXPECTED_TESTS, VerificationError,
+    EXPECTED_KEYS, EXPECTED_SAFETY, EXPECTED_TEST_IDS, VerificationError,
     canonical_json, verify_receipt,
 )
 
@@ -36,7 +36,7 @@ def valid_receipt():
         "failure_count": 0,
         "error_count": 0,
         "skip_count": 0,
-        "tests": [{"test": name, "status": "PASS"} for name in sorted(EXPECTED_TESTS)],
+        "tests": [{"test": name, "status": "PASS"} for name in sorted(EXPECTED_TEST_IDS)],
         "safety_invariants": dict(EXPECTED_SAFETY),
     }
     body["receipt_payload_sha256"] = hashlib.sha256(canonical_json(body)).hexdigest()
