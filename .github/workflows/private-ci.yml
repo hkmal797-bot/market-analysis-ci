@@ -99,7 +99,7 @@ jobs:
       matrix:
         source:
           - name: phase-01-02-control-center
-            sha: 1de928f2c92a79ad5cc314aa3f53ed17c3c069fa
+            sha: 25cf978aa98f5599b329ef12580392efa0177d0c
           - name: archive-recovery-control
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
     runs-on: ubuntu-latest
@@ -237,7 +237,7 @@ jobs:
       matrix:
         source:
           - name: phase-01-02-control-center
-            sha: 1de928f2c92a79ad5cc314aa3f53ed17c3c069fa
+            sha: 25cf978aa98f5599b329ef12580392efa0177d0c
           - name: archive-recovery-control
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
     runs-on: windows-latest
@@ -296,6 +296,7 @@ jobs:
             "test_paper_trading_v1.py",
             "test_control_center_v1.py",
             "test_operational_foundation_v1.py",
+            "test_runtime_monitor_v1.py",
             "test_windows_paper_launcher.py",
             "test_windows_paper_readonly_launcher.py",
             "test_daily_backtest_v1.py",
