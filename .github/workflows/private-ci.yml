@@ -295,6 +295,7 @@ jobs:
           $patterns = @(
             "test_paper_trading_v1.py",
             "test_control_center_v1.py",
+            "test_operational_foundation_v1.py",
             "test_windows_paper_launcher.py",
             "test_windows_paper_readonly_launcher.py",
             "test_daily_backtest_v1.py",
