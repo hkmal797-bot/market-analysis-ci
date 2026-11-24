@@ -189,7 +189,29 @@ jobs:
         env:
           PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
-        run: python -m unittest discover -s tests -v
+        run: |
+          set +e
+          test_log="$RUNNER_TEMP/private-source-unittest.log"
+          python -m unittest discover -s tests >"$test_log" 2>&1
+          test_status=$?
+          python - "$test_log" "$test_status" <<'PY'
+          import re
+          import sys
+          from pathlib import Path
+
+          log = Path(sys.argv[1]).read_text(encoding="utf-8", errors="replace")
+          status = int(sys.argv[2])
+          ran = re.findall(r"Ran (\d+) tests? in", log)
+          failures = re.search(r"failures=(\d+)", log)
+          errors = re.search(r"errors=(\d+)", log)
+          skipped = re.search(r"skipped=(\d+)", log)
+          print(f"UNIT_TESTS_RESULT={'PASS' if status == 0 else 'FAIL'}")
+          print(f"UNIT_TESTS_RUN={ran[-1] if ran else 'UNKNOWN'}")
+          print(f"UNIT_TESTS_FAILURES={failures.group(1) if failures else '0'}")
+          print(f"UNIT_TESTS_ERRORS={errors.group(1) if errors else '0'}")
+          print(f"UNIT_TESTS_SKIPPED={skipped.group(1) if skipped else '0'}")
+          raise SystemExit(status)
+          PY
       - name: Read-only Tigris raw-content probe (explicit validation PR only)
         if: (github.event_name == 'pull_request' && startsWith(github.event.pull_request.title, '[RUN_TIGRIS_PROBE]')) || (github.event_name == 'push' && github.ref == 'refs/heads/main' && matrix.source.sha == 'b794281e0653d5ccf20adb3ba51575f20e853350')
         working-directory: private-source
@@ -305,15 +327,31 @@ jobs:
             "test_strategy_robustness_matrix_v1.py",
             "test_tigris_raw_content_probe.py"
           )
+          $groupIndex = 0
+          $skippedGroups = 0
           foreach ($pattern in $patterns) {
+            $groupIndex += 1
             if (-not (Test-Path (Join-Path "tests" $pattern))) {
-              Write-Output "SKIPPING_UNAVAILABLE_TEST_PATTERN=$pattern"
+              $skippedGroups += 1
+              Write-Output "WINDOWS_TEST_GROUP=$groupIndex RESULT=SKIPPED"
               continue
             }
-            Write-Output "RUNNING_TEST_PATTERN=$pattern"
-            python -m unittest discover -s tests -p $pattern -v
-            if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+            $logPath = Join-Path $env:RUNNER_TEMP ("private-source-test-group-" + $groupIndex + ".log")
+            python -m unittest discover -s tests -p $pattern *> $logPath
+            $testExitCode = $LASTEXITCODE
+            $summary = Get-Content -LiteralPath $logPath -Raw
+            $ran = [regex]::Match($summary, 'Ran (\d+) tests? in')
+            $failures = [regex]::Match($summary, 'failures=(\d+)')
+            $errors = [regex]::Match($summary, 'errors=(\d+)')
+            $skipped = [regex]::Match($summary, 'skipped=(\d+)')
+            Write-Output "WINDOWS_TEST_GROUP=$groupIndex RESULT=$(if ($testExitCode -eq 0) { 'PASS' } else { 'FAIL' })"
+            Write-Output "WINDOWS_TESTS_RUN=$(if ($ran.Success) { $ran.Groups[1].Value } else { 'UNKNOWN' })"
+            Write-Output "WINDOWS_TESTS_FAILURES=$(if ($failures.Success) { $failures.Groups[1].Value } else { '0' })"
+            Write-Output "WINDOWS_TESTS_ERRORS=$(if ($errors.Success) { $errors.Groups[1].Value } else { '0' })"
+            Write-Output "WINDOWS_TESTS_SKIPPED=$(if ($skipped.Success) { $skipped.Groups[1].Value } else { '0' })"
+            if ($testExitCode -ne 0) { exit $testExitCode }
           }
+          Write-Output "WINDOWS_TEST_GROUPS_SKIPPED=$skippedGroups"
 
       - name: Parse PowerShell Paper launchers without executing API actions
         working-directory: private-source
