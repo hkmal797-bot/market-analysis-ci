@@ -1,12 +1,7 @@
 #!/usr/bin/env python3
 """Verify the append-only Git-backed CI evidence ledger without third-party packages."""
 from __future__ import annotations
-import base64
-import hashlib
-import io
-import json
-import sys
-import zipfile
+import base64, hashlib, io, json, sys, zipfile
 from pathlib import Path
 from typing import Any
 
@@ -17,12 +12,9 @@ EXPECTED_CI_REPO = "hkmal797-bot/market-analysis-ci"
 EXPECTED_SOURCE_REPO = "hkmal797-bot/market-analysis-system"
 EXPECTED_SCHEMA = "EVIDENCE_LIFECYCLE_ACCEPTANCE_RECEIPT_V1"
 EXPECTED_SAFETY = {
-    "source_verified": False,
-    "research_admission_granted": False,
-    "strategy_approved": False,
-    "paper_order_submission_enabled": False,
-    "broker_routing_enabled": False,
-    "live_trading_enabled": False,
+    "source_verified": False, "research_admission_granted": False,
+    "strategy_approved": False, "paper_order_submission_enabled": False,
+    "broker_routing_enabled": False, "live_trading_enabled": False,
 }
 
 class LedgerError(ValueError):
@@ -64,10 +56,8 @@ def verify_receipt(receipt_raw: bytes, entry: dict[str, Any]) -> None:
     if receipt["schema"] != EXPECTED_SCHEMA or receipt["status"] != "PASS":
         raise LedgerError("RECEIPT_NOT_ACCEPTED")
     identity = {
-        "source_repository": EXPECTED_SOURCE_REPO,
-        "source_commit_sha": entry["source_commit_sha"],
-        "ci_repository": EXPECTED_CI_REPO,
-        "ci_head_sha": entry["ci_head_sha"],
+        "source_repository": EXPECTED_SOURCE_REPO, "source_commit_sha": entry["source_commit_sha"],
+        "ci_repository": EXPECTED_CI_REPO, "ci_head_sha": entry["ci_head_sha"],
         "workflow_run_id": str(entry["workflow_run_id"]),
         "workflow_run_attempt": str(entry["workflow_run_attempt"]),
     }
@@ -76,7 +66,8 @@ def verify_receipt(receipt_raw: bytes, entry: dict[str, Any]) -> None:
             raise LedgerError(f"RECEIPT_IDENTITY_MISMATCH:{key}")
     if receipt["source_commit_sha"] != EXPECTED_SOURCE:
         raise LedgerError("SOURCE_REVISION_NOT_EXPECTED")
-    if (receipt["test_count_expected"], receipt["test_count_run"], receipt["failure_count"], receipt["error_count"], receipt["skip_count"]) != (23, 23, 0, 0, 0):
+    counters = (receipt["test_count_expected"], receipt["test_count_run"], receipt["failure_count"], receipt["error_count"], receipt["skip_count"])
+    if counters != (23, 23, 0, 0, 0):
         raise LedgerError("RECEIPT_COUNTERS_NOT_ACCEPTED")
     tests = receipt["tests"]
     if not isinstance(tests, list) or len(tests) != 23:
@@ -98,16 +89,25 @@ def entry_hash(entry: dict[str, Any]) -> str:
     body.pop("entry_hash", None)
     return hashlib.sha256(canonical(body)).hexdigest()
 
-def verify_ledger(root: Path = Path(__file__).resolve().parents[1]) -> dict[str, Any]:
+def verify_ledger(root: Path = ROOT) -> dict[str, Any]:
     ledger = root / "evidence-ledger"
     lines = (ledger / "entries.jsonl").read_bytes().splitlines()
     if not lines:
         raise LedgerError("LEDGER_EMPTY")
-    entries = []
-    previous = ZERO_HASH
+    entries, previous = [], ZERO_HASH
+    required_entry = {
+        "sequence", "previous_entry_hash", "recorded_at_utc", "workflow_run_id", "workflow_run_attempt",
+        "ci_repository", "ci_head_sha", "source_repository", "source_commit_sha", "artifact_id",
+        "artifact_name", "artifact_created_at_utc", "artifact_expires_at_utc", "artifact_zip_sha256",
+        "artifact_transport_sha256", "receipt_path", "receipt_sha256", "artifact_path",
+        "receipt_payload_sha256", "test_count_expected", "test_count_run", "failure_count",
+        "error_count", "skip_count", "safety_invariants", "entry_hash",
+    }
     for expected_seq, line in enumerate(lines, 1):
         entry = parse_json(line, "ENTRY")
-        if not isinstance(entry, dict) or canonical(entry) != line:
+        if not isinstance(entry, dict) or set(entry) != required_entry:
+            raise LedgerError("ENTRY_SCHEMA_MISMATCH")
+        if canonical(entry) != line:
             raise LedgerError("ENTRY_NOT_CANONICAL_OBJECT")
         if entry.get("sequence") != expected_seq or entry.get("previous_entry_hash") != previous:
             raise LedgerError("LEDGER_SEQUENCE_OR_PREVIOUS_HASH_MISMATCH")
@@ -116,12 +116,15 @@ def verify_ledger(root: Path = Path(__file__).resolve().parents[1]) -> dict[str,
             raise LedgerError("LEDGER_ENTRY_HASH_MISMATCH")
         if entry.get("source_commit_sha") != EXPECTED_SOURCE:
             raise LedgerError("LEDGER_SOURCE_SHA_MISMATCH")
-        receipt_path = ledger / entry["receipt_path"]
-        artifact_path = ledger / entry["artifact_path"]
+        run_id = str(entry["workflow_run_id"])
+        if entry.get("ci_repository") != EXPECTED_CI_REPO or entry.get("source_repository") != EXPECTED_SOURCE_REPO:
+            raise LedgerError("LEDGER_REPOSITORY_IDENTITY_MISMATCH")
+        if entry.get("receipt_path") != f"receipts/{run_id}.json" or entry.get("artifact_path") != f"artifacts/{run_id}.zip.b64":
+            raise LedgerError("LEDGER_EVIDENCE_PATH_INVALID")
+        receipt_path, artifact_path = ledger / entry["receipt_path"], ledger / entry["artifact_path"]
         if not receipt_path.is_file() or not artifact_path.is_file():
             raise LedgerError("LEDGER_EVIDENCE_FILE_MISSING")
-        receipt_raw = receipt_path.read_bytes()
-        artifact_transport = artifact_path.read_bytes()
+        receipt_raw, artifact_transport = receipt_path.read_bytes(), artifact_path.read_bytes()
         if hashlib.sha256(artifact_transport).hexdigest() != entry["artifact_transport_sha256"]:
             raise LedgerError("ARTIFACT_TRANSPORT_SHA256_MISMATCH")
         try:
