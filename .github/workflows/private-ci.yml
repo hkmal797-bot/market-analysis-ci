@@ -99,7 +99,7 @@ jobs:
       matrix:
         source:
           - name: phase-01-02-control-center
-            sha: 8feaa277020585534a1c38496950ab27f9b10e66
+            sha: 6c87d3a9ba09b47544680e5aed9e48b77f36e051
           - name: archive-recovery-control
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
     runs-on: ubuntu-latest
@@ -237,7 +237,7 @@ jobs:
       matrix:
         source:
           - name: phase-01-02-control-center
-            sha: 8feaa277020585534a1c38496950ab27f9b10e66
+            sha: 6c87d3a9ba09b47544680e5aed9e48b77f36e051
           - name: archive-recovery-control
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
     runs-on: windows-latest
