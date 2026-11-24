@@ -42,3 +42,17 @@ All 23 tests must execute exactly once and pass; failures, errors, skips, test-d
 ### Safety boundary
 
 The runner uses a read-only checkout token with checkout credentials not persisted. It does not install packages, access market-data providers, call a broker, submit Paper orders, or enable Live trading. The expected terminal state remains source-unverified / research-not-admitted / strategy-not-approved / Paper submission disabled / Live trading disabled.
+
+
+## Independent artifact-consumer acceptance lane
+
+A second, separately scheduled job consumes the uploaded receipt only after the producer job succeeds. It checks out the CI verifier harness independently, downloads the named artifact using the pinned `actions/download-artifact` commit, and does not consume producer workspace files, environment exports, or in-memory outputs.
+
+The independent verifier enforces:
+- Duplicate-key rejection, exact schema keys, canonical JSON bytes, and SHA-256 over the canonical receipt body.
+- Exact workflow run ID/attempt, CI head SHA, private-source repository and immutable source SHA.
+- Exact 23-test identity set, ordering, uniqueness, PASS-only outcomes, and zero failure/error/skip counters.
+- Time-zone-aware generation timestamp and all safety invariants remaining false.
+- A 17-case adversarial verifier suite covering duplicate keys, serialization, digest, identity substitution, schema drift, test omission/duplication, non-PASS outcomes, counter drift, safety promotion, and timestamp errors.
+
+The acceptance graph now contains 16 immutable-source matrix jobs, one receipt producer, and one independent artifact consumer (18 jobs total). The consumer is a distinct GitHub Actions job with an explicit dependency on the producer; it cannot run if the producer fails. This remains software/evidence-integrity validation only and does not confer data trust, research admission, strategy approval, order submission, broker routing, or Live permission.
