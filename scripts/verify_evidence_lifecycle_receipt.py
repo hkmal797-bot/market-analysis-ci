@@ -37,6 +37,10 @@ EXPECTED_TESTS = (
     "test_detached_ledger_manifest_verifier_requires_canonical_exact_schema",
     "test_diagnostic_ledger_rejects_duplicates_reordering_and_tampering",
 )
+EXPECTED_TEST_IDS = tuple(
+    f"test_research_admission_envelope_v1.ResearchAdmissionEnvelopeV1Tests.{name}"
+    for name in EXPECTED_TESTS
+)
 EXPECTED_SAFETY = {
     "source_verified": False,
     "research_admission_granted": False,
@@ -146,7 +150,7 @@ def verify_receipt(
         if not isinstance(item["test"], str):
             raise VerificationError("RECEIPT_TEST_NAME_INVALID")
         names.append(item["test"])
-    if names != sorted(EXPECTED_TESTS) or len(set(names)) != len(names):
+    if names != sorted(EXPECTED_TEST_IDS) or len(set(names)) != len(names):
         raise VerificationError("RECEIPT_TEST_SET_OR_ORDER_MISMATCH")
     return receipt
 
