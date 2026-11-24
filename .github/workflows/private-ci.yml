@@ -492,3 +492,47 @@ jobs:
           path: artifacts/evidence-lifecycle-acceptance.json
           if-no-files-found: error
           retention-days: 30
+
+  independent-evidence-receipt-verification:
+    name: Independent downloaded receipt verification
+    needs: evidence-lifecycle-acceptance
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    permissions:
+      actions: read
+      contents: read
+    steps:
+      - name: Checkout isolated verifier harness (read-only; credentials not persisted)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          path: ci-verifier
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+
+      - name: Test verifier against adversarial receipt fixtures
+        working-directory: ci-verifier
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests -p "test_verify_evidence_lifecycle_receipt.py" -v
+
+      - name: Download producer artifact as an independent consumer
+        uses: actions/download-artifact@d3f86a106a0bac45b974a628896c90dbdf5c8093 # v4
+        with:
+          name: evidence-lifecycle-acceptance-\${{ github.run_id }}
+          path: received-artifact
+
+      - name: Verify downloaded receipt without producer workspace or outputs
+        working-directory: ci-verifier
+        env:
+          EXPECTED_WORKFLOW_RUN_ID: \${{ github.run_id }}
+          EXPECTED_WORKFLOW_RUN_ATTEMPT: \${{ github.run_attempt }}
+          EXPECTED_CI_HEAD_SHA: \${{ github.event.pull_request.head.sha || github.sha }}
+          EXPECTED_PRIVATE_SOURCE_SHA: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
+        run: python scripts/verify_evidence_lifecycle_receipt.py ../received-artifact/evidence-lifecycle-acceptance.json
+
