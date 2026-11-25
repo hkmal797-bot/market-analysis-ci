@@ -108,7 +108,7 @@ jobs:
           - name: stage-07-experimental-operations
             sha: 2755cd30277673efde7c5783a989bda0012364f5
           - name: stage-08-final-integration
-            sha: 4b9c63adbf6670408eb36d297583c8b807e478bd
+            sha: 174f76d815ca3d9f6e97911f1ec389eff4cd9167
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -209,7 +209,7 @@ jobs:
         working-directory: private-source
         shell: bash
         run: |
-          sha256sum src/ma_engine/__init__.py src/ma_engine/application.py tests/test_stage06_import_boundary.py tests/test_stages_08.py docs/eight_stage-roadmap/stage-08-final-integration.md docs/eight_stage-roadmap/STAGE_08_SHA256SUMS.txt
+          sha256sum src/ma_engine/__init__.py src/ma_engine/application.py tests/test_stages_01_03.py tests/test_stage06_import_boundary.py tests/test_stages_08.py docs/eight_stage-roadmap/stage-08-final-integration.md docs/eight_stage-roadmap/STAGE_08_SHA256SUMS.txt
       - name: Run complete deterministic unit-test suite
         working-directory: private-source
         env:
@@ -276,7 +276,7 @@ jobs:
           - name: stage-07-experimental-operations
             sha: 2755cd30277673efde7c5783a989bda0012364f5
           - name: stage-08-final-integration
-            sha: 4b9c63adbf6670408eb36d297583c8b807e478bd
+            sha: 174f76d815ca3d9f6e97911f1ec389eff4cd9167
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
