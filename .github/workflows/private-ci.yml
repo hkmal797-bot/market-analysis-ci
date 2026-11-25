@@ -109,6 +109,8 @@ jobs:
             sha: 2755cd30277673efde7c5783a989bda0012364f5
           - name: stage-08-final-integration
             sha: 70f24c9241863b2503ea66eaedd5a0b71a50feba
+          - name: stage-09-listing-identity
+            sha: a335ec1ddc6ef6dddb8eb5589b1776d0bd06639f
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -337,6 +339,7 @@ jobs:
             "test_stages_08.py",
             "test_stage09_provider_validation.py",
             "test_stage09_history_validation.py",
+            "test_stage09_identity_validation.py",
             "test_stage06_import_boundary.py",
             "test_windows_paper_launcher.py",
             "test_windows_paper_readonly_launcher.py",
