@@ -123,6 +123,8 @@ jobs:
             sha: fc0fa5f5271ad2bb107ffec53d81e60e53c992c9
           - name: stage-09-corporate-action-coverage
             sha: 9f1b80b356e6e4393f54049d4131a828d9a5c122
+          - name: stage-09-independent-reference-scope
+            sha: a29047fa81944f8b047b6feba9cfac1f776790b6
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -249,7 +251,7 @@ jobs:
         run: |
           sha256sum src/ma_engine/sample_admission.py tests/test_stage09_sample_admission.py docs/eight_stage-roadmap/stage-09-provider-desk-research.md docs/eight_stage-roadmap/stage-09-provider-clarification-questionnaire.md docs/eight_stage-roadmap/stage-09-provider-evaluation-matrix.md docs/eight_stage-roadmap/stage-09-provider-due-diligence.md docs/eight-stage-roadmap/stage-09-sample-admission.md docs/eight-stage-roadmap/stage-09-internal-readiness.md docs/eight-stage-roadmap/STAGE_09_ADMISSION_HARDENING_SHA256SUMS.txt
       - name: SHA-256 manifest for stage 09 delisted sample evidence
-        if: matrix.source.name == 'stage-09-delisted-sample-evidence' || matrix.source.name == 'stage-09-revision-sample-binding' || matrix.source.name == 'stage-09-full-revision-coverage' || matrix.source.name == 'stage-09-revision-row-validation' || matrix.source.name == 'stage-09-corporate-action-coverage'
+        if: matrix.source.name == 'stage-09-delisted-sample-evidence' || matrix.source.name == 'stage-09-revision-sample-binding' || matrix.source.name == 'stage-09-full-revision-coverage' || matrix.source.name == 'stage-09-revision-row-validation' || matrix.source.name == 'stage-09-corporate-action-coverage' || matrix.source.name == 'stage-09-independent-reference-scope'
         working-directory: private-source
         shell: bash
         run: |
@@ -335,6 +337,8 @@ jobs:
             sha: fc0fa5f5271ad2bb107ffec53d81e60e53c992c9
           - name: stage-09-corporate-action-coverage
             sha: 9f1b80b356e6e4393f54049d4131a828d9a5c122
+          - name: stage-09-independent-reference-scope
+            sha: a29047fa81944f8b047b6feba9cfac1f776790b6
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
