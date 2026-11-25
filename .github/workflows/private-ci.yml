@@ -333,6 +333,8 @@ jobs:
             sha: 12c1964a1e8620396fd5d5a58e46e5ae54ee4046
           - name: stage-09-revision-row-validation
             sha: fc0fa5f5271ad2bb107ffec53d81e60e53c992c9
+          - name: stage-09-corporate-action-coverage
+            sha: d338ad731803acdf8c21d78903d976dee30a5e13
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
