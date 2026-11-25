@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: dddb4aaf9ad1ebbf24f53c216a5ec503d9858d02
+          ref: d159d13fccc3aefb209124193bf10f1666850cdc
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -30,7 +30,7 @@ jobs:
       - name: Verify exact source revision
         working-directory: private-source
         env:
-          EXPECTED_SHA: dddb4aaf9ad1ebbf24f53c216a5ec503d9858d02
+          EXPECTED_SHA: d159d13fccc3aefb209124193bf10f1666850cdc
         run: |
           actual="$(git rev-parse HEAD)"
           test "$actual" = "$EXPECTED_SHA"
