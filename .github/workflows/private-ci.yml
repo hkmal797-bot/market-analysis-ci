@@ -103,6 +103,8 @@ jobs:
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
           - name: stages-04-05-risk-portfolio
             sha: 8e607045e8e0d4b80c6ce229ef6a1a10f253c8d5
+          - name: stage-06-monitoring-audit
+            sha: 59d50531a8b7ff654668a7ee0909fc21d79412a2
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -247,6 +249,8 @@ jobs:
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
           - name: stages-04-05-risk-portfolio
             sha: 8e607045e8e0d4b80c6ce229ef6a1a10f253c8d5
+          - name: stage-06-monitoring-audit
+            sha: 59d50531a8b7ff654668a7ee0909fc21d79412a2
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -302,6 +306,8 @@ jobs:
           $patterns = @(
             "test_paper_trading_v1.py",
             "test_stages_04_05.py",
+            "test_stages_06.py",
+            "test_stage06_import_boundary.py",
             "test_windows_paper_launcher.py",
             "test_windows_paper_readonly_launcher.py",
             "test_daily_backtest_v1.py",
