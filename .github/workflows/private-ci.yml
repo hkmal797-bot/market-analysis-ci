@@ -104,7 +104,7 @@ jobs:
           - name: stages-04-05-risk-portfolio
             sha: 8e607045e8e0d4b80c6ce229ef6a1a10f253c8d5
           - name: stage-06-monitoring-audit
-            sha: 59d50531a8b7ff654668a7ee0909fc21d79412a2
+            sha: 3b92e3f97464fe3f94eb7c1768808a089adbd318
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -188,6 +188,11 @@ jobs:
           print(f"LANDLOCK_PROBE_PROCESS_EXIT={p.returncode}")
           PY
 
+      - name: SHA-256 manifest for stage 06 source and tests
+        working-directory: private-source
+        shell: bash
+        run: |
+          sha256sum src/ma_engine/__init__.py src/ma_engine/audit.py src/ma_engine/monitoring.py tests/test_stages_01_03.py tests/test_stages_06.py tests/test_stage06_import_boundary.py docs/eight_stage-roadmap/stage-06-monitoring-audit.md
       - name: Run complete deterministic unit-test suite
         working-directory: private-source
         env:
@@ -250,7 +255,7 @@ jobs:
           - name: stages-04-05-risk-portfolio
             sha: 8e607045e8e0d4b80c6ce229ef6a1a10f253c8d5
           - name: stage-06-monitoring-audit
-            sha: 59d50531a8b7ff654668a7ee0909fc21d79412a2
+            sha: 3b92e3f97464fe3f94eb7c1768808a089adbd318
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
