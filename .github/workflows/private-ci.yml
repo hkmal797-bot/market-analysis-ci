@@ -132,7 +132,7 @@ jobs:
           - name: stage-09-exact-revision-scope
             sha: 98c318fa4a419517a6f90b2d2af2c2af6fd4e76a
           - name: stage-09-corporate-action-row-scope
-            sha: cf06039078e12d7adb61185e471e014ec7c8d41f
+            sha: a316c917e3757630dd041fadddf8771de1ba9537
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -354,7 +354,7 @@ jobs:
           - name: stage-09-exact-revision-scope
             sha: 98c318fa4a419517a6f90b2d2af2c2af6fd4e76a
           - name: stage-09-corporate-action-row-scope
-            sha: cf06039078e12d7adb61185e471e014ec7c8d41f
+            sha: a316c917e3757630dd041fadddf8771de1ba9537
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
