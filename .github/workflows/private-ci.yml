@@ -115,6 +115,8 @@ jobs:
             sha: 08c47f8be4586ca2e70f6c1d0918a1bb842dcaad
           - name: stage-09-sample-admission
             sha: 2dacb39fedcd2a7016abeea0223de9d69e51652a
+          - name: stage-09-admission-hardening
+            sha: 34de6b5cf813e1b27af1916eccc29e3742b69c3a
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -234,6 +236,12 @@ jobs:
         shell: bash
         run: |
           sha256sum src/ma_engine/sample_admission.py src/ma_engine/__init__.py tests/test_stage09_sample_admission.py tests/test_stages_01_03.py tests/test_stage06_import_boundary.py
+      - name: SHA-256 manifest for stage 09 admission hardening
+        if: matrix.source.name == 'stage-09-admission-hardening'
+        working-directory: private-source
+        shell: bash
+        run: |
+          sha256sum src/ma_engine/sample_admission.py tests/test_stage09_sample_admission.py docs/eight_stage-roadmap/stage-09-provider-desk-research.md docs/eight_stage-roadmap/stage-09-provider-clarification-questionnaire.md docs/eight_stage-roadmap/stage-09-provider-evaluation-matrix.md docs/eight_stage-roadmap/stage-09-provider-due-diligence.md
       - name: Run complete deterministic unit-test suite
         working-directory: private-source
         env:
@@ -307,6 +315,8 @@ jobs:
             sha: 08c47f8be4586ca2e70f6c1d0918a1bb842dcaad
           - name: stage-09-sample-admission
             sha: 2dacb39fedcd2a7016abeea0223de9d69e51652a
+          - name: stage-09-admission-hardening
+            sha: 34de6b5cf813e1b27af1916eccc29e3742b69c3a
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
