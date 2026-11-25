@@ -106,7 +106,7 @@ jobs:
           - name: stage-06-monitoring-audit
             sha: 0c98fd7029215cb5906a40cb59d139f931ff353e
           - name: stage-07-experimental-operations
-            sha: 324343bd1c455a85710e6fc2a5785503868e58fd
+            sha: f24e6bb5e20acb0603b3862a89fa9516252755ae
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -201,7 +201,7 @@ jobs:
         working-directory: private-source
         shell: bash
         run: |
-          sha256sum src/ma_engine/__init__.py src/ma_engine/operations.py tests/test_stages_01_03.py tests/test_stage06_import_boundary.py tests/test_stages_07.py docs/eight_stage-roadmap/stage-07-experimental-operations.md
+          sha256sum src/ma_engine/__init__.py src/ma_engine/operations.py tests/test_stages_01_03.py tests/test_stage06_import_boundary.py tests/test_stages_07.py docs/eight_stage-roadmap/stage-07-experimental-operations.md docs/eight_stage-roadmap/STAGE_07_SHA256SUMS.txt
       - name: Run complete deterministic unit-test suite
         working-directory: private-source
         env:
@@ -266,7 +266,7 @@ jobs:
           - name: stage-06-monitoring-audit
             sha: 0c98fd7029215cb5906a40cb59d139f931ff353e
           - name: stage-07-experimental-operations
-            sha: 324343bd1c455a85710e6fc2a5785503868e58fd
+            sha: f24e6bb5e20acb0603b3862a89fa9516252755ae
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
