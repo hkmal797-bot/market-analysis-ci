@@ -92,7 +92,7 @@ concurrency:
 jobs:
   unit-tests:
     name: Standard-library unit tests (Ubuntu) — ${{ matrix.source.name }}
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && !startsWith(github.event.pull_request.title, '[CORE_ONLY]'))
     strategy:
       fail-fast: false
       matrix:
@@ -230,7 +230,7 @@ jobs:
 
   windows-paper-safety:
     name: Windows Paper safety and adaptive-cycle tests — ${{ matrix.source.name }}
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && !startsWith(github.event.pull_request.title, '[CORE_ONLY]'))
     strategy:
       fail-fast: false
       matrix:
@@ -453,7 +453,7 @@ jobs:
 
   data-independent-core:
     name: Data-independent core tests — exact private source
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci'
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[CORE_ONLY]')
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
@@ -461,7 +461,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: f65c7acfcb63947fda851276d2351b18f34380ca
+          ref: 6dbcd8c066a5e2bdd6927190c92db2b6f4f610b1
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source-core
           persist-credentials: false
@@ -470,7 +470,7 @@ jobs:
       - name: Verify exact private source commit
         working-directory: private-source-core
         env:
-          EXPECTED_PRIVATE_SOURCE_SHA: f65c7acfcb63947fda851276d2351b18f34380ca
+          EXPECTED_PRIVATE_SOURCE_SHA: 6dbcd8c066a5e2bdd6927190c92db2b6f4f610b1
         run: |
           actual="$(git rev-parse HEAD)"
           test "$actual" = "$EXPECTED_PRIVATE_SOURCE_SHA"
