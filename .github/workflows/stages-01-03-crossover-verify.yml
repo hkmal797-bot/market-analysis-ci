@@ -1,0 +1,46 @@
+name: Verify rebuilt stages 01-03 (crossover correction)
+
+on:
+  pull_request:
+    paths:
+      - ".github/workflows/stages-01-03-crossover-verify.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  exact-source-offline-tests:
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - name: Checkout verification workflow repository
+        uses: actions/checkout@v4
+
+      - name: Checkout exact private implementation
+        uses: actions/checkout@v4
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 52aeada2f6c815cf2ca58b0545d68e61c360d9f2
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+
+      - name: Verify exact private source revision
+        shell: bash
+        run: |
+          actual="$(git -C private-source rev-parse HEAD)"
+          expected="52aeada2f6c815cf2ca58b0545d68e61c360d9f2"
+          test "$actual" = "$expected"
+          echo "EXACT_PRIVATE_SOURCE_SHA=$actual"
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.13"
+
+      - name: Run offline stages 01-03 tests
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+        run: python -m unittest discover -s tests -p 'test_stages_01_03.py' -v
