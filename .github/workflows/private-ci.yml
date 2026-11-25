@@ -148,7 +148,7 @@ jobs:
           - name: phase07-execution-lifecycle-simulator
             sha: ef49d87e89c1a539844b8ff8dbbdbb7db962b6d7
           - name: phase08-decision-assistant
-            sha: 850ca07b70b359cfeb078af16dbc2cebc87cd77c
+            sha: 2538f333931c214b900efe8d7d8996a47afe26d1
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -398,7 +398,7 @@ jobs:
           - name: phase07-execution-lifecycle-simulator
             sha: ef49d87e89c1a539844b8ff8dbbdbb7db962b6d7
           - name: phase08-decision-assistant
-            sha: 850ca07b70b359cfeb078af16dbc2cebc87cd77c
+            sha: 2538f333931c214b900efe8d7d8996a47afe26d1
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
