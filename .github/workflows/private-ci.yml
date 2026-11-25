@@ -120,7 +120,7 @@ jobs:
           - name: stage-09-delisted-sample-evidence
             sha: 12c1964a1e8620396fd5d5a58e46e5ae54ee4046
           - name: stage-09-revision-sample-binding
-            sha: 782ec47d478dbc61ad14d77ad760f031de10d5a8
+            sha: edb35a8e6acbe873d3a923e98e70def816d6996a
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -330,7 +330,7 @@ jobs:
           - name: stage-09-delisted-sample-evidence
             sha: 12c1964a1e8620396fd5d5a58e46e5ae54ee4046
           - name: stage-09-revision-sample-binding
-            sha: 782ec47d478dbc61ad14d77ad760f031de10d5a8
+            sha: edb35a8e6acbe873d3a923e98e70def816d6996a
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
