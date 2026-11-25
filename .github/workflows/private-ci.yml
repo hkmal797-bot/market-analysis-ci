@@ -124,7 +124,7 @@ jobs:
           - name: stage-09-corporate-action-coverage
             sha: 9f1b80b356e6e4393f54049d4131a828d9a5c122
           - name: stage-09-independent-reference-scope
-            sha: a29047fa81944f8b047b6feba9cfac1f776790b6
+            sha: b1cd1938965beb4a063f349fd66e39ec2bafa2b6
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -338,7 +338,7 @@ jobs:
           - name: stage-09-corporate-action-coverage
             sha: 9f1b80b356e6e4393f54049d4131a828d9a5c122
           - name: stage-09-independent-reference-scope
-            sha: a29047fa81944f8b047b6feba9cfac1f776790b6
+            sha: b1cd1938965beb4a063f349fd66e39ec2bafa2b6
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -567,3 +567,5 @@ jobs:
 # PR32 validates each revision snapshot as complete OHLCV rows with matching ticker/venue identity.
 
 # Re-run both OS matrices after adding the corporate-action coverage Windows target.
+
+# Final exact-source run after refreshing independent-reference manifest hashes.
