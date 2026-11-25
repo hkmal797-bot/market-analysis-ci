@@ -119,6 +119,8 @@ jobs:
             sha: c99699af89062e6815de1ee2bcec62876a75b3cb
           - name: stage-09-delisted-sample-evidence
             sha: 12c1964a1e8620396fd5d5a58e46e5ae54ee4046
+          - name: stage-09-revision-sample-binding
+            sha: 782ec47d478dbc61ad14d77ad760f031de10d5a8
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -327,6 +329,8 @@ jobs:
             sha: c99699af89062e6815de1ee2bcec62876a75b3cb
           - name: stage-09-delisted-sample-evidence
             sha: 12c1964a1e8620396fd5d5a58e46e5ae54ee4046
+          - name: stage-09-revision-sample-binding
+            sha: 782ec47d478dbc61ad14d77ad760f031de10d5a8
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -550,3 +554,4 @@ jobs:
 # Parallel immutable source matrix validates external HMAC checkpoints and its PR94 archive discovery/recovery control on both operating systems.
 # PR28 validates fail-closed stage-09 sample admission against exact private source SHA c99699a.
 # PR29 validates delisted price rows, machine-readable vendor evidence, and exact-source admission on both operating systems.
+# PR30 binds before/after revision snapshots to the submitted sample keys and rejects empty or unrelated snapshots.
