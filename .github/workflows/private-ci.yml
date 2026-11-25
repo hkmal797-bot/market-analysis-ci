@@ -145,6 +145,8 @@ jobs:
             sha: 9741c1ffbf0d4c0a56efa4d722b0bbce628ba4ba
           - name: phase07-end-to-end-decision-workflow
             sha: 772b2f89280e2e87b44da230b0cc422ab72f0c7c
+          - name: phase07-execution-lifecycle-simulator
+            sha: 1fc567953fbfd5a51507f9e7b1f910e6d73d79ee
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -240,6 +242,12 @@ jobs:
         shell: bash
         run: |
           sha256sum src/ma_engine/__init__.py src/ma_engine/operations.py tests/test_stages_01_03.py tests/test_stage06_import_boundary.py tests/test_stages_07.py docs/eight_stage-roadmap/stage-07-experimental-operations.md docs/eight_stage-roadmap/STAGE_07_SHA256SUMS.txt
+      - name: SHA-256 manifest for data-last phase 07 execution lifecycle
+        if: matrix.source.name == 'phase07-execution-lifecycle-simulator'
+        working-directory: private-source
+        shell: bash
+        run: |
+          sha256sum src/ma_engine/execution_lifecycle.py src/ma_engine/__init__.py tests/test_execution_lifecycle_v1.py tests/test_stage06_import_boundary.py docs/DATA_LAST_PHASE07_EXECUTION_LIFECYCLE_SIMULATOR_V1.md docs/DATA_LAST_PHASE07_EXECUTION_LIFECYCLE_SHA256SUMS.txt
       - name: SHA-256 manifest for stage 08 source and tests
         if: matrix.source.name == 'stage-08-final-integration'
         working-directory: private-source
@@ -379,6 +387,8 @@ jobs:
             sha: 9741c1ffbf0d4c0a56efa4d722b0bbce628ba4ba
           - name: phase07-end-to-end-decision-workflow
             sha: 772b2f89280e2e87b44da230b0cc422ab72f0c7c
+          - name: phase07-execution-lifecycle-simulator
+            sha: 1fc567953fbfd5a51507f9e7b1f910e6d73d79ee
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -439,6 +449,7 @@ jobs:
             "test_stages_06.py",
             "test_stages_07.py",
             "test_stages_08.py",
+            "test_execution_lifecycle_v1.py",
             "test_stage09_provider_validation.py",
             "test_stage09_history_validation.py",
             "test_stage09_identity_validation.py",
