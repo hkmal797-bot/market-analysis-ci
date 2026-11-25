@@ -1,6 +1,11 @@
 name: Phase 12 strategy catalogue exact-source validation
 
 on:
+  push:
+    branches:
+      - main
+    paths:
+      - .github/workflows/phase12-strategy-catalog.yml
   workflow_dispatch:
 
 permissions:
@@ -22,7 +27,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: c84a1c9a0fa12147e52f62fd8529eca6cc90b385
+          ref: 907130198109c8a24656c0e59206b284b70dec1f
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -32,7 +37,7 @@ jobs:
         shell: bash
         run: |
           actual="$(git rev-parse HEAD)"
-          expected="c84a1c9a0fa12147e52f62fd8529eca6cc90b385"
+          expected="907130198109c8a24656c0e59206b284b70dec1f"
           test "$actual" = "$expected"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python
@@ -65,7 +70,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: c84a1c9a0fa12147e52f62fd8529eca6cc90b385
+          ref: 907130198109c8a24656c0e59206b284b70dec1f
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -75,7 +80,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
-          $expected = "c84a1c9a0fa12147e52f62fd8529eca6cc90b385"
+          $expected = "907130198109c8a24656c0e59206b284b70dec1f"
           if ($actual -ne $expected) { throw "PRIVATE_SOURCE_SHA_MISMATCH" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python
