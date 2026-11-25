@@ -212,6 +212,12 @@ jobs:
         shell: bash
         run: |
           sha256sum src/ma_engine/__init__.py src/ma_engine/application.py tests/test_stages_01_03.py tests/test_stage06_import_boundary.py tests/test_stages_08.py docs/eight_stage-roadmap/stage-08-final-integration.md docs/eight_stage-roadmap/STAGE_08_SHA256SUMS.txt
+      - name: SHA-256 manifest for stage 09 listing identity
+        if: matrix.source.name == 'stage-09-listing-identity'
+        working-directory: private-source
+        shell: bash
+        run: |
+          sha256sum src/ma_engine/identity_validation.py src/ma_engine/__init__.py tests/test_stage09_identity_validation.py tests/test_stages_01_03.py tests/test_stage06_import_boundary.py
       - name: Run complete deterministic unit-test suite
         working-directory: private-source
         env:
