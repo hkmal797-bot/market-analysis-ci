@@ -143,6 +143,8 @@ jobs:
             sha: 38e057ef01fd328625a4781ab6f1fa24065c5b2a
           - name: phase06-decision-governance
             sha: 9741c1ffbf0d4c0a56efa4d722b0bbce628ba4ba
+          - name: phase07-end-to-end-decision-workflow
+            sha: 772b2f89280e2e87b44da230b0cc422ab72f0c7c
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -375,6 +377,8 @@ jobs:
             sha: 38e057ef01fd328625a4781ab6f1fa24065c5b2a
           - name: phase06-decision-governance
             sha: 9741c1ffbf0d4c0a56efa4d722b0bbce628ba4ba
+          - name: phase07-end-to-end-decision-workflow
+            sha: 772b2f89280e2e87b44da230b0cc422ab72f0c7c
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
