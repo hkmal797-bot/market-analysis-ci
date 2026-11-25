@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 593d6cc78fd9458720ee8e9d5d755e788724e966
+          ref: d28e2fa9ba1d019361a794ee4951c42795a49998
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -37,7 +37,7 @@ jobs:
         shell: bash
         run: |
           actual="$(git rev-parse HEAD)"
-          expected="593d6cc78fd9458720ee8e9d5d755e788724e966"
+          expected="d28e2fa9ba1d019361a794ee4951c42795a49998"
           test "$actual" = "$expected"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python
@@ -57,7 +57,7 @@ jobs:
         working-directory: private-source
         shell: bash
         run: |
-          sha256sum src/ma_engine/regime.py src/ma_engine/__init__.py tests/test_market_regime_routing_v1.py docs/architecture/PHASE14_MARKET_REGIME_ROUTING_V1.md
+          sha256sum src/ma_engine/regime.py src/ma_engine/__init__.py tests/test_market_regime_routing_v1.py tests/test_stage06_import_boundary.py tests/test_stages_01_03.py docs/architecture/PHASE14_MARKET_REGIME_ROUTING_V1.md
 
   windows:
     name: Phase 14 exact source — Windows
@@ -70,7 +70,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 593d6cc78fd9458720ee8e9d5d755e788724e966
+          ref: d28e2fa9ba1d019361a794ee4951c42795a49998
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -80,7 +80,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
-          $expected = "593d6cc78fd9458720ee8e9d5d755e788724e966"
+          $expected = "d28e2fa9ba1d019361a794ee4951c42795a49998"
           if ($actual -ne $expected) { throw "PRIVATE_SOURCE_SHA_MISMATCH" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python
@@ -126,6 +126,8 @@ jobs:
             "src/ma_engine/regime.py",
             "src/ma_engine/__init__.py",
             "tests/test_market_regime_routing_v1.py",
+            "tests/test_stage06_import_boundary.py",
+            "tests/test_stages_01_03.py",
             "docs/architecture/PHASE14_MARKET_REGIME_ROUTING_V1.md"
           )
           Get-FileHash -Algorithm SHA256 -LiteralPath $files | ForEach-Object {
