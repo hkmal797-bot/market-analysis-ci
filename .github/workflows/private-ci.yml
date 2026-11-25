@@ -108,7 +108,7 @@ jobs:
           - name: stage-07-experimental-operations
             sha: 2755cd30277673efde7c5783a989bda0012364f5
           - name: stage-08-final-integration
-            sha: 174f76d815ca3d9f6e97911f1ec389eff4cd9167
+            sha: 8d72ebde2e36cd5fc589fc24ea2b50e5f46c0af8
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -276,7 +276,7 @@ jobs:
           - name: stage-07-experimental-operations
             sha: 2755cd30277673efde7c5783a989bda0012364f5
           - name: stage-08-final-integration
-            sha: 174f76d815ca3d9f6e97911f1ec389eff4cd9167
+            sha: 8d72ebde2e36cd5fc589fc24ea2b50e5f46c0af8
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
