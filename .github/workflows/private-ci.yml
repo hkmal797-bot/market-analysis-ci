@@ -138,7 +138,7 @@ jobs:
           - name: phase03-quantitative-core-completion
             sha: 1d1d384ebe65c41af5b03bbffefe67d90ecd253d
           - name: phase04-provider-neutral-strategy-engine
-            sha: 715c042e4c83a9ecc2f895ceaadfa88d0c996801
+            sha: 7c9d5a467ee68d21cb599183a17770f74482d21d
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -366,7 +366,7 @@ jobs:
           - name: phase03-quantitative-core-completion
             sha: 1d1d384ebe65c41af5b03bbffefe67d90ecd253d
           - name: phase04-provider-neutral-strategy-engine
-            sha: 715c042e4c83a9ecc2f895ceaadfa88d0c996801
+            sha: 7c9d5a467ee68d21cb599183a17770f74482d21d
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
