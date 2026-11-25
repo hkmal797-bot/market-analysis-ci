@@ -117,6 +117,8 @@ jobs:
             sha: 2dacb39fedcd2a7016abeea0223de9d69e51652a
           - name: stage-09-admission-hardening
             sha: c99699af89062e6815de1ee2bcec62876a75b3cb
+          - name: stage-09-delisted-sample-evidence
+            sha: ed6f7d17acbeda0e4de9873e9eeedee7754a2f13
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -242,6 +244,12 @@ jobs:
         shell: bash
         run: |
           sha256sum src/ma_engine/sample_admission.py tests/test_stage09_sample_admission.py docs/eight_stage-roadmap/stage-09-provider-desk-research.md docs/eight_stage-roadmap/stage-09-provider-clarification-questionnaire.md docs/eight_stage-roadmap/stage-09-provider-evaluation-matrix.md docs/eight_stage-roadmap/stage-09-provider-due-diligence.md docs/eight-stage-roadmap/stage-09-sample-admission.md docs/eight-stage-roadmap/stage-09-internal-readiness.md docs/eight-stage-roadmap/STAGE_09_ADMISSION_HARDENING_SHA256SUMS.txt
+      - name: SHA-256 manifest for stage 09 delisted sample evidence
+        if: matrix.source.name == 'stage-09-delisted-sample-evidence'
+        working-directory: private-source
+        shell: bash
+        run: |
+          sha256sum src/ma_engine/sample_admission.py tests/test_stage09_sample_admission.py docs/eight-stage-roadmap/stage-09-sample-admission.md
       - name: Run complete deterministic unit-test suite
         working-directory: private-source
         env:
@@ -317,6 +325,8 @@ jobs:
             sha: 2dacb39fedcd2a7016abeea0223de9d69e51652a
           - name: stage-09-admission-hardening
             sha: c99699af89062e6815de1ee2bcec62876a75b3cb
+          - name: stage-09-delisted-sample-evidence
+            sha: ed6f7d17acbeda0e4de9873e9eeedee7754a2f13
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -539,3 +549,4 @@ jobs:
 # PR95 validates HMAC archive checkpoints on PR94; PR94 is the archive discovery/recovery control source.
 # Parallel immutable source matrix validates external HMAC checkpoints and its PR94 archive discovery/recovery control on both operating systems.
 # PR28 validates fail-closed stage-09 sample admission against exact private source SHA c99699a.
+# PR29 requires an actual historically delisted bar in the stage-09 sample admission fixture.
