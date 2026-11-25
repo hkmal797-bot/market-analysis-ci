@@ -108,7 +108,7 @@ jobs:
           - name: stage-07-experimental-operations
             sha: 2755cd30277673efde7c5783a989bda0012364f5
           - name: stage-08-final-integration
-            sha: 6c14b0709b4cf44557ef7753ca92ae430d760e08
+            sha: 19828746e83e7c112d154bef568f6d76de05ea2d
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -276,7 +276,7 @@ jobs:
           - name: stage-07-experimental-operations
             sha: 2755cd30277673efde7c5783a989bda0012364f5
           - name: stage-08-final-integration
-            sha: 6c14b0709b4cf44557ef7753ca92ae430d760e08
+            sha: 19828746e83e7c112d154bef568f6d76de05ea2d
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -335,6 +335,7 @@ jobs:
             "test_stages_06.py",
             "test_stages_07.py",
             "test_stages_08.py",
+            "test_stage09_provider_validation.py",
             "test_stage06_import_boundary.py",
             "test_windows_paper_launcher.py",
             "test_windows_paper_readonly_launcher.py",
