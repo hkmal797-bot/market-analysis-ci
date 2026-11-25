@@ -127,6 +127,8 @@ jobs:
             sha: b1cd1938965beb4a063f349fd66e39ec2bafa2b6
           - name: stage-09-license-scope-binding
             sha: 628de75a017175f16271e7b4f6d9a65eb6aed74f
+          - name: stage-09-revision-listing-binding
+            sha: e51338260f8dfa248e808362299772cb4653c3b3
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -253,7 +255,7 @@ jobs:
         run: |
           sha256sum src/ma_engine/sample_admission.py tests/test_stage09_sample_admission.py docs/eight_stage-roadmap/stage-09-provider-desk-research.md docs/eight_stage-roadmap/stage-09-provider-clarification-questionnaire.md docs/eight_stage-roadmap/stage-09-provider-evaluation-matrix.md docs/eight_stage-roadmap/stage-09-provider-due-diligence.md docs/eight-stage-roadmap/stage-09-sample-admission.md docs/eight-stage-roadmap/stage-09-internal-readiness.md docs/eight-stage-roadmap/STAGE_09_ADMISSION_HARDENING_SHA256SUMS.txt
       - name: SHA-256 manifest for stage 09 delisted sample evidence
-        if: matrix.source.name == 'stage-09-delisted-sample-evidence' || matrix.source.name == 'stage-09-revision-sample-binding' || matrix.source.name == 'stage-09-full-revision-coverage' || matrix.source.name == 'stage-09-revision-row-validation' || matrix.source.name == 'stage-09-corporate-action-coverage' || matrix.source.name == 'stage-09-independent-reference-scope' || matrix.source.name == 'stage-09-license-scope-binding'
+        if: matrix.source.name == 'stage-09-delisted-sample-evidence' || matrix.source.name == 'stage-09-revision-sample-binding' || matrix.source.name == 'stage-09-full-revision-coverage' || matrix.source.name == 'stage-09-revision-row-validation' || matrix.source.name == 'stage-09-corporate-action-coverage' || matrix.source.name == 'stage-09-independent-reference-scope' || matrix.source.name == 'stage-09-license-scope-binding' || matrix.source.name == 'stage-09-revision-listing-binding'
         working-directory: private-source
         shell: bash
         run: |
@@ -343,6 +345,8 @@ jobs:
             sha: b1cd1938965beb4a063f349fd66e39ec2bafa2b6
           - name: stage-09-license-scope-binding
             sha: 628de75a017175f16271e7b4f6d9a65eb6aed74f
+          - name: stage-09-revision-listing-binding
+            sha: e51338260f8dfa248e808362299772cb4653c3b3
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
