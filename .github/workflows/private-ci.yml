@@ -122,7 +122,7 @@ jobs:
           - name: stage-09-revision-row-validation
             sha: fc0fa5f5271ad2bb107ffec53d81e60e53c992c9
           - name: stage-09-corporate-action-coverage
-            sha: d338ad731803acdf8c21d78903d976dee30a5e13
+            sha: 9f1b80b356e6e4393f54049d4131a828d9a5c122
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -334,7 +334,7 @@ jobs:
           - name: stage-09-revision-row-validation
             sha: fc0fa5f5271ad2bb107ffec53d81e60e53c992c9
           - name: stage-09-corporate-action-coverage
-            sha: d338ad731803acdf8c21d78903d976dee30a5e13
+            sha: 9f1b80b356e6e4393f54049d4131a828d9a5c122
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
