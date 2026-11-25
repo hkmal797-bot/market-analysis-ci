@@ -189,6 +189,7 @@ jobs:
           PY
 
       - name: SHA-256 manifest for stage 06 source and tests
+        if: matrix.source.name == 'stage-06-monitoring-audit'
         working-directory: private-source
         shell: bash
         run: |
