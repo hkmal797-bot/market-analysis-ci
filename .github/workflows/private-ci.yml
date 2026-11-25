@@ -461,7 +461,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 6e3ef8ffaa29f5a5daf4d4abd18f5bc46f36e1d2
+          ref: bf0bdd5bba71fca0c474e841538fed5c227189d8
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source-stages-01-03
           persist-credentials: false
@@ -470,7 +470,7 @@ jobs:
       - name: Verify exact private source revision
         working-directory: private-source-stages-01-03
         env:
-          EXPECTED_PRIVATE_SOURCE_SHA: 6e3ef8ffaa29f5a5daf4d4abd18f5bc46f36e1d2
+          EXPECTED_PRIVATE_SOURCE_SHA: bf0bdd5bba71fca0c474e841538fed5c227189d8
         run: |
           actual="$(git rev-parse HEAD)"
           test "$actual" = "$EXPECTED_PRIVATE_SOURCE_SHA"
