@@ -113,6 +113,8 @@ jobs:
             sha: a335ec1ddc6ef6dddb8eb5589b1776d0bd06639f
           - name: stage-09-identity-bar-binding
             sha: 08c47f8be4586ca2e70f6c1d0918a1bb842dcaad
+          - name: stage-09-sample-admission
+            sha: f966670f60e08ad2045a6f5c1f690ace9f05f9dc
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -226,6 +228,12 @@ jobs:
         shell: bash
         run: |
           sha256sum src/ma_engine/identity_validation.py src/ma_engine/__init__.py tests/test_stage09_identity_bar_binding.py tests/test_stages_01_03.py tests/test_stage06_import_boundary.py
+      - name: SHA-256 manifest for stage 09 sample admission
+        if: matrix.source.name == 'stage-09-sample-admission'
+        working-directory: private-source
+        shell: bash
+        run: |
+          sha256sum src/ma_engine/sample_admission.py src/ma_engine/__init__.py tests/test_stage09_sample_admission.py tests/test_stages_01_03.py tests/test_stage06_import_boundary.py
       - name: Run complete deterministic unit-test suite
         working-directory: private-source
         env:
@@ -297,6 +305,8 @@ jobs:
             sha: a335ec1ddc6ef6dddb8eb5589b1776d0bd06639f
           - name: stage-09-identity-bar-binding
             sha: 08c47f8be4586ca2e70f6c1d0918a1bb842dcaad
+          - name: stage-09-sample-admission
+            sha: f966670f60e08ad2045a6f5c1f690ace9f05f9dc
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -359,6 +369,7 @@ jobs:
             "test_stage09_history_validation.py",
             "test_stage09_identity_validation.py",
             "test_stage09_identity_bar_binding.py",
+            "test_stage09_sample_admission.py",
             "test_stage06_import_boundary.py",
             "test_windows_paper_launcher.py",
             "test_windows_paper_readonly_launcher.py",
