@@ -561,3 +561,5 @@ jobs:
 # PR30 binds before/after revision snapshots to the submitted sample keys and rejects empty or unrelated snapshots.
 # PR31 requires complete sample-key coverage in both before and after revision snapshots.
 # PR32 validates each revision snapshot as complete OHLCV rows with matching ticker/venue identity.
+
+# Re-run both OS matrices after adding the corporate-action coverage Windows target.
