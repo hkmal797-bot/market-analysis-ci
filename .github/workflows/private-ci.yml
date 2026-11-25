@@ -128,7 +128,7 @@ jobs:
           - name: stage-09-license-scope-binding
             sha: 628de75a017175f16271e7b4f6d9a65eb6aed74f
           - name: stage-09-revision-listing-binding
-            sha: 18331084f51ceba95f238ae9fe7f36e956049f31
+            sha: c93b223723b57f3001346b8c9ea03fcd693c34d8
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -346,7 +346,7 @@ jobs:
           - name: stage-09-license-scope-binding
             sha: 628de75a017175f16271e7b4f6d9a65eb6aed74f
           - name: stage-09-revision-listing-binding
-            sha: 18331084f51ceba95f238ae9fe7f36e956049f31
+            sha: c93b223723b57f3001346b8c9ea03fcd693c34d8
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -581,3 +581,5 @@ jobs:
 # Final exact-source run after refreshing license-scope manifest hashes.
 
 # Re-run exact-source CI after correcting the fail-closed diagnostic assertion.
+
+# Final exact-source run after refreshing revision-listing manifest hashes.
