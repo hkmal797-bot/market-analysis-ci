@@ -126,7 +126,7 @@ jobs:
           - name: stage-09-independent-reference-scope
             sha: b1cd1938965beb4a063f349fd66e39ec2bafa2b6
           - name: stage-09-license-scope-binding
-            sha: f6176aaf67731449f4317ba0114a02e7e08aaffc
+            sha: 628de75a017175f16271e7b4f6d9a65eb6aed74f
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -342,7 +342,7 @@ jobs:
           - name: stage-09-independent-reference-scope
             sha: b1cd1938965beb4a063f349fd66e39ec2bafa2b6
           - name: stage-09-license-scope-binding
-            sha: f6176aaf67731449f4317ba0114a02e7e08aaffc
+            sha: 628de75a017175f16271e7b4f6d9a65eb6aed74f
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -573,3 +573,5 @@ jobs:
 # Re-run both OS matrices after adding the corporate-action coverage Windows target.
 
 # Final exact-source run after refreshing independent-reference manifest hashes.
+
+# Final exact-source run after refreshing license-scope manifest hashes.
