@@ -106,7 +106,7 @@ jobs:
           - name: stage-06-monitoring-audit
             sha: 0c98fd7029215cb5906a40cb59d139f931ff353e
           - name: stage-07-experimental-operations
-            sha: f24e6bb5e20acb0603b3862a89fa9516252755ae
+            sha: 5ca16ff492ff5050b26701c8ba1448d5836b5c4a
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -266,7 +266,7 @@ jobs:
           - name: stage-06-monitoring-audit
             sha: 0c98fd7029215cb5906a40cb59d139f931ff353e
           - name: stage-07-experimental-operations
-            sha: f24e6bb5e20acb0603b3862a89fa9516252755ae
+            sha: 5ca16ff492ff5050b26701c8ba1448d5836b5c4a
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
