@@ -1,0 +1,49 @@
+name: Stages 01–03 isolated core tests
+
+on:
+  pull_request:
+    branches: [main]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: stages-01-03-${{ github.event.pull_request.number }}
+  cancel-in-progress: false
+
+jobs:
+  offline-core:
+    if: startsWith(github.event.pull_request.head.ref, 'ci/stages-01-03-rebuild-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout exact private implementation
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 5b8d8366cc1ece19822dc498e52b2594b39713e9
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Verify exact source revision
+        working-directory: private-source
+        env:
+          EXPECTED_SHA: 5b8d8366cc1ece19822dc498e52b2594b39713e9
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "$EXPECTED_SHA"
+          echo "SOURCE_SHA_VERIFIED=$actual"
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+
+      - name: Run stages 01–03 offline tests
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests -p 'test_stages_01_03.py' -v
