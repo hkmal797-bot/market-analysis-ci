@@ -92,7 +92,7 @@ concurrency:
 jobs:
   unit-tests:
     name: Standard-library unit tests (Ubuntu) — ${{ matrix.source.name }}
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && !startsWith(github.event.pull_request.title, '[CORE_ONLY]'))
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && !startsWith(github.event.pull_request.head.ref, 'ci/data-independent-core-'))
     strategy:
       fail-fast: false
       matrix:
@@ -230,7 +230,7 @@ jobs:
 
   windows-paper-safety:
     name: Windows Paper safety and adaptive-cycle tests — ${{ matrix.source.name }}
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && !startsWith(github.event.pull_request.title, '[CORE_ONLY]'))
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && !startsWith(github.event.pull_request.head.ref, 'ci/data-independent-core-'))
     strategy:
       fail-fast: false
       matrix:
@@ -453,7 +453,7 @@ jobs:
 
   data-independent-core:
     name: Data-independent core tests — exact private source
-    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[CORE_ONLY]')
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.head.ref, 'ci/data-independent-core-')
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
