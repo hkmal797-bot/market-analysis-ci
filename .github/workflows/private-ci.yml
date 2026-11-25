@@ -133,6 +133,8 @@ jobs:
             sha: 98c318fa4a419517a6f90b2d2af2c2af6fd4e76a
           - name: stage-09-corporate-action-row-scope
             sha: 4c1aeb2aa105534273cdf933fe7357f55460323e
+          - name: final-main-quantitative-core
+            sha: 3982158c16afe27fa0b29ac399b83bc7d5b3ef2c
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -355,6 +357,8 @@ jobs:
             sha: 98c318fa4a419517a6f90b2d2af2c2af6fd4e76a
           - name: stage-09-corporate-action-row-scope
             sha: 4c1aeb2aa105534273cdf933fe7357f55460323e
+          - name: final-main-quantitative-core
+            sha: 3982158c16afe27fa0b29ac399b83bc7d5b3ef2c
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -409,6 +413,8 @@ jobs:
         run: |
           $patterns = @(
             "test_paper_trading_v1.py",
+            "test_stages_01_03.py",
+            "test_marketanalysis_core*.py",
             "test_stages_04_05.py",
             "test_stages_06.py",
             "test_stages_07.py",
