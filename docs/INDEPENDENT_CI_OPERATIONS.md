@@ -189,3 +189,23 @@ Push-triggered validation now runs only when `.github/workflows/private-ci.yml`
 changes. Runbook-only documentation updates no longer launch the four-job
 matrix. Manual `workflow_dispatch` and trusted same-repository pull-request
 validation remain available.
+
+
+## Phase 08 — deterministic decision assistant (2026-11-25)
+
+Final tested source commit:
+
+\`6289df4a75090c8fc273fe8d625105c11572f85c\`
+
+Independent exact-source run #45677755397:
+https://github.com/hkmal797-bot/market-analysis-ci/actions/runs/45677755397
+
+- Full matrix: **52/52 jobs successful**, zero failures and zero cancellations.
+- Ubuntu complete deterministic suite: **251 tests**, zero failures, zero errors, zero skips.
+- Windows decision-assistant suite: **18/18 passed**; import-boundary suite: **1/1 passed**.
+- Both OS logs printed \`PRIVATE_SOURCE_SHA_VERIFIED=6289df4a75090c8fc273fe8d625105c11572f85c\`.
+- Ubuntu verified all seven entries in \`DATA_LAST_PHASE08_DECISION_ASSISTANT_SHA256SUMS.txt\` with \`sha256sum -c\`; all reported \`OK\`.
+- Windows recorded \`NO_ORDER_EXECUTED=TRUE\`. PowerShell launcher parsing was skipped because no launcher files exist in this source snapshot.
+- The candidate contains a deterministic policy assistant only; no LLM/API, market-data provider, network, credentials, storage, broker, or order side effect is enabled.
+
+This proves offline software behavior for the exact source revision. It does not establish strategy profitability, authenticate caller assertions, validate live market data, authorize deployment, or change the proposed status of the data-last roadmap ADR.
