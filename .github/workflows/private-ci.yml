@@ -130,7 +130,7 @@ jobs:
           - name: stage-09-revision-listing-binding
             sha: c93b223723b57f3001346b8c9ea03fcd693c34d8
           - name: stage-09-exact-revision-scope
-            sha: 8b36900e83a89897ff1a614ac60bc9b7c1574f7a
+            sha: 13026a38cfacd724bc33a81e9875790d3c77cdfb
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -350,7 +350,7 @@ jobs:
           - name: stage-09-revision-listing-binding
             sha: c93b223723b57f3001346b8c9ea03fcd693c34d8
           - name: stage-09-exact-revision-scope
-            sha: 8b36900e83a89897ff1a614ac60bc9b7c1574f7a
+            sha: 13026a38cfacd724bc33a81e9875790d3c77cdfb
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
