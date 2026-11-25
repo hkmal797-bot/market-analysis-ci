@@ -241,6 +241,8 @@ jobs:
             sha: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
           - name: archive-recovery-control
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
+          - name: stages-04-05-risk-portfolio
+            sha: f30fd5c74888d65be6726dbff9dfaf8129b8b496
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
