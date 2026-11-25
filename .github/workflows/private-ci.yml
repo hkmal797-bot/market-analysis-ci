@@ -114,7 +114,7 @@ jobs:
           - name: stage-09-identity-bar-binding
             sha: 08c47f8be4586ca2e70f6c1d0918a1bb842dcaad
           - name: stage-09-sample-admission
-            sha: f966670f60e08ad2045a6f5c1f690ace9f05f9dc
+            sha: 2dacb39fedcd2a7016abeea0223de9d69e51652a
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -306,7 +306,7 @@ jobs:
           - name: stage-09-identity-bar-binding
             sha: 08c47f8be4586ca2e70f6c1d0918a1bb842dcaad
           - name: stage-09-sample-admission
-            sha: f966670f60e08ad2045a6f5c1f690ace9f05f9dc
+            sha: 2dacb39fedcd2a7016abeea0223de9d69e51652a
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
