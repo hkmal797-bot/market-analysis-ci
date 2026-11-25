@@ -92,7 +92,7 @@ concurrency:
 jobs:
   unit-tests:
     name: Standard-library unit tests (Ubuntu) — ${{ matrix.source.name }}
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && !startsWith(github.event.pull_request.head.ref, 'ci/data-independent-core-'))
     strategy:
       fail-fast: false
       matrix:
@@ -230,7 +230,7 @@ jobs:
 
   windows-paper-safety:
     name: Windows Paper safety and adaptive-cycle tests — ${{ matrix.source.name }}
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && !startsWith(github.event.pull_request.head.ref, 'ci/data-independent-core-'))
     strategy:
       fail-fast: false
       matrix:
@@ -450,3 +450,40 @@ jobs:
 
 # PR95 validates HMAC archive checkpoints on PR94; PR94 is the archive discovery/recovery control source.
 # Parallel immutable source matrix validates external HMAC checkpoints and its PR94 archive discovery/recovery control on both operating systems.
+
+  data-independent-core:
+    name: Data-independent core tests — exact private source
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.head.ref, 'ci/data-independent-core-')
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Checkout exact private source revision (read-only token)
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: b76760d54bf713483ce81ea10c6b18918f37562a
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source-core
+          persist-credentials: false
+          fetch-depth: 1
+
+      - name: Verify exact private source commit
+        working-directory: private-source-core
+        env:
+          EXPECTED_PRIVATE_SOURCE_SHA: b76760d54bf713483ce81ea10c6b18918f37562a
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "$EXPECTED_PRIVATE_SOURCE_SHA"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+
+      - name: Set up Python
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+
+      - name: Run focused offline core tests
+        working-directory: private-source-core
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests -p 'test_marketanalysis_core*.py' -v
