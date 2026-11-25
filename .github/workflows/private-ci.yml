@@ -591,3 +591,5 @@ jobs:
 # Re-run exact-source CI after correcting the fail-closed diagnostic assertion.
 
 # Final exact-source run after refreshing revision-listing manifest hashes.
+
+# PR39 validates iterator-safe Stage 09 sample admission against exact private source SHA 4c1aeb2aa105534273cdf933fe7357f55460323e.
