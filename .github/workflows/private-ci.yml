@@ -538,3 +538,4 @@ jobs:
 
 # PR95 validates HMAC archive checkpoints on PR94; PR94 is the archive discovery/recovery control source.
 # Parallel immutable source matrix validates external HMAC checkpoints and its PR94 archive discovery/recovery control on both operating systems.
+# PR28 validates fail-closed stage-09 sample admission against exact private source SHA 34de6b5.
