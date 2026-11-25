@@ -118,7 +118,7 @@ jobs:
           - name: stage-09-admission-hardening
             sha: c99699af89062e6815de1ee2bcec62876a75b3cb
           - name: stage-09-delisted-sample-evidence
-            sha: ed6f7d17acbeda0e4de9873e9eeedee7754a2f13
+            sha: 7f7a707d6493db20ad718a20ce3a45cca88b5d94
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -249,7 +249,7 @@ jobs:
         working-directory: private-source
         shell: bash
         run: |
-          sha256sum src/ma_engine/sample_admission.py tests/test_stage09_sample_admission.py docs/eight-stage-roadmap/stage-09-sample-admission.md
+          sha256sum src/ma_engine/sample_admission.py tests/test_stage09_sample_admission.py docs/eight-stage-roadmap/stage-09-sample-admission.md docs/eight-stage-roadmap/stage-09-internal-readiness.md docs/eight-stage-roadmap/STAGE_09_DELISTED_SAMPLE_EVIDENCE_SHA256SUMS.txt
       - name: Run complete deterministic unit-test suite
         working-directory: private-source
         env:
@@ -326,7 +326,7 @@ jobs:
           - name: stage-09-admission-hardening
             sha: c99699af89062e6815de1ee2bcec62876a75b3cb
           - name: stage-09-delisted-sample-evidence
-            sha: ed6f7d17acbeda0e4de9873e9eeedee7754a2f13
+            sha: 7f7a707d6493db20ad718a20ce3a45cca88b5d94
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -549,4 +549,4 @@ jobs:
 # PR95 validates HMAC archive checkpoints on PR94; PR94 is the archive discovery/recovery control source.
 # Parallel immutable source matrix validates external HMAC checkpoints and its PR94 archive discovery/recovery control on both operating systems.
 # PR28 validates fail-closed stage-09 sample admission against exact private source SHA c99699a.
-# PR29 requires an actual historically delisted bar in the stage-09 sample admission fixture.
+# PR29 validates actual delisted price rows and exact-source admission acceptance on both operating systems.
