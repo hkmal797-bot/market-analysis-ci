@@ -141,6 +141,8 @@ jobs:
             sha: 7607b9ddb8dcff2e573dccc01e2c47edde153265
           - name: phase05-deterministic-portfolio-simulation
             sha: 38e057ef01fd328625a4781ab6f1fa24065c5b2a
+          - name: phase06-decision-governance
+            sha: 4ab8fe188ca7b8a0fa0c90e407eb86da0110196c
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -371,6 +373,8 @@ jobs:
             sha: 7607b9ddb8dcff2e573dccc01e2c47edde153265
           - name: phase05-deterministic-portfolio-simulation
             sha: 38e057ef01fd328625a4781ab6f1fa24065c5b2a
+          - name: phase06-decision-governance
+            sha: 4ab8fe188ca7b8a0fa0c90e407eb86da0110196c
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
