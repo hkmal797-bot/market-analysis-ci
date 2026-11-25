@@ -150,7 +150,7 @@ jobs:
           - name: phase08-decision-assistant
             sha: 6289df4a75090c8fc273fe8d625105c11572f85c
           - name: phase09-control-center-semi-automation
-            sha: eae297856748c9c48fe2a75e64de4804e389de3a
+            sha: f59206a9482f187c2c59cce08f0d3fb5a83684aa
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -408,7 +408,7 @@ jobs:
           - name: phase08-decision-assistant
             sha: 6289df4a75090c8fc273fe8d625105c11572f85c
           - name: phase09-control-center-semi-automation
-            sha: eae297856748c9c48fe2a75e64de4804e389de3a
+            sha: f59206a9482f187c2c59cce08f0d3fb5a83684aa
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
