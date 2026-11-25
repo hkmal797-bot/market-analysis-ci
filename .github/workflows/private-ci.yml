@@ -104,7 +104,7 @@ jobs:
           - name: stages-04-05-risk-portfolio
             sha: 8e607045e8e0d4b80c6ce229ef6a1a10f253c8d5
           - name: stage-06-monitoring-audit
-            sha: 3b92e3f97464fe3f94eb7c1768808a089adbd318
+            sha: a8239edf05224d065e54c96bd3e0092b5d8337e2
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -255,7 +255,7 @@ jobs:
           - name: stages-04-05-risk-portfolio
             sha: 8e607045e8e0d4b80c6ce229ef6a1a10f253c8d5
           - name: stage-06-monitoring-audit
-            sha: 3b92e3f97464fe3f94eb7c1768808a089adbd318
+            sha: a8239edf05224d065e54c96bd3e0092b5d8337e2
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
