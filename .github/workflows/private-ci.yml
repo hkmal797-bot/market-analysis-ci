@@ -150,7 +150,7 @@ jobs:
           - name: phase08-decision-assistant
             sha: 6289df4a75090c8fc273fe8d625105c11572f85c
           - name: phase09-control-center-semi-automation
-            sha: f61d1f60f34319e6b40b18d48df2e35eedf5f574
+            sha: eae297856748c9c48fe2a75e64de4804e389de3a
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -263,7 +263,7 @@ jobs:
         working-directory: private-source
         shell: bash
         run: |
-          sha256sum src/ma_engine/control_center.py src/ma_engine/__init__.py tests/test_control_center_v1.py tests/test_stage06_import_boundary.py docs/architecture/PHASE09_CONTROL_CENTER_SEMIAUTOMATION_RELIABILITY_VALIDATION_V1.md
+          sha256sum src/ma_engine/control_center.py src/ma_engine/__init__.py tests/test_control_center_v1.py tests/test_stage06_import_boundary.py tests/test_stages_01_03.py docs/architecture/PHASE09_CONTROL_CENTER_SEMIAUTOMATION_RELIABILITY_VALIDATION_V1.md
       - name: SHA-256 manifest for stage 08 source and tests
         if: matrix.source.name == 'stage-08-final-integration'
         working-directory: private-source
@@ -408,7 +408,7 @@ jobs:
           - name: phase08-decision-assistant
             sha: 6289df4a75090c8fc273fe8d625105c11572f85c
           - name: phase09-control-center-semi-automation
-            sha: f61d1f60f34319e6b40b18d48df2e35eedf5f574
+            sha: eae297856748c9c48fe2a75e64de4804e389de3a
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
