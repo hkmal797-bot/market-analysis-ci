@@ -140,7 +140,7 @@ jobs:
           - name: phase04-provider-neutral-strategy-engine
             sha: 7607b9ddb8dcff2e573dccc01e2c47edde153265
           - name: phase05-deterministic-portfolio-simulation
-            sha: a8a2a8a0d847fe9b6c39998ad1ceb99385e6d3b4
+            sha: 8a57c794214b98b28e8095f52630057a0ed388ac
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -370,7 +370,7 @@ jobs:
           - name: phase04-provider-neutral-strategy-engine
             sha: 7607b9ddb8dcff2e573dccc01e2c47edde153265
           - name: phase05-deterministic-portfolio-simulation
-            sha: a8a2a8a0d847fe9b6c39998ad1ceb99385e6d3b4
+            sha: 8a57c794214b98b28e8095f52630057a0ed388ac
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
