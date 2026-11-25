@@ -101,6 +101,38 @@ jobs:
             sha: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
           - name: archive-recovery-control
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
+          - name: stages-04-05-risk-portfolio
+            sha: 8e607045e8e0d4b80c6ce229ef6a1a10f253c8d5
+          - name: stage-06-monitoring-audit
+            sha: 0c98fd7029215cb5906a40cb59d139f931ff353e
+          - name: stage-07-experimental-operations
+            sha: 2755cd30277673efde7c5783a989bda0012364f5
+          - name: stage-08-final-integration
+            sha: 70f24c9241863b2503ea66eaedd5a0b71a50feba
+          - name: stage-09-listing-identity
+            sha: a335ec1ddc6ef6dddb8eb5589b1776d0bd06639f
+          - name: stage-09-identity-bar-binding
+            sha: 08c47f8be4586ca2e70f6c1d0918a1bb842dcaad
+          - name: stage-09-sample-admission
+            sha: 2dacb39fedcd2a7016abeea0223de9d69e51652a
+          - name: stage-09-admission-hardening
+            sha: c99699af89062e6815de1ee2bcec62876a75b3cb
+          - name: stage-09-delisted-sample-evidence
+            sha: 12c1964a1e8620396fd5d5a58e46e5ae54ee4046
+          - name: stage-09-revision-row-validation
+            sha: fc0fa5f5271ad2bb107ffec53d81e60e53c992c9
+          - name: stage-09-corporate-action-coverage
+            sha: 9f1b80b356e6e4393f54049d4131a828d9a5c122
+          - name: stage-09-independent-reference-scope
+            sha: b1cd1938965beb4a063f349fd66e39ec2bafa2b6
+          - name: stage-09-license-scope-binding
+            sha: 628de75a017175f16271e7b4f6d9a65eb6aed74f
+          - name: stage-09-revision-listing-binding
+            sha: c93b223723b57f3001346b8c9ea03fcd693c34d8
+          - name: stage-09-exact-revision-scope
+            sha: 98c318fa4a419517a6f90b2d2af2c2af6fd4e76a
+          - name: stage-09-corporate-action-row-scope
+            sha: 4c1aeb2aa105534273cdf933fe7357f55460323e
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -184,6 +216,54 @@ jobs:
           print(f"LANDLOCK_PROBE_PROCESS_EXIT={p.returncode}")
           PY
 
+      - name: SHA-256 manifest for stage 06 source and tests
+        if: matrix.source.name == 'stage-06-monitoring-audit'
+        working-directory: private-source
+        shell: bash
+        run: |
+          sha256sum src/ma_engine/__init__.py src/ma_engine/audit.py src/ma_engine/monitoring.py tests/test_stages_01_03.py tests/test_stages_06.py tests/test_stage06_import_boundary.py docs/eight_stage-roadmap/stage-06-monitoring-audit.md docs/eight_stage-roadmap/STAGE_06_SHA256SUMS.txt
+      - name: SHA-256 manifest for stage 07 source and tests
+        if: matrix.source.name == 'stage-07-experimental-operations'
+        working-directory: private-source
+        shell: bash
+        run: |
+          sha256sum src/ma_engine/__init__.py src/ma_engine/operations.py tests/test_stages_01_03.py tests/test_stage06_import_boundary.py tests/test_stages_07.py docs/eight_stage-roadmap/stage-07-experimental-operations.md docs/eight_stage-roadmap/STAGE_07_SHA256SUMS.txt
+      - name: SHA-256 manifest for stage 08 source and tests
+        if: matrix.source.name == 'stage-08-final-integration'
+        working-directory: private-source
+        shell: bash
+        run: |
+          sha256sum src/ma_engine/__init__.py src/ma_engine/application.py tests/test_stages_01_03.py tests/test_stage06_import_boundary.py tests/test_stages_08.py docs/eight_stage-roadmap/stage-08-final-integration.md docs/eight_stage-roadmap/STAGE_08_SHA256SUMS.txt
+      - name: SHA-256 manifest for stage 09 listing identity
+        if: matrix.source.name == 'stage-09-listing-identity'
+        working-directory: private-source
+        shell: bash
+        run: |
+          sha256sum src/ma_engine/identity_validation.py src/ma_engine/__init__.py tests/test_stage09_identity_validation.py tests/test_stages_01_03.py tests/test_stage06_import_boundary.py
+      - name: SHA-256 manifest for stage 09 identity bar binding
+        if: matrix.source.name == 'stage-09-identity-bar-binding'
+        working-directory: private-source
+        shell: bash
+        run: |
+          sha256sum src/ma_engine/identity_validation.py src/ma_engine/__init__.py tests/test_stage09_identity_bar_binding.py tests/test_stages_01_03.py tests/test_stage06_import_boundary.py
+      - name: SHA-256 manifest for stage 09 sample admission
+        if: matrix.source.name == 'stage-09-sample-admission'
+        working-directory: private-source
+        shell: bash
+        run: |
+          sha256sum src/ma_engine/sample_admission.py src/ma_engine/__init__.py tests/test_stage09_sample_admission.py tests/test_stages_01_03.py tests/test_stage06_import_boundary.py
+      - name: SHA-256 manifest for stage 09 admission hardening
+        if: matrix.source.name == 'stage-09-admission-hardening'
+        working-directory: private-source
+        shell: bash
+        run: |
+          sha256sum src/ma_engine/sample_admission.py tests/test_stage09_sample_admission.py docs/eight_stage-roadmap/stage-09-provider-desk-research.md docs/eight_stage-roadmap/stage-09-provider-clarification-questionnaire.md docs/eight_stage-roadmap/stage-09-provider-evaluation-matrix.md docs/eight_stage-roadmap/stage-09-provider-due-diligence.md docs/eight-stage-roadmap/stage-09-sample-admission.md docs/eight-stage-roadmap/stage-09-internal-readiness.md docs/eight-stage-roadmap/STAGE_09_ADMISSION_HARDENING_SHA256SUMS.txt
+      - name: SHA-256 manifest for stage 09 delisted sample evidence
+        if: matrix.source.name == 'stage-09-delisted-sample-evidence' || matrix.source.name == 'stage-09-revision-sample-binding' || matrix.source.name == 'stage-09-full-revision-coverage' || matrix.source.name == 'stage-09-revision-row-validation' || matrix.source.name == 'stage-09-corporate-action-coverage' || matrix.source.name == 'stage-09-independent-reference-scope' || matrix.source.name == 'stage-09-license-scope-binding' || matrix.source.name == 'stage-09-revision-listing-binding' || matrix.source.name == 'stage-09-exact-revision-scope' || matrix.source.name == 'stage-09-corporate-action-row-scope'
+        working-directory: private-source
+        shell: bash
+        run: |
+          sha256sum src/ma_engine/sample_admission.py tests/test_stage09_sample_admission.py docs/eight-stage-roadmap/stage-09-sample-admission.md docs/eight-stage-roadmap/stage-09-internal-readiness.md docs/eight-stage-roadmap/STAGE_09_DELISTED_SAMPLE_EVIDENCE_SHA256SUMS.txt docs/eight_stage-roadmap/stage-09-provider-evaluation-template.json
       - name: Run complete deterministic unit-test suite
         working-directory: private-source
         env:
@@ -210,6 +290,10 @@ jobs:
           print(f"UNIT_TESTS_FAILURES={failures.group(1) if failures else '0'}")
           print(f"UNIT_TESTS_ERRORS={errors.group(1) if errors else '0'}")
           print(f"UNIT_TESTS_SKIPPED={skipped.group(1) if skipped else '0'}")
+          if status != 0:
+              print("UNIT_TEST_FAILURE_DETAILS_BEGIN")
+              print(log)
+              print("UNIT_TEST_FAILURE_DETAILS_END")
           raise SystemExit(status)
           PY
       - name: Read-only Tigris raw-content probe (explicit validation PR only)
@@ -239,6 +323,38 @@ jobs:
             sha: d0fa1a333f0c1f46626a750aeb8324a26339fbdb
           - name: archive-recovery-control
             sha: 20df4d5ae1d3d66cd831f1b83414f01d1cc8c295
+          - name: stages-04-05-risk-portfolio
+            sha: 8e607045e8e0d4b80c6ce229ef6a1a10f253c8d5
+          - name: stage-06-monitoring-audit
+            sha: 0c98fd7029215cb5906a40cb59d139f931ff353e
+          - name: stage-07-experimental-operations
+            sha: 2755cd30277673efde7c5783a989bda0012364f5
+          - name: stage-08-final-integration
+            sha: 70f24c9241863b2503ea66eaedd5a0b71a50feba
+          - name: stage-09-listing-identity
+            sha: a335ec1ddc6ef6dddb8eb5589b1776d0bd06639f
+          - name: stage-09-identity-bar-binding
+            sha: 08c47f8be4586ca2e70f6c1d0918a1bb842dcaad
+          - name: stage-09-sample-admission
+            sha: 2dacb39fedcd2a7016abeea0223de9d69e51652a
+          - name: stage-09-admission-hardening
+            sha: c99699af89062e6815de1ee2bcec62876a75b3cb
+          - name: stage-09-delisted-sample-evidence
+            sha: 12c1964a1e8620396fd5d5a58e46e5ae54ee4046
+          - name: stage-09-revision-row-validation
+            sha: fc0fa5f5271ad2bb107ffec53d81e60e53c992c9
+          - name: stage-09-corporate-action-coverage
+            sha: 9f1b80b356e6e4393f54049d4131a828d9a5c122
+          - name: stage-09-independent-reference-scope
+            sha: b1cd1938965beb4a063f349fd66e39ec2bafa2b6
+          - name: stage-09-license-scope-binding
+            sha: 628de75a017175f16271e7b4f6d9a65eb6aed74f
+          - name: stage-09-revision-listing-binding
+            sha: c93b223723b57f3001346b8c9ea03fcd693c34d8
+          - name: stage-09-exact-revision-scope
+            sha: 98c318fa4a419517a6f90b2d2af2c2af6fd4e76a
+          - name: stage-09-corporate-action-row-scope
+            sha: 4c1aeb2aa105534273cdf933fe7357f55460323e
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -293,6 +409,16 @@ jobs:
         run: |
           $patterns = @(
             "test_paper_trading_v1.py",
+            "test_stages_04_05.py",
+            "test_stages_06.py",
+            "test_stages_07.py",
+            "test_stages_08.py",
+            "test_stage09_provider_validation.py",
+            "test_stage09_history_validation.py",
+            "test_stage09_identity_validation.py",
+            "test_stage09_identity_bar_binding.py",
+            "test_stage09_sample_admission.py",
+            "test_stage06_import_boundary.py",
             "test_windows_paper_launcher.py",
             "test_windows_paper_readonly_launcher.py",
             "test_daily_backtest_v1.py",
@@ -450,3 +576,20 @@ jobs:
 
 # PR95 validates HMAC archive checkpoints on PR94; PR94 is the archive discovery/recovery control source.
 # Parallel immutable source matrix validates external HMAC checkpoints and its PR94 archive discovery/recovery control on both operating systems.
+# PR28 validates fail-closed stage-09 sample admission against exact private source SHA c99699a.
+# PR29 validates delisted price rows, machine-readable vendor evidence, and exact-source admission on both operating systems.
+# PR30 binds before/after revision snapshots to the submitted sample keys and rejects empty or unrelated snapshots.
+# PR31 requires complete sample-key coverage in both before and after revision snapshots.
+# PR32 validates each revision snapshot as complete OHLCV rows with matching ticker/venue identity.
+
+# Re-run both OS matrices after adding the corporate-action coverage Windows target.
+
+# Final exact-source run after refreshing independent-reference manifest hashes.
+
+# Final exact-source run after refreshing license-scope manifest hashes.
+
+# Re-run exact-source CI after correcting the fail-closed diagnostic assertion.
+
+# Final exact-source run after refreshing revision-listing manifest hashes.
+
+# PR39 validates iterator-safe Stage 09 sample admission against exact private source SHA 4c1aeb2aa105534273cdf933fe7357f55460323e.
