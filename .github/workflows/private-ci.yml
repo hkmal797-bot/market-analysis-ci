@@ -116,7 +116,7 @@ jobs:
           - name: stage-09-sample-admission
             sha: 2dacb39fedcd2a7016abeea0223de9d69e51652a
           - name: stage-09-admission-hardening
-            sha: 34de6b5cf813e1b27af1916eccc29e3742b69c3a
+            sha: c99699af89062e6815de1ee2bcec62876a75b3cb
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -241,7 +241,7 @@ jobs:
         working-directory: private-source
         shell: bash
         run: |
-          sha256sum src/ma_engine/sample_admission.py tests/test_stage09_sample_admission.py docs/eight_stage-roadmap/stage-09-provider-desk-research.md docs/eight_stage-roadmap/stage-09-provider-clarification-questionnaire.md docs/eight_stage-roadmap/stage-09-provider-evaluation-matrix.md docs/eight_stage-roadmap/stage-09-provider-due-diligence.md
+          sha256sum src/ma_engine/sample_admission.py tests/test_stage09_sample_admission.py docs/eight-stage-roadmap/stage-09-provider-desk-research.md docs/eight-stage-roadmap/stage-09-provider-clarification-questionnaire.md docs/eight-stage-roadmap/stage-09-provider-evaluation-matrix.md docs/eight-stage-roadmap/stage-09-provider-due-diligence.md docs/eight-stage-roadmap/stage-09-sample-admission.md docs/eight-stage-roadmap/stage-09-internal-readiness.md docs/eight-stage-roadmap/STAGE_09_ADMISSION_HARDENING_SHA256SUMS.txt
       - name: Run complete deterministic unit-test suite
         working-directory: private-source
         env:
@@ -316,7 +316,7 @@ jobs:
           - name: stage-09-sample-admission
             sha: 2dacb39fedcd2a7016abeea0223de9d69e51652a
           - name: stage-09-admission-hardening
-            sha: 34de6b5cf813e1b27af1916eccc29e3742b69c3a
+            sha: c99699af89062e6815de1ee2bcec62876a75b3cb
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -538,4 +538,4 @@ jobs:
 
 # PR95 validates HMAC archive checkpoints on PR94; PR94 is the archive discovery/recovery control source.
 # Parallel immutable source matrix validates external HMAC checkpoints and its PR94 archive discovery/recovery control on both operating systems.
-# PR28 validates fail-closed stage-09 sample admission against exact private source SHA 34de6b5.
+# PR28 validates fail-closed stage-09 sample admission against exact private source SHA c99699a.
