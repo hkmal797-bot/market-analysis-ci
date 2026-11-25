@@ -249,7 +249,7 @@ jobs:
         working-directory: private-source
         shell: bash
         run: |
-          sha256sum src/ma_engine/sample_admission.py tests/test_stage09_sample_admission.py docs/eight-stage-roadmap/stage-09-sample-admission.md docs/eight-stage-roadmap/stage-09-internal-readiness.md docs/eight-stage-roadmap/STAGE_09_DELISTED_SAMPLE_EVIDENCE_SHA256SUMS.txt docs/eight-stage-roadmap/stage-09-provider-evaluation-template.json
+          sha256sum src/ma_engine/sample_admission.py tests/test_stage09_sample_admission.py docs/eight-stage-roadmap/stage-09-sample-admission.md docs/eight-stage-roadmap/stage-09-internal-readiness.md docs/eight-stage-roadmap/STAGE_09_DELISTED_SAMPLE_EVIDENCE_SHA256SUMS.txt docs/eight_stage-roadmap/stage-09-provider-evaluation-template.json
       - name: Run complete deterministic unit-test suite
         working-directory: private-source
         env:
