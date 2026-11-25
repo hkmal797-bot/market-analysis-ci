@@ -279,6 +279,8 @@ jobs:
             sha: 2755cd30277673efde7c5783a989bda0012364f5
           - name: stage-08-final-integration
             sha: 70f24c9241863b2503ea66eaedd5a0b71a50feba
+          - name: stage-09-listing-identity
+            sha: a335ec1ddc6ef6dddb8eb5589b1776d0bd06639f
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
