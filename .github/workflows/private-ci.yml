@@ -105,6 +105,8 @@ jobs:
             sha: 8e607045e8e0d4b80c6ce229ef6a1a10f253c8d5
           - name: stage-06-monitoring-audit
             sha: 0c98fd7029215cb5906a40cb59d139f931ff353e
+          - name: stage-07-experimental-operations
+            sha: 324343bd1c455a85710e6fc2a5785503868e58fd
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -194,6 +196,12 @@ jobs:
         shell: bash
         run: |
           sha256sum src/ma_engine/__init__.py src/ma_engine/audit.py src/ma_engine/monitoring.py tests/test_stages_01_03.py tests/test_stages_06.py tests/test_stage06_import_boundary.py docs/eight_stage-roadmap/stage-06-monitoring-audit.md docs/eight_stage-roadmap/STAGE_06_SHA256SUMS.txt
+      - name: SHA-256 manifest for stage 07 source and tests
+        if: matrix.source.name == 'stage-07-experimental-operations'
+        working-directory: private-source
+        shell: bash
+        run: |
+          sha256sum src/ma_engine/__init__.py src/ma_engine/operations.py tests/test_stages_01_03.py tests/test_stage06_import_boundary.py tests/test_stages_07.py docs/eight_stage-roadmap/stage-07-experimental-operations.md
       - name: Run complete deterministic unit-test suite
         working-directory: private-source
         env:
@@ -257,6 +265,8 @@ jobs:
             sha: 8e607045e8e0d4b80c6ce229ef6a1a10f253c8d5
           - name: stage-06-monitoring-audit
             sha: 0c98fd7029215cb5906a40cb59d139f931ff353e
+          - name: stage-07-experimental-operations
+            sha: 324343bd1c455a85710e6fc2a5785503868e58fd
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -313,6 +323,7 @@ jobs:
             "test_paper_trading_v1.py",
             "test_stages_04_05.py",
             "test_stages_06.py",
+            "test_stages_07.py",
             "test_stage06_import_boundary.py",
             "test_windows_paper_launcher.py",
             "test_windows_paper_readonly_launcher.py",
