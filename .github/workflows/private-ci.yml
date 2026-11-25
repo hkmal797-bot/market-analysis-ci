@@ -212,6 +212,10 @@ jobs:
           print(f"UNIT_TESTS_FAILURES={failures.group(1) if failures else '0'}")
           print(f"UNIT_TESTS_ERRORS={errors.group(1) if errors else '0'}")
           print(f"UNIT_TESTS_SKIPPED={skipped.group(1) if skipped else '0'}")
+          if status != 0:
+              print("UNIT_TEST_FAILURE_DETAILS_BEGIN")
+              print(log)
+              print("UNIT_TEST_FAILURE_DETAILS_END")
           raise SystemExit(status)
           PY
       - name: Read-only Tigris raw-content probe (explicit validation PR only)
