@@ -135,6 +135,8 @@ jobs:
             sha: 4c1aeb2aa105534273cdf933fe7357f55460323e
           - name: final-main-quantitative-core
             sha: 3982158c16afe27fa0b29ac399b83bc7d5b3ef2c
+          - name: phase03-quantitative-core-completion
+            sha: 1d1d384ebe65c41af5b03bbffefe67d90ecd253d
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -359,6 +361,8 @@ jobs:
             sha: 4c1aeb2aa105534273cdf933fe7357f55460323e
           - name: final-main-quantitative-core
             sha: 3982158c16afe27fa0b29ac399b83bc7d5b3ef2c
+          - name: phase03-quantitative-core-completion
+            sha: 1d1d384ebe65c41af5b03bbffefe67d90ecd253d
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
