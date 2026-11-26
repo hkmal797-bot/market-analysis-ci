@@ -156,6 +156,7 @@ jobs:
           - name: research-command-center-v2
             sha: e642dc7716cfeb8bb700fe8357ca3ff27c2bc1fb
           # Explicit PR trigger for exact-source command-center validation.
+# Run dedicated Ubuntu and Windows jobs against the same immutable source SHA.
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
