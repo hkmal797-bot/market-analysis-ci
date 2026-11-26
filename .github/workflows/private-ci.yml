@@ -92,7 +92,7 @@ concurrency:
 jobs:
   unit-tests:
     name: Standard-library unit tests (Ubuntu) — ${{ matrix.source.name }}
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && !startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V2]') && !startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V3]'))
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && !startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V2]') && !startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V3]') && !startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V4]'))
     strategy:
       fail-fast: false
       matrix:
@@ -783,6 +783,72 @@ jobs:
         run: |
           $actual = git rev-parse HEAD
           if ($actual -ne "46d95ce7ed447d23224ac126cf55546e53e656a5") { throw "Private source SHA mismatch: $actual" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - name: Set up Python 3.13
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Run dashboard contract tests
+        working-directory: private-source
+        shell: pwsh
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests -p "test_research_command_center_ui_v1.py"
+
+  command-center-v4-ubuntu:
+    name: Command center V4 — Ubuntu full suite
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V4]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact private source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: c1359b7f83af06c6b0d6d69eacdfaa3766d1310a
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source SHA
+        working-directory: private-source
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "c1359b7f83af06c6b0d6d69eacdfaa3766d1310a"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - name: Set up Python 3.13
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Run complete deterministic unit-test suite
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests
+
+  command-center-v4-windows:
+    name: Command center V4 — Windows focused suite
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V4]')
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact private source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: c1359b7f83af06c6b0d6d69eacdfaa3766d1310a
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source SHA
+        working-directory: private-source
+        shell: pwsh
+        run: |
+          $actual = git rev-parse HEAD
+          if ($actual -ne "c1359b7f83af06c6b0d6d69eacdfaa3766d1310a") { throw "Private source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
