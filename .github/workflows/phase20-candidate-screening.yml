@@ -17,7 +17,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 1b982290332261c8af78fe8b5f366b1a729cfe5b
+          ref: 88e651ade9099f1905ec97061d5a3b505f21f51d
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
