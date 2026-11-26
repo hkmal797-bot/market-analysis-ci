@@ -1,1 +1,1 @@
-Trigger exact-source validation for corrected market-analysis-system commit 48da57570bc93d4edf71d08d36025a954e5ba3cc. Keep this trigger PR open until both Ubuntu and Windows jobs complete.
+Trigger exact-source validation for corrected market-analysis-system commit 2a4cc3f8fc289a0712073b2d9614f32ff387bd69. Keep this trigger PR open until both Ubuntu and Windows jobs complete.
