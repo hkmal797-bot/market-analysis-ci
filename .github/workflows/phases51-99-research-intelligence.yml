@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: phases51-99-research-intelligence-95e24a2c084a30dab70d11c2d01bb54e319601b4
+  group: phases51-99-research-intelligence-4d7f6d3f65f5faae8444e201aec653031115cb9e
   cancel-in-progress: false
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 95e24a2c084a30dab70d11c2d01bb54e319601b4
+          ref: 4d7f6d3f65f5faae8444e201aec653031115cb9e
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -38,7 +38,7 @@ jobs:
         shell: bash
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "95e24a2c084a30dab70d11c2d01bb54e319601b4"
+          test "$actual" = "4d7f6d3f65f5faae8444e201aec653031115cb9e"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
@@ -67,7 +67,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 95e24a2c084a30dab70d11c2d01bb54e319601b4
+          ref: 4d7f6d3f65f5faae8444e201aec653031115cb9e
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -77,7 +77,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
-          if ($actual -ne "95e24a2c084a30dab70d11c2d01bb54e319601b4") { throw "PRIVATE_SOURCE_SHA_MISMATCH" }
+          if ($actual -ne "4d7f6d3f65f5faae8444e201aec653031115cb9e") { throw "PRIVATE_SOURCE_SHA_MISMATCH" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
@@ -101,4 +101,4 @@ jobs:
           python -m unittest discover -s tests -p "test_stages_01_03.py" -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-# Exact-source validation target: 95e24a2c084a30dab70d11c2d01bb54e319601b4.
+# Exact-source validation target: 4d7f6d3f65f5faae8444e201aec653031115cb9e.
