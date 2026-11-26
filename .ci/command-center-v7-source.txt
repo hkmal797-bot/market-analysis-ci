@@ -1,0 +1,2 @@
+Exact private source commit under test: 4473ccdc07d1c5648234ffc28272f4fc6c7e0d6e
+Scope: Research Command Center V4 local-runtime launcher guide
