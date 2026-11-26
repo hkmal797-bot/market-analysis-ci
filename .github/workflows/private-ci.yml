@@ -92,7 +92,7 @@ concurrency:
 jobs:
   unit-tests:
     name: Standard-library unit tests (Ubuntu) — ${{ matrix.source.name }}
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && (!startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V2]') || matrix.source.sha == 'e642dc7716cfeb8bb700fe8357ca3ff27c2bc1fb'))
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && !startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V2]'))
     strategy:
       fail-fast: false
       matrix:
@@ -355,7 +355,7 @@ jobs:
 
   windows-paper-safety:
     name: Windows Paper safety and adaptive-cycle tests — ${{ matrix.source.name }}
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && (!startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V2]') || matrix.source.sha == 'e642dc7716cfeb8bb700fe8357ca3ff27c2bc1fb'))
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && !startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V2]'))
     strategy:
       fail-fast: false
       matrix:
@@ -662,3 +662,70 @@ jobs:
 # Final exact-source run after refreshing revision-listing manifest hashes.
 
 # PR39 validates iterator-safe Stage 09 sample admission against exact private source SHA 4c1aeb2aa105534273cdf933fe7357f55460323e.
+
+
+  command-center-v2-ubuntu:
+    name: Command center V2 — Ubuntu full suite
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V2]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact private source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: e642dc7716cfeb8bb700fe8357ca3ff27c2bc1fb
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source SHA
+        working-directory: private-source
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "e642dc7716cfeb8bb700fe8357ca3ff27c2bc1fb"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - name: Set up Python 3.13
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Run complete deterministic unit-test suite
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests
+
+  command-center-v2-windows:
+    name: Command center V2 — Windows focused suite
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V2]')
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact private source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: e642dc7716cfeb8bb700fe8357ca3ff27c2bc1fb
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source SHA
+        working-directory: private-source
+        shell: pwsh
+        run: |
+          $actual = git rev-parse HEAD
+          if ($actual -ne "e642dc7716cfeb8bb700fe8357ca3ff27c2bc1fb") { throw "Private source SHA mismatch: $actual" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - name: Set up Python 3.13
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Run command center and observatory tests
+        working-directory: private-source
+        shell: pwsh
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests -p "test_research_observatory_v1.py"
