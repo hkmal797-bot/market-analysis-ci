@@ -38,7 +38,7 @@ jobs:
         run: python -m unittest discover -s tests -v
       - name: SHA manifest
         working-directory: private-source
-        run: sha256sum src/ma_engine/runtime.py src/ma_engine/portfolio_backtest.py src/ma_engine/portfolio_stress.py src/ma_engine/portfolio_walk_forward.py src/ma_engine/portfolio_path_stress.py tests/test_portfolio_backtest_v1.py tests/test_portfolio_stress_v1.py tests/test_portfolio_walk_forward_v1.py","test_portfolio_path_stress_v1.py tests/test_stage06_import_boundary.py tests/test_stages_01_03.py
+        run: sha256sum src/ma_engine/runtime.py src/ma_engine/portfolio_backtest.py src/ma_engine/portfolio_stress.py src/ma_engine/portfolio_walk_forward.py src/ma_engine/portfolio_path_stress.py tests/test_portfolio_backtest_v1.py tests/test_portfolio_stress_v1.py tests/test_portfolio_walk_forward_v1.py tests/test_portfolio_path_stress_v1.py tests/test_stage06_import_boundary.py tests/test_stages_01_03.py
 
   windows:
     runs-on: windows-latest
