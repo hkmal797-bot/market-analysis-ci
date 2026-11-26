@@ -1,10 +1,10 @@
-name: Consolidated Phases 38-40 exact-source validation
+name: Phases 41-50 final exact-source validation
 
 on:
   push:
     branches: [main]
     paths:
-      - .github/workflows/phase38-40-portfolio-campaign.yml
+      - .github/workflows/phase41-50-final-exact-source.yml
   pull_request:
     branches: [main]
   workflow_dispatch:
@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: phase38-40-portfolio-campaign-8cdecfcc80c729ec06fcd0aee6974f1a25937bfa
+  group: phase41-50-final-exact-source-0e37e7c5a8544b423b8276465604cf8b987df4ab
   cancel-in-progress: false
 
 jobs:
@@ -28,7 +28,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 8cdecfcc80c729ec06fcd0aee6974f1a25937bfa
+          ref: 0e37e7c5a8544b423b8276465604cf8b987df4ab
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -38,7 +38,7 @@ jobs:
         shell: bash
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "8cdecfcc80c729ec06fcd0aee6974f1a25937bfa"
+          test "$actual" = "0e37e7c5a8544b423b8276465604cf8b987df4ab"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
@@ -50,11 +50,11 @@ jobs:
           PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
         run: python -m unittest discover -s tests -v
-      - name: Fingerprint consolidated campaign source
+      - name: Fingerprint paper supervisor source
         working-directory: private-source
         shell: bash
         run: |
-          sha256sum src/ma_engine/portfolio_research_campaign.py src/ma_engine/portfolio_decision.py src/ma_engine/runtime.py src/ma_engine/__init__.py tests/test_portfolio_research_campaign_v1.py tests/test_stage06_import_boundary.py tests/test_stages_01_03.py docs/architecture/PHASE38_40_PORTFOLIO_RESEARCH_CAMPAIGN_V1.md
+          sha256sum src/ma_engine/paper_supervisor.py src/ma_engine/operations.py src/ma_engine/risk.py src/ma_engine/monitoring.py src/ma_engine/portfolio_research_campaign.py src/ma_engine/__init__.py tests/test_paper_supervisor_v1.py tests/test_stage06_import_boundary.py tests/test_stages_01_03.py docs/architecture/PHASE41_50_PAPER_SUPERVISOR_V1.md
 
   windows-portfolio-suite:
     name: Windows — portfolio suites and import safety
@@ -67,7 +67,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 8cdecfcc80c729ec06fcd0aee6974f1a25937bfa
+          ref: 0e37e7c5a8544b423b8276465604cf8b987df4ab
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -77,19 +77,21 @@ jobs:
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
-          if ($actual -ne "8cdecfcc80c729ec06fcd0aee6974f1a25937bfa") { throw "PRIVATE_SOURCE_SHA_MISMATCH" }
+          if ($actual -ne "0e37e7c5a8544b423b8276465604cf8b987df4ab") { throw "PRIVATE_SOURCE_SHA_MISMATCH" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.13"
-      - name: Run portfolio and import-boundary suites
+      - name: Run paper supervisor, portfolio and import-boundary suites
         working-directory: private-source
         env:
           PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
         shell: pwsh
         run: |
+          python -m unittest discover -s tests -p "test_paper_supervisor_v1.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_portfolio_*v1.py" -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_stage06_import_boundary.py" -v
