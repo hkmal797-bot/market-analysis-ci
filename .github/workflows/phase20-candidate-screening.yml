@@ -17,14 +17,14 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: fdaeba09722e093589e23f97f0d6c8ac0786b07b
+          ref: 093888edf657dfd7c7a07ed9f94d8d7c1641c248
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
           fetch-depth: 1
       - name: Verify pinned source
         working-directory: private-source
-        run: test "$(git rev-parse HEAD)" = "fdaeba09722e093589e23f97f0d6c8ac0786b07b"
+        run: test "$(git rev-parse HEAD)" = "093888edf657dfd7c7a07ed9f94d8d7c1641c248"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.13"
@@ -46,7 +46,7 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: fdaeba09722e093589e23f97f0d6c8ac0786b07b
+          ref: 093888edf657dfd7c7a07ed9f94d8d7c1641c248
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -55,7 +55,7 @@ jobs:
         working-directory: private-source
         shell: pwsh
         run: |
-          if ((git rev-parse HEAD).Trim() -ne "fdaeba09722e093589e23f97f0d6c8ac0786b07b") { throw "SOURCE_SHA_MISMATCH" }
+          if ((git rev-parse HEAD).Trim() -ne "093888edf657dfd7c7a07ed9f94d8d7c1641c248") { throw "SOURCE_SHA_MISMATCH" }
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
         with:
           python-version: "3.13"
