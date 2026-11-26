@@ -98,3 +98,5 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_stages_01_03.py" -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+# Exact-source validation refresh: 0e37e7c5a8544b423b8276465604cf8b987df4ab.
