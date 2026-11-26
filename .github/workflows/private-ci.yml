@@ -92,7 +92,7 @@ concurrency:
 jobs:
   unit-tests:
     name: Standard-library unit tests (Ubuntu) — ${{ matrix.source.name }}
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && (!startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V2]') || matrix.source.sha == 'e642dc7716cfeb8bb700fe8357ca3ff27c2bc1fb'))
     strategy:
       fail-fast: false
       matrix:
@@ -153,6 +153,8 @@ jobs:
             sha: 13d5b0cbcbf4356df29298586644c6aba67e47c2
           - name: research-observatory-v1
             sha: 2ee0f14e2fe14a906672d909f5346ad608d073cd
+          - name: research-command-center-v2
+            sha: e642dc7716cfeb8bb700fe8357ca3ff27c2bc1fb
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -352,7 +354,7 @@ jobs:
 
   windows-paper-safety:
     name: Windows Paper safety and adaptive-cycle tests — ${{ matrix.source.name }}
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci')
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && (!startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V2]') || matrix.source.sha == 'e642dc7716cfeb8bb700fe8357ca3ff27c2bc1fb'))
     strategy:
       fail-fast: false
       matrix:
@@ -413,6 +415,8 @@ jobs:
             sha: 13d5b0cbcbf4356df29298586644c6aba67e47c2
           - name: research-observatory-v1
             sha: 2ee0f14e2fe14a906672d909f5346ad608d073cd
+          - name: research-command-center-v2
+            sha: e642dc7716cfeb8bb700fe8357ca3ff27c2bc1fb
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
