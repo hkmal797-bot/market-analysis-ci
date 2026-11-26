@@ -3,6 +3,8 @@ name: Phase 21 candidate arbitration exact-source cross-platform validation
 on:
   push:
     branches: [main]
+    paths:
+      - .github/workflows/phase21-candidate-arbitration.yml
   workflow_dispatch:
 
 permissions:
