@@ -3,8 +3,6 @@ name: Phase 18 Signal Generation exact-source cross-platform validation
 on:
   push:
     branches: [main]
-    paths:
-      - .github/workflows/phase-18-signal-generation.yml
   workflow_dispatch:
 
 permissions:
