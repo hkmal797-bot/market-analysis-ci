@@ -1,0 +1,1 @@
+Synchronize trigger to ensure the dedicated adaptive-intelligence workflow starts.
