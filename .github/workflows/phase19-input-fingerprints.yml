@@ -78,5 +78,5 @@ jobs:
         working-directory: private-source
         shell: pwsh
         run: |
-          $files = @('src/ma_engine/*.py','tests/test_offline_research_cycle_v1.py','tests/test_stage06_import_boundary.py')
+          $files = @(Get-ChildItem -Path src/ma_engine -Filter *.py -File | Select-Object -ExpandProperty FullName) + @('tests/test_offline_research_cycle_v1.py','tests/test_stage06_import_boundary.py')
           Get-FileHash -Algorithm SHA256 -LiteralPath $files
