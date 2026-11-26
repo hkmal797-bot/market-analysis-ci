@@ -5,6 +5,8 @@ on:
     branches: [main]
     paths:
       - .github/workflows/phase38-40-portfolio-campaign.yml
+  pull_request:
+    branches: [main]
   workflow_dispatch:
 
 permissions:
