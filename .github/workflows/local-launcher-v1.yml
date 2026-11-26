@@ -1,4 +1,4 @@
-name: Local runtime integration V2 exact-source validation
+name: Local research memory V1 exact-source validation
 
 on:
   pull_request:
@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 6a860b37e46c939067d57761eab42a7f6a5a3a3b
+          ref: 8fbb69e5a82189576fb667bda3cd568e196dda38
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -27,8 +27,8 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "6a860b37e46c939067d57761eab42a7f6a5a3a3b"
-          echo "LOCAL_RUNTIME_V2_SOURCE_SHA_VERIFIED=$actual"
+          test "$actual" = "8fbb69e5a82189576fb667bda3cd568e196dda38"
+          echo "LOCAL_RESEARCH_MEMORY_V1_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -39,7 +39,7 @@ jobs:
           PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
-          python -m py_compile tools/launch_local.py tools/local_server.py
+          python -m py_compile tools/local_persistence.py tools/launch_local.py tools/local_server.py
           python -m unittest discover -s tests
 
   windows-launcher-contract:
@@ -51,7 +51,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 6a860b37e46c939067d57761eab42a7f6a5a3a3b
+          ref: 8fbb69e5a82189576fb667bda3cd568e196dda38
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -61,8 +61,8 @@ jobs:
         shell: pwsh
         run: |
           $actual = git rev-parse HEAD
-          if ($actual -ne "6a860b37e46c939067d57761eab42a7f6a5a3a3b") { throw "Private source SHA mismatch: $actual" }
-          Write-Output "LOCAL_RUNTIME_V2_SOURCE_SHA_VERIFIED=$actual"
+          if ($actual -ne "8fbb69e5a82189576fb667bda3cd568e196dda38") { throw "Research memory source SHA mismatch: $actual" }
+          Write-Output "LOCAL_RESEARCH_MEMORY_V1_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -74,6 +74,7 @@ jobs:
           PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
-          python -m py_compile tools/launch_local.py tools/local_server.py
+          python -m py_compile tools/local_persistence.py tools/launch_local.py tools/local_server.py
           python -m unittest discover -s tests -p "test_local_launcher_v1.py"
           python -m unittest discover -s tests -p "test_local_runtime_status_v2.py"
+          python -m unittest discover -s tests -p "test_persistent_audit_v1.py"
