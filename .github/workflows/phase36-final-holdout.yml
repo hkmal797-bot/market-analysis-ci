@@ -1,0 +1,96 @@
+name: Phase 36 exact-source validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - .github/workflows/phase36-final-holdout.yml
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: phase36-final-holdout-${{ github.sha }}
+  cancel-in-progress: false
+
+jobs:
+  ubuntu-full-suite:
+    name: Ubuntu — exact-source full unit suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout CI controller
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Checkout exact private source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: e880dc2bf96d1fa8be5310a272832ab54f915cd7
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source SHA
+        working-directory: private-source
+        shell: bash
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "e880dc2bf96d1fa8be5310a272832ab54f915cd7"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - name: Set up Python 3.13
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+      - name: Run complete deterministic test suite
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests -v
+      - name: Fingerprint Phase 36 exact source
+        working-directory: private-source
+        shell: bash
+        run: |
+          sha256sum src/ma_engine/portfolio_final_holdout.py src/ma_engine/runtime.py src/ma_engine/__init__.py tests/test_portfolio_final_holdout_v1.py docs/architecture/PHASE36_PORTFOLIO_FINAL_HOLDOUT_V1.md
+
+  windows-portfolio-suite:
+    name: Windows — portfolio research and safety
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout CI controller
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+      - name: Checkout exact private source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: e880dc2bf96d1fa8be5310a272832ab54f915cd7
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source SHA
+        working-directory: private-source
+        shell: pwsh
+        run: |
+          $actual = (git rev-parse HEAD).Trim()
+          if ($actual -ne "e880dc2bf96d1fa8be5310a272832ab54f915cd7") { throw "PRIVATE_SOURCE_SHA_MISMATCH" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - name: Set up Python 3.13
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0 # v7.1.0
+        with:
+          python-version: "3.13"
+      - name: Run portfolio final holdout and regression tests
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        shell: pwsh
+        run: |
+          python -m unittest discover -s tests -p "test_portfolio_*v1.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest tests.test_stage06_import_boundary -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
