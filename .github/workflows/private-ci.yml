@@ -151,6 +151,8 @@ jobs:
             sha: 6289df4a75090c8fc273fe8d625105c11572f85c
           - name: phase09-control-center-semi-automation
             sha: 13d5b0cbcbf4356df29298586644c6aba67e47c2
+          - name: research-observatory-v1
+            sha: 2ee0f14e2fe14a906672d909f5346ad608d073cd
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
@@ -409,6 +411,8 @@ jobs:
             sha: 6289df4a75090c8fc273fe8d625105c11572f85c
           - name: phase09-control-center-semi-automation
             sha: 13d5b0cbcbf4356df29298586644c6aba67e47c2
+          - name: research-observatory-v1
+            sha: 2ee0f14e2fe14a906672d909f5346ad608d073cd
     runs-on: windows-latest
     timeout-minutes: 20
     steps:
@@ -478,6 +482,7 @@ jobs:
             "test_stage09_identity_bar_binding.py",
             "test_stage09_sample_admission.py",
             "test_stage06_import_boundary.py",
+            "test_research_observatory_v1.py",
             "test_windows_paper_launcher.py",
             "test_windows_paper_readonly_launcher.py",
             "test_daily_backtest_v1.py",
