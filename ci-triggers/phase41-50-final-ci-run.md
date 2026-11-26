@@ -1,1 +1,2 @@
 Trigger exact-source validation against private source SHA 0e37e7c5a8544b423b8276465604cf8b987df4ab. Keep PR open until all jobs complete.
+Re-trigger final validation after the workflow was retargeted to the exact final SHA.
