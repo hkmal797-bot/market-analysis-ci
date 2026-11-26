@@ -155,6 +155,7 @@ jobs:
             sha: 2ee0f14e2fe14a906672d909f5346ad608d073cd
           - name: research-command-center-v2
             sha: e642dc7716cfeb8bb700fe8357ca3ff27c2bc1fb
+          # Explicit PR trigger for exact-source command-center validation.
     runs-on: ubuntu-latest
     timeout-minutes: 15
     steps:
