@@ -1,0 +1,2 @@
+Exact MarketAnalysis_AI source commit: 4473ccdc07d1c5648234ffc28272f4fc6c7e0d6e
+Validation scope: Ubuntu full suite and Windows dashboard contract tests.
