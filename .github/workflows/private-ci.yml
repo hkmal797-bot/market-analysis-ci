@@ -1223,6 +1223,8 @@ jobs:
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
           python-version: "3.13"
+      - name: Install existing test dependency
+        run: python -m pip install cryptography
       - name: Compile V22 implementation and run full suite
         working-directory: private-source
         env:
