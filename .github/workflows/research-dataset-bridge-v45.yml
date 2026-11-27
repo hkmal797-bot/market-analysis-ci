@@ -13,7 +13,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: marketanalysis-v45-70b2c6ad9df67d5116010cc17094fbe77e205987
+  group: marketanalysis-v45-df805f169a439b5b3399c52b53c6076c2040f66e
   cancel-in-progress: false
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 70b2c6ad9df67d5116010cc17094fbe77e205987
+          ref: df805f169a439b5b3399c52b53c6076c2040f66e
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -35,7 +35,7 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "70b2c6ad9df67d5116010cc17094fbe77e205987"
+          test "$actual" = "df805f169a439b5b3399c52b53c6076c2040f66e"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
@@ -72,7 +72,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 70b2c6ad9df67d5116010cc17094fbe77e205987
+          ref: df805f169a439b5b3399c52b53c6076c2040f66e
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -82,7 +82,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
-          if ($actual -ne "70b2c6ad9df67d5116010cc17094fbe77e205987") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "df805f169a439b5b3399c52b53c6076c2040f66e") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
@@ -101,4 +101,4 @@ jobs:
           python -m unittest discover -s tests -p "test_research_mission_control_v32.py" -v
           python -m unittest discover -s tests -p "test_research_preparation_v33.py" -v
 
-# Exact immutable MarketAnalysis_AI source: 70b2c6ad9df67d5116010cc17094fbe77e205987
+# Exact immutable MarketAnalysis_AI source: df805f169a439b5b3399c52b53c6076c2040f66e
