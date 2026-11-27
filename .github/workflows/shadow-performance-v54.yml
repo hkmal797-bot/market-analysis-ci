@@ -113,3 +113,5 @@ jobs:
           python -m unittest discover -s tests -p "test_local_launcher_v1.py" -v
 
 # Exact immutable MarketAnalysis_AI source: 55c07f08160fde9161ad38d258da44e4c411ddae
+
+# Re-trigger exact-source validation after the workflow was installed on main.
