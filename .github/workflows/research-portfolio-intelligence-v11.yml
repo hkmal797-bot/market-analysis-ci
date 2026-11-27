@@ -1,5 +1,5 @@
 name: Research Portfolio Intelligence V11 exact-source validation
-run-name: Research Portfolio Intelligence V11 exact-source validation
+run-name: Research Portfolio Intelligence V11 exact-source validation (rerun trigger)
 
 on:
   pull_request:
