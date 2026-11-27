@@ -1,0 +1,98 @@
+name: MarketAnalysis_AI V44 unified workspace validation
+
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/unified-workspace-v44.yml"]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: marketanalysis-v44-f6fc253ad6e8e02cfa267ca51daf8275a8bb0b50
+  cancel-in-progress: false
+
+jobs:
+  ubuntu-full-suite:
+    name: V44 — Ubuntu full deterministic suite
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: f6fc253ad6e8e02cfa267ca51daf8275a8bb0b50
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source SHA
+        working-directory: private-source
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "f6fc253ad6e8e02cfa267ca51daf8275a8bb0b50"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - name: Set up Python 3.13
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install pinned test runtime dependencies
+        run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
+      - name: Validate navigation HTML and run full deterministic suite
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          class Checker(HTMLParser):
+              pass
+          for name in ("index.html", "strategy-library.html", "research-intelligence.html", "system-center.html"):
+              page = Path("apps/research-command-center") / name
+              Checker().feed(page.read_text(encoding="utf-8"))
+              print(f"HTML_STRUCTURE_OK={name}")
+          PY
+          python -m unittest discover -s tests
+
+  windows-navigation-contracts:
+    name: V44 — Windows navigation and System Center contracts
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: f6fc253ad6e8e02cfa267ca51daf8275a8bb0b50
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source SHA
+        working-directory: private-source
+        shell: pwsh
+        run: |
+          $actual = (git rev-parse HEAD).Trim()
+          if ($actual -ne "f6fc253ad6e8e02cfa267ca51daf8275a8bb0b50") { throw "Source SHA mismatch: $actual" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - name: Set up Python 3.13
+        uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install pinned test runtime dependencies
+        run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
+      - name: Run Windows navigation and System Center contracts
+        working-directory: private-source
+        shell: pwsh
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m unittest discover -s tests -p "test_unified_command_center_shell_v17.py" -v
+          python -m unittest discover -s tests -p "test_system_center_v20.py" -v
+
+# Exact immutable MarketAnalysis_AI source: f6fc253ad6e8e02cfa267ca51daf8275a8bb0b50
