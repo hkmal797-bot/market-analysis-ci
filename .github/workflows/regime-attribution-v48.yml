@@ -1,0 +1,97 @@
+name: MarketAnalysis_AI V48 regime attribution exact-source validation
+
+on:
+  push:
+    branches: [main, feature/regime-attribution-v48-ci]
+    paths: [".github/workflows/regime-attribution-v48.yml"]
+  pull_request:
+    branches: [main]
+    paths: [".github/workflows/regime-attribution-v48.yml"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: marketanalysis-v48-e365100d97bb16eb3f40a58c85ce1060d484661a
+  cancel-in-progress: false
+
+jobs:
+  ubuntu-full-suite:
+    name: V48 — Ubuntu full deterministic suite
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/regime-attribution-v48-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V48]'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: e365100d97bb16eb3f40a58c85ce1060d484661a
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify immutable source SHA
+        working-directory: private-source
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "e365100d97bb16eb3f40a58c85ce1060d484661a"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install pinned runtime dependencies
+        run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
+      - name: Compile V48 implementation
+        working-directory: private-source
+        run: python -m py_compile tools/regime_attribution_v48.py tools/strategy_evaluation.py tools/local_server.py
+      - name: Run full deterministic suite
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests
+
+  windows-strategy-contracts:
+    name: V48 — Windows strategy and archive contracts
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/regime-attribution-v48-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V48]'))
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: e365100d97bb16eb3f40a58c85ce1060d484661a
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify immutable source SHA
+        working-directory: private-source
+        shell: pwsh
+        run: |
+          $actual = (git rev-parse HEAD).Trim()
+          if ($actual -ne "e365100d97bb16eb3f40a58c85ce1060d484661a") { throw "Source SHA mismatch: $actual" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install pinned runtime dependencies
+        run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
+      - name: Compile V48 implementation
+        working-directory: private-source
+        run: python -m py_compile tools/regime_attribution_v48.py tools/strategy_evaluation.py
+      - name: Run strategy evaluation and regime attribution contracts
+        working-directory: private-source
+        shell: pwsh
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m unittest discover -s tests -p "test_regime_attribution_v48.py" -v
+          python -m unittest discover -s tests -p "test_strategy_evaluation_v6.py" -v
+          python -m unittest discover -s tests -p "test_strategy_evaluation_v9.py" -v
+          python -m unittest discover -s tests -p "test_strategy_evaluation_governance_v10.py" -v
+
+# Exact immutable MarketAnalysis_AI source: e365100d97bb16eb3f40a58c85ce1060d484661a
