@@ -103,3 +103,5 @@ jobs:
         run: python -m unittest discover -s tests -p "test_research_review_queue_v13.py"
 
 # Exact-source V13 workflow activation.
+
+# Validate final integrity hardening.
