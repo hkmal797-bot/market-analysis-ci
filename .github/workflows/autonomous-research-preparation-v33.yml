@@ -83,3 +83,5 @@ jobs:
           python -m unittest discover -s tests -p "test_local_runtime_status_v2.py"
           python -m unittest discover -s tests -p "test_market_data_intake_v1.py"
           python -m unittest discover -s tests -p "test_market_data_intake_http_v1.py"
+
+# Trigger exact pinned-source validation after installing the Windows crypto dependency.
