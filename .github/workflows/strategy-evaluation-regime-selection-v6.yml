@@ -1,0 +1,105 @@
+name: Strategy Evaluation Regime Selection V6 exact-source validation
+run-name: Strategy Evaluation Regime Selection V6 exact-source validation
+
+on:
+  push:
+    branches: [main, feature/strategy-evaluation-regime-selection-v6]
+    paths:
+      - ".github/workflows/strategy-evaluation-regime-selection-v6.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/strategy-evaluation-regime-selection-v6.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  ubuntu-full-suite:
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/strategy-evaluation-regime-selection-v6')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_STRATEGY_EVALUATION_V6]'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: b8f13e6305a5027aaf90cec462c2858fc95eb5f2
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source commit
+        working-directory: source
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "b8f13e6305a5027aaf90cec462c2858fc95eb5f2"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Compile V6 implementation
+        working-directory: source
+        run: python -m py_compile tools/strategy_evaluation.py tools/local_server.py tools/research_archive.py src/ma_engine/regime.py src/ma_engine/regime_research.py src/ma_engine/walk_forward.py src/ma_engine/final_holdout.py
+      - name: Validate dashboard markup and inline JavaScript
+        working-directory: source
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          class Checker(HTMLParser):
+              def error(self, message):
+                  raise RuntimeError(message)
+          path = Path("apps/research-command-center/index.html")
+          source = path.read_text(encoding="utf-8")
+          Checker().feed(source)
+          scripts = []
+          import re
+          for match in re.finditer(r"<script[^>]*>(.*?)</script>", source, re.S | re.I):
+              scripts.append(match.group(1))
+          if not scripts:
+              raise SystemExit("No inline dashboard script found")
+          Path("/tmp/marketanalysis-dashboard.js").write_text("\n".join(scripts), encoding="utf-8")
+          PY
+          node --check /tmp/marketanalysis-dashboard.js
+      - name: Run complete unit and integration suite
+        working-directory: source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests
+
+  windows-contracts:
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/strategy-evaluation-regime-selection-v6')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_STRATEGY_EVALUATION_V6]'))
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: b8f13e6305a5027aaf90cec462c2858fc95eb5f2
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source commit
+        working-directory: source
+        shell: pwsh
+        run: |
+          $actual = git rev-parse HEAD
+          if ($actual -ne "b8f13e6305a5027aaf90cec462c2858fc95eb5f2") { throw "Source SHA mismatch: $actual" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Compile V6 implementation
+        working-directory: source
+        run: python -m py_compile tools/strategy_evaluation.py tools/local_server.py tools/research_archive.py
+      - name: Run V6 strategy evaluation and local archive/API contracts
+        working-directory: source
+        shell: pwsh
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests -p "test_strategy_evaluation_v6.py"
