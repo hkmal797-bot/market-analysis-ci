@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: alpaca-paper-v43-7b07537cf0d1266c4fd6bd255241a18b385effa0
+  group: alpaca-paper-v43-5f68a6f7b2d4faa363510ab20ce15a2e46d32e19
   cancel-in-progress: false
 
 jobs:
@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 7b07537cf0d1266c4fd6bd255241a18b385effa0
+          ref: 5f68a6f7b2d4faa363510ab20ce15a2e46d32e19
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -34,7 +34,7 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "7b07537cf0d1266c4fd6bd255241a18b385effa0"
+          test "$actual" = "5f68a6f7b2d4faa363510ab20ce15a2e46d32e19"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
@@ -60,7 +60,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 7b07537cf0d1266c4fd6bd255241a18b385effa0
+          ref: 5f68a6f7b2d4faa363510ab20ce15a2e46d32e19
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -70,7 +70,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = git rev-parse HEAD
-          if ($actual -ne "7b07537cf0d1266c4fd6bd255241a18b385effa0") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "5f68a6f7b2d4faa363510ab20ce15a2e46d32e19") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
