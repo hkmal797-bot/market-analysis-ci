@@ -1,4 +1,4 @@
-name: Unified Workspace V18 exact-source validation
+name: Unified Workspace V18 exact-source validation · PR trigger
 run-name: Unified Workspace V18 exact-source validation
 
 on:
@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 91c75a2efcb8dc9f93a661fba71eda459f9b3334
+          ref: 56a2a351ea7e4ab78f5e924e675a4eedac163125
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: source
           persist-credentials: false
@@ -30,7 +30,7 @@ jobs:
         working-directory: source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "91c75a2efcb8dc9f93a661fba71eda459f9b3334"
+          test "$actual" = "56a2a351ea7e4ab78f5e924e675a4eedac163125"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 91c75a2efcb8dc9f93a661fba71eda459f9b3334
+          ref: 56a2a351ea7e4ab78f5e924e675a4eedac163125
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: source
           persist-credentials: false
@@ -85,7 +85,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
-          if ($actual -ne "91c75a2efcb8dc9f93a661fba71eda459f9b3334") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "56a2a351ea7e4ab78f5e924e675a4eedac163125") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -100,4 +100,4 @@ jobs:
           PYTHONDONTWRITEBYTECODE: "1"
         run: python -m unittest discover -s tests -p "test_unified_workspace_v18.py" -v
 
-# Exact source pin: 91c75a2efcb8dc9f93a661fba71eda459f9b3334
+# Exact source pin: 56a2a351ea7e4ab78f5e924e675a4eedac163125
