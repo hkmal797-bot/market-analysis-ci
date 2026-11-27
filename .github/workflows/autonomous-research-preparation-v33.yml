@@ -87,3 +87,5 @@ jobs:
 # Trigger exact pinned-source validation after installing the Windows crypto dependency.
 
 # Revalidate the V33 dashboard auto-scan contract at the latest exact source SHA.
+
+# Trigger latest exact-source validation including dashboard auto-scan coverage.
