@@ -1,4 +1,5 @@
 name: MarketAnalysis_AI V45 admitted research dataset bridge
+# Validation target: MarketAnalysis_AI source SHA 20eb88fd4d61adccf1e3e8a113f00f11ead1088d
 
 on:
   push:
