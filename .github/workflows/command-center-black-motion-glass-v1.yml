@@ -1,4 +1,5 @@
 name: Command Center Black Motion Glass V1 exact-source validation
+run-name: Black Motion Glass exact-source validation
 
 on:
   push:
