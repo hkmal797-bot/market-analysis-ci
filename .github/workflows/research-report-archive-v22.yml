@@ -1,0 +1,75 @@
+name: Research Report Archive V22 exact-source validation
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  ubuntu-full-suite:
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_RESEARCH_REPORT_ARCHIVE_V22]'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout exact private source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 7c92cec50a1cfe17b56cfd5814e8db9b64ccb590
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source SHA
+        working-directory: private-source
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "7c92cec50a1cfe17b56cfd5814e8db9b64ccb590"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Compile and run complete deterministic suite
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m py_compile tools/research_report_archive_v22.py tools/local_server.py
+          python -m unittest discover -s tests
+
+  windows-contracts:
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_RESEARCH_REPORT_ARCHIVE_V22]'))
+    runs-on: windows-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact private source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 7c92cec50a1cfe17b56cfd5814e8db9b64ccb590
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source SHA
+        working-directory: private-source
+        shell: pwsh
+        run: |
+          $actual = git rev-parse HEAD
+          if ($actual -ne "7c92cec50a1cfe17b56cfd5814e8db9b64ccb590") { throw "Source SHA mismatch: $actual" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Run Windows report archive and dashboard contracts
+        working-directory: private-source
+        shell: pwsh
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m unittest discover -s tests -p "test_research_report_archive_v22.py"
+          python -m unittest discover -s tests -p "test_reports_studio_v22.py"
+          python -m unittest discover -s tests -p "test_reports_studio_v21.py"
+          python -m unittest discover -s tests -p "test_research_run_archive_v1.py"
