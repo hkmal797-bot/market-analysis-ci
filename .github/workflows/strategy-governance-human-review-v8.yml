@@ -1,3 +1,4 @@
+# Trigger exact-source V8 validation for pinned MarketAnalysis_AI commit 591ec7bd68604eff03f954daf7b165a4881053f7.
 name: Strategy Governance V8 exact-source validation
 run-name: Strategy Governance V8 exact-source validation
 
