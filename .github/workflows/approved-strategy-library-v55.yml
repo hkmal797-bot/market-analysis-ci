@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: marketanalysis-v55-1d6c7eb9a97456fe1edba2bc356227fe02adf6c7
+  group: marketanalysis-v55-c6abef935714d6c7c5565c51525b81948ddec237
   cancel-in-progress: false
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 1d6c7eb9a97456fe1edba2bc356227fe02adf6c7
+          ref: c6abef935714d6c7c5565c51525b81948ddec237
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -35,7 +35,7 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "1d6c7eb9a97456fe1edba2bc356227fe02adf6c7"
+          test "$actual" = "c6abef935714d6c7c5565c51525b81948ddec237"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -80,7 +80,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 1d6c7eb9a97456fe1edba2bc356227fe02adf6c7
+          ref: c6abef935714d6c7c5565c51525b81948ddec237
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -90,7 +90,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
-          if ($actual -ne "1d6c7eb9a97456fe1edba2bc356227fe02adf6c7") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "c6abef935714d6c7c5565c51525b81948ddec237") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -113,4 +113,4 @@ jobs:
           python -m unittest discover -s tests -p "test_strategy_governance_v8.py" -v
           python -m unittest discover -s tests -p "test_local_launcher_v1.py" -v
 
-# Exact immutable MarketAnalysis_AI source: 1d6c7eb9a97456fe1edba2bc356227fe02adf6c7
+# Exact immutable MarketAnalysis_AI source: c6abef935714d6c7c5565c51525b81948ddec237
