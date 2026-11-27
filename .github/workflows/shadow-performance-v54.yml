@@ -1,0 +1,115 @@
+name: MarketAnalysis_AI V54 Full-Library Shadow Evaluation exact-source validation
+
+on:
+  push:
+    branches: [main, feature/full-library-shadow-v54-ci]
+    paths: [".github/workflows/shadow-performance-v54.yml"]
+  pull_request:
+    branches: [main]
+    paths: [".github/workflows/shadow-performance-v54.yml"]
+
+permissions:
+  contents: read
+
+concurrency:
+  group: marketanalysis-v54-55c07f08160fde9161ad38d258da44e4c411ddae
+  cancel-in-progress: false
+
+jobs:
+  ubuntu-full-suite:
+    name: V54 — Ubuntu full deterministic suite
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/full-library-shadow-v54-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V54]'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 55c07f08160fde9161ad38d258da44e4c411ddae
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify immutable source SHA
+        working-directory: private-source
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "55c07f08160fde9161ad38d258da44e4c411ddae"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install pinned runtime dependencies
+        run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
+      - name: Compile V54 engine, evaluation, archive projection, and server
+        working-directory: private-source
+        run: python -m py_compile src/ma_engine/walk_forward.py tools/strategy_evaluation.py tools/strategy_performance_ledger_v52.py tools/all_candidate_shadow_performance_v53.py tools/local_server.py
+      - name: Validate V54 dashboard HTML and JavaScript
+        working-directory: private-source
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import re
+          raw = Path("apps/research-command-center/shadow-performance.html").read_text(encoding="utf-8")
+          class Checker(HTMLParser):
+              def error(self, message):
+                  raise RuntimeError(message)
+          Checker().feed(raw)
+          scripts = re.findall(r"<script[^>]*>(.*?)</script>", raw, re.S | re.I)
+          if len(scripts) != 1:
+              raise SystemExit("Expected one inline script in V54 page")
+          Path("/tmp/shadow-performance-v54.js").write_text("\n".join(scripts), encoding="utf-8")
+          PY
+          node --check /tmp/shadow-performance-v54.js
+      - name: Run full deterministic suite
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests
+
+  windows-v54-contracts:
+    name: V54 — Windows full-library, archive, API, and launcher contracts
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/full-library-shadow-v54-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V54]'))
+    runs-on: windows-latest
+    timeout-minutes: 35
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 55c07f08160fde9161ad38d258da44e4c411ddae
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify immutable source SHA
+        working-directory: private-source
+        shell: pwsh
+        run: |
+          $actual = (git rev-parse HEAD).Trim()
+          if ($actual -ne "55c07f08160fde9161ad38d258da44e4c411ddae") { throw "Source SHA mismatch: $actual" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install pinned runtime dependencies
+        run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
+      - name: Compile V54 implementation
+        working-directory: private-source
+        run: python -m py_compile src/ma_engine/walk_forward.py tools/strategy_evaluation.py tools/all_candidate_shadow_performance_v53.py tools/local_server.py
+      - name: Run V54 engine, evaluation, archive, API, and launcher contracts
+        working-directory: private-source
+        shell: pwsh
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m unittest discover -s tests -p "test_walk_forward_research_v1.py" -v
+          python -m unittest discover -s tests -p "test_strategy_evaluation_v6.py" -v
+          python -m unittest discover -s tests -p "test_all_candidate_shadow_performance_v53.py" -v
+          python -m unittest discover -s tests -p "test_local_launcher_v1.py" -v
+
+# Exact immutable MarketAnalysis_AI source: 55c07f08160fde9161ad38d258da44e4c411ddae
