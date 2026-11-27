@@ -92,7 +92,7 @@ concurrency:
 jobs:
   unit-tests:
     name: Standard-library unit tests (Ubuntu) — ${{ matrix.source.name }}
-    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && !startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V2]') && !startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V3]') && !startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V4]') && !startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V5]') && !startsWith(github.event.pull_request.title, '[RUN_RESEARCH_ARCHIVE_V1]'))
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && !startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V2]') && !startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V3]') && !startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V4]') && !startsWith(github.event.pull_request.title, '[RUN_COMMAND_CENTER_V5]') && !startsWith(github.event.pull_request.title, '[RUN_RESEARCH_ARCHIVE_V1]') && !startsWith(github.event.pull_request.title, '[RUN_ALPACA_PAPER_V41]'))
     strategy:
       fail-fast: false
       matrix:
@@ -1198,3 +1198,71 @@ jobs:
           python -m unittest discover -s tests -p "test_persistent_audit_v1.py"
           python -m unittest discover -s tests -p "test_local_runtime_status_v2.py"
           python -m unittest discover -s tests -p "test_local_launcher_v1.py"
+
+
+  alpaca-paper-v41-ubuntu:
+    name: Alpaca Paper V41 — Ubuntu exact-source full suite
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_ALPACA_PAPER_V41]')
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 87008bfb1b06d0f6d4bb7e8068d0fdb5a9d9908d
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source SHA
+        working-directory: private-source
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "87008bfb1b06d0f6d4bb7e8068d0fdb5a9d9908d"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Compile touched Python modules and run full deterministic suite
+        working-directory: private-source
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m py_compile tools/alpaca_paper_readonly.py tools/local_server.py
+          python -m unittest discover -s tests
+
+  alpaca-paper-v41-windows:
+    name: Alpaca Paper V41 — Windows contracts
+    if: github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_ALPACA_PAPER_V41]')
+    runs-on: windows-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 87008bfb1b06d0f6d4bb7e8068d0fdb5a9d9908d
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source SHA
+        working-directory: private-source
+        shell: pwsh
+        run: |
+          $actual = git rev-parse HEAD
+          if ($actual -ne "87008bfb1b06d0f6d4bb7e8068d0fdb5a9d9908d") { throw "Source SHA mismatch: $actual" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Run Paper connector and dashboard safety contracts
+        working-directory: private-source
+        shell: pwsh
+        env:
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m unittest discover -s tests -p "test_alpaca_paper_readonly_v41.py"
+          python -m unittest discover -s tests -p "test_alpaca_paper_dashboard_v41.py"
+          python -m unittest discover -s tests -p "test_system_center_v20.py"
