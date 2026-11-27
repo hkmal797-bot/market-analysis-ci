@@ -18,7 +18,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 7801da5bb33b549ebc82c73e4d20b10b1a83289a
+          ref: 6eda71192a4ba6804583b4a92a99250c092a5f4f
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -27,7 +27,7 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "7801da5bb33b549ebc82c73e4d20b10b1a83289a"
+          test "$actual" = "6eda71192a4ba6804583b4a92a99250c092a5f4f"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -52,7 +52,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 7801da5bb33b549ebc82c73e4d20b10b1a83289a
+          ref: 6eda71192a4ba6804583b4a92a99250c092a5f4f
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -62,7 +62,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = git rev-parse HEAD
-          if ($actual -ne "7801da5bb33b549ebc82c73e4d20b10b1a83289a") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "6eda71192a4ba6804583b4a92a99250c092a5f4f") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -83,3 +83,9 @@ jobs:
           python -m unittest discover -s tests -p "test_local_runtime_status_v2.py"
           python -m unittest discover -s tests -p "test_market_data_intake_v1.py"
           python -m unittest discover -s tests -p "test_market_data_intake_http_v1.py"
+
+# Trigger exact pinned-source validation after installing the Windows crypto dependency.
+
+# Revalidate the V33 dashboard auto-scan contract at the latest exact source SHA.
+
+# Trigger latest exact-source validation including dashboard auto-scan coverage.
