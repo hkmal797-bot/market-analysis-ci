@@ -1,4 +1,5 @@
 name: System Center V20 exact-source validation
+# PR-triggered exact-source verification for the MarketAnalysis_AI V20 workspace.
 run-name: System Center V20 exact-source validation
 
 on:
