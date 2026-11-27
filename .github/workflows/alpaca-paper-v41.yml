@@ -25,7 +25,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 87008bfb1b06d0f6d4bb7e8068d0fdb5a9d9908d
+          ref: 094ac1cb4ffb98390b087ba5fce7365cc608e72e
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -34,7 +34,7 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "87008bfb1b06d0f6d4bb7e8068d0fdb5a9d9908d"
+          test "$actual" = "094ac1cb4ffb98390b087ba5fce7365cc608e72e"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
@@ -43,6 +43,7 @@ jobs:
       - name: Compile touched modules and run complete deterministic suite
         working-directory: private-source
         env:
+          PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
           python -m py_compile tools/alpaca_paper_readonly.py tools/local_server.py
@@ -57,7 +58,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 87008bfb1b06d0f6d4bb7e8068d0fdb5a9d9908d
+          ref: 094ac1cb4ffb98390b087ba5fce7365cc608e72e
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -67,7 +68,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = git rev-parse HEAD
-          if ($actual -ne "87008bfb1b06d0f6d4bb7e8068d0fdb5a9d9908d") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "094ac1cb4ffb98390b087ba5fce7365cc608e72e") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
@@ -77,6 +78,7 @@ jobs:
         working-directory: private-source
         shell: pwsh
         env:
+          PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
           python -m unittest discover -s tests -p "test_alpaca_paper_readonly_v41.py"
