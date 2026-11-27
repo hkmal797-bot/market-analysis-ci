@@ -1,4 +1,5 @@
 name: Disaster Recovery Readiness V30 exact-source validation
+# Triggered validation is pinned to the immutable V30 source commit.
 
 on:
   pull_request:
