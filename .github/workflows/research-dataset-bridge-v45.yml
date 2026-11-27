@@ -1,5 +1,5 @@
 name: MarketAnalysis_AI V45 admitted research dataset bridge
-# Validation target: MarketAnalysis_AI source SHA 20eb88fd4d61adccf1e3e8a113f00f11ead1088d
+# Validation target: MarketAnalysis_AI source SHA 39b6ba8a756dda65cb1f4b7b24c03a1e9c7ad7c8
 
 on:
   push:
@@ -14,7 +14,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: marketanalysis-v45-20eb88fd4d61adccf1e3e8a113f00f11ead1088d
+  group: marketanalysis-v45-39b6ba8a756dda65cb1f4b7b24c03a1e9c7ad7c8
   cancel-in-progress: false
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 20eb88fd4d61adccf1e3e8a113f00f11ead1088d
+          ref: 39b6ba8a756dda65cb1f4b7b24c03a1e9c7ad7c8
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -36,7 +36,7 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "20eb88fd4d61adccf1e3e8a113f00f11ead1088d"
+          test "$actual" = "39b6ba8a756dda65cb1f4b7b24c03a1e9c7ad7c8"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
@@ -73,7 +73,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 20eb88fd4d61adccf1e3e8a113f00f11ead1088d
+          ref: 39b6ba8a756dda65cb1f4b7b24c03a1e9c7ad7c8
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -83,7 +83,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
-          if ($actual -ne "20eb88fd4d61adccf1e3e8a113f00f11ead1088d") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "39b6ba8a756dda65cb1f4b7b24c03a1e9c7ad7c8") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
@@ -102,4 +102,4 @@ jobs:
           python -m unittest discover -s tests -p "test_research_mission_control_v32.py" -v
           python -m unittest discover -s tests -p "test_research_preparation_v33.py" -v
 
-# Exact immutable MarketAnalysis_AI source: 20eb88fd4d61adccf1e3e8a113f00f11ead1088d
+# Exact immutable MarketAnalysis_AI source: 39b6ba8a756dda65cb1f4b7b24c03a1e9c7ad7c8
