@@ -1,0 +1,1 @@
+Trigger exact-source validation for MarketAnalysis_AI V24. Pinned private source SHA: 37904d30826bb524a08fd85add39e5497f167c8f.
