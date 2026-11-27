@@ -1,0 +1,92 @@
+name: Disaster Recovery Readiness V30 exact-source validation
+
+on:
+  pull_request:
+    branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  ubuntu-full-suite:
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_DISASTER_RECOVERY_V30]'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout exact private source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 4d661b506a182a0473f805d1177525fdac6504e9
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source SHA
+        working-directory: private-source
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "4d661b506a182a0473f805d1177525fdac6504e9"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install existing crypto dependency
+        run: python -m pip install "cryptography>=44,<48"
+      - name: Compile and run complete deterministic suite
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m py_compile tools/backup_recovery_v23.py tools/portable_backup_v24.py tools/encrypted_backup_v25.py tools/encrypted_backup_verification_v28.py tools/encrypted_recovery_drill_v29.py tools/disaster_recovery_center_v30.py tools/local_server.py
+          python -m unittest discover -s tests
+
+  windows-contracts:
+    if: github.event_name == 'workflow_dispatch' || (github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_DISASTER_RECOVERY_V30]'))
+    runs-on: windows-latest
+    timeout-minutes: 30
+    steps:
+      - name: Checkout exact private source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 4d661b506a182a0473f805d1177525fdac6504e9
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source SHA
+        working-directory: private-source
+        shell: pwsh
+        run: |
+          $actual = git rev-parse HEAD
+          if ($actual -ne "4d661b506a182a0473f805d1177525fdac6504e9") { throw "Source SHA mismatch: $actual" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install existing crypto dependency
+        run: python -m pip install "cryptography>=44,<48"
+      - name: Run recovery and Windows archive contracts
+        working-directory: private-source
+        shell: pwsh
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m py_compile tools/encrypted_recovery_drill_v29.py tools/disaster_recovery_center_v30.py tools/local_server.py
+          python -m unittest discover -s tests -p "test_disaster_recovery_center_v30.py"
+          python -m unittest discover -s tests -p "test_encrypted_recovery_drill_v29.py"
+          python -m unittest discover -s tests -p "test_encrypted_recovery_drill_v29_contracts.py"
+          python -m unittest discover -s tests -p "test_encrypted_backup_verification_v28.py"
+          python -m unittest discover -s tests -p "test_encrypted_backup_verification_v28_contracts.py"
+          python -m unittest discover -s tests -p "test_encrypted_backup_v25.py"
+          python -m unittest discover -s tests -p "test_encrypted_backup_v25_contracts.py"
+          python -m unittest discover -s tests -p "test_portable_backup_v24.py"
+          python -m unittest discover -s tests -p "test_portable_backup_v24_contracts.py"
+          python -m unittest discover -s tests -p "test_backup_recovery_v23.py"
+          python -m unittest discover -s tests -p "test_backup_recovery_v23_contracts.py"
+          python -m unittest discover -s tests -p "test_system_center_v20.py"
+          python -m unittest discover -s tests -p "test_research_run_archive_v1.py"
