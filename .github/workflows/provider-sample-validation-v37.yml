@@ -40,7 +40,7 @@ jobs:
           PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
-          python -m py_compile tools/provider_research_shortlist_v36.py tools/provider_evaluation_center_v35.py tools/local_server.py
+          python -m py_compile tools/provider_sample_validation_v37.py tools/provider_research_shortlist_v36.py tools/provider_evaluation_center_v35.py tools/local_server.py
           python -m unittest discover -s tests
 
   windows-contracts:
@@ -76,8 +76,8 @@ jobs:
           PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
-          python -m py_compile tools/provider_research_shortlist_v36.py tools/provider_evaluation_center_v35.py tools/local_server.py
+          python -m py_compile tools/provider_sample_validation_v37.py tools/provider_research_shortlist_v36.py tools/provider_evaluation_center_v35.py tools/local_server.py
           python -m unittest discover -s tests -p "test_provider_sample_validation_v37.py"
-          python -m unittest discover -s tests -p "test_provider_sample_validation_v37.py"
-          python -m unittest discover -s tests -p "test_provider_sample_validation_v37.py"
-          python -m unittest discover -s tests -p "test_provider_sample_validation_v37.py"
+          python -m unittest discover -s tests -p "test_provider_research_shortlist_v36.py"
+          python -m unittest discover -s tests -p "test_provider_evaluation_center_v35.py"
+          python -m unittest discover -s tests -p "test_system_center_v20.py"
