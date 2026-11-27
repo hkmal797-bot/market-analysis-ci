@@ -1,6 +1,6 @@
 # Trigger exact-source V8 validation for pinned MarketAnalysis_AI commit f6a66a980f9cd26246587cbd6cad61e3f5c6b4f6.
 name: Approved Candidate V6 Bridge V9 exact-source validation
-run-name: Approved Candidate V6 Bridge V9 exact-source validation
+run-name: Approved Candidate V6 Bridge V9 exact-source validation (trigger)
 
 on:
   push:
