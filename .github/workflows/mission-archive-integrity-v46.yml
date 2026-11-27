@@ -102,3 +102,5 @@ jobs:
           python -m unittest discover -s tests -p "test_research_preparation_v33.py" -v
 
 # Exact immutable MarketAnalysis_AI source: c3e2ac46ee55d6ae287e7d4b0feef4cfe297d9c5
+
+# V46 exact-source trigger confirmation: c3e2ac46ee55d6ae287e7d4b0feef4cfe297d9c5
