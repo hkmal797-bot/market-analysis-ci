@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: eb7ca4d4bc524a6e4cc1ddfcef64b88880ea7bed
+          ref: 0576fba21393a9992cb11cc09edcc78b55783ce4
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -24,11 +24,13 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "eb7ca4d4bc524a6e4cc1ddfcef64b88880ea7bed"
+          test "$actual" = "0576fba21393a9992cb11cc09edcc78b55783ce4"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
           python-version: "3.13"
+      - name: Install existing test dependency
+        run: python -m pip install cryptography
       - name: Compile and run complete deterministic suite
         working-directory: private-source
         env:
@@ -47,7 +49,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: eb7ca4d4bc524a6e4cc1ddfcef64b88880ea7bed
+          ref: 0576fba21393a9992cb11cc09edcc78b55783ce4
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -57,7 +59,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = git rev-parse HEAD
-          if ($actual -ne "eb7ca4d4bc524a6e4cc1ddfcef64b88880ea7bed") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "0576fba21393a9992cb11cc09edcc78b55783ce4") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
