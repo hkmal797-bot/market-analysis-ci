@@ -1,5 +1,5 @@
 # Trigger exact-source V10 validation for pinned MarketAnalysis_AI commit 544772c804bfad99a6fc5a1fe3f3f05c036d1b77.
-name: Evaluation Result Governance V10 exact-source validation (final trigger)
+name: Evaluation Result Governance V10 exact-source validation (explicit rerun trigger)
 run-name: Evaluation Result Governance V10 exact-source validation (trigger)
 
 on:
