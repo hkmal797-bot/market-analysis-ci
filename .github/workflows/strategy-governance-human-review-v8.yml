@@ -2,6 +2,10 @@ name: Strategy Governance V8 exact-source validation
 run-name: Strategy Governance V8 exact-source validation
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/strategy-governance-human-review-v8.yml"
   pull_request:
     branches: [main]
     paths:
@@ -12,7 +16,7 @@ permissions:
 
 jobs:
   ubuntu-full-suite:
-    if: github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_STRATEGY_GOVERNANCE_V8]')
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_STRATEGY_GOVERNANCE_V8]'))
     runs-on: ubuntu-latest
     timeout-minutes: 40
     steps:
@@ -66,7 +70,7 @@ jobs:
         run: python -m unittest discover -s tests
 
   windows-governance-contracts:
-    if: github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_STRATEGY_GOVERNANCE_V8]')
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_STRATEGY_GOVERNANCE_V8]'))
     runs-on: windows-latest
     timeout-minutes: 25
     steps:
