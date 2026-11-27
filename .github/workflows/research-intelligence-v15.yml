@@ -1,0 +1,104 @@
+name: Research Intelligence V15 exact-source validation
+run-name: Research Intelligence V15 exact-source validation
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/research-intelligence-v15.yml"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/research-intelligence-v15.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  ubuntu-full-suite:
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_RESEARCH_INTELLIGENCE_V15]'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 4365f4d5d673e8f7f3d0b017f5622a8813af93c7
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source commit
+        working-directory: source
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "4365f4d5d673e8f7f3d0b017f5622a8813af93c7"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install existing test dependency
+        run: python -m pip install "cryptography>=44,<47"
+      - name: Compile V15 integration
+        working-directory: source
+        run: python -m py_compile tools/local_server.py tools/research_portfolio_intelligence.py tools/research_monitoring_intelligence.py tools/research_review_queue_v13.py tools/research_review_closure_v14.py
+      - name: Validate dashboard HTML and JavaScript
+        working-directory: source
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import re
+          class Checker(HTMLParser):
+              def error(self, message):
+                  raise RuntimeError(message)
+          for name in ("index.html", "research-intelligence.html", "strategy-library.html"):
+              path = Path("apps/research-command-center") / name
+              source = path.read_text(encoding="utf-8")
+              Checker().feed(source)
+              scripts = re.findall(r"<script[^>]*>(.*?)</script>", source, re.S | re.I)
+              if scripts:
+                  Path("/tmp/" + name + ".js").write_text("\n".join(scripts), encoding="utf-8")
+          PY
+          node --check /tmp/research-intelligence.html.js
+      - name: Run complete deterministic test suite
+        working-directory: source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests -v
+
+  windows-v15-contracts:
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_RESEARCH_INTELLIGENCE_V15]'))
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 4365f4d5d673e8f7f3d0b017f5622a8813af93c7
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source commit
+        working-directory: source
+        shell: pwsh
+        run: |
+          $actual = (git rev-parse HEAD).Trim()
+          if ($actual -ne "4365f4d5d673e8f7f3d0b017f5622a8813af93c7") { throw "Source SHA mismatch: $actual" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Compile V15 integration
+        working-directory: source
+        run: python -m py_compile tools/local_server.py
+      - name: Run V15 cross-platform contracts
+        working-directory: source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests -p "test_research_intelligence_command_center_v15.py" -v
