@@ -1,0 +1,1 @@
+Trigger-only marker. The workflow pins and tests the exact private source SHA; this file does not modify source code.
