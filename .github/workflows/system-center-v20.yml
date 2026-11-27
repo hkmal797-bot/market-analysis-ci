@@ -21,7 +21,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 8846ecad8f2d08395d6cb7c26e183d30be3e82e4
+          ref: 570182cac42093dbfa19c410b6118e82884359ab
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: source
           persist-credentials: false
@@ -30,7 +30,7 @@ jobs:
         working-directory: source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "8846ecad8f2d08395d6cb7c26e183d30be3e82e4"
+          test "$actual" = "570182cac42093dbfa19c410b6118e82884359ab"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -76,7 +76,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 8846ecad8f2d08395d6cb7c26e183d30be3e82e4
+          ref: 570182cac42093dbfa19c410b6118e82884359ab
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: source
           persist-credentials: false
@@ -86,7 +86,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
-          if ($actual -ne "8846ecad8f2d08395d6cb7c26e183d30be3e82e4") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "570182cac42093dbfa19c410b6118e82884359ab") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -104,4 +104,4 @@ jobs:
           python -m unittest discover -s tests -p "test_native_dashboard_v19.py" -v
           python -m unittest discover -s tests -p "test_system_center_v20.py" -v
 
-# Exact source pin: 8846ecad8f2d08395d6cb7c26e183d30be3e82e4
+# Exact source pin: 570182cac42093dbfa19c410b6118e82884359ab
