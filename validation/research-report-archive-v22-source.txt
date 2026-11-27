@@ -1,3 +1,4 @@
 Pinned MarketAnalysis_AI source SHA: 7c92cec50a1cfe17b56cfd5814e8db9b64ccb590
 Validation scope: V22 report archive
 Validation workflow merged to helper main.
+Final pinned source SHA: eb7ca4d4bc524a6e4cc1ddfcef64b88880ea7bed
