@@ -1,0 +1,2 @@
+Pinned MarketAnalysis_AI source SHA: 0576fba21393a9992cb11cc09edcc78b55783ce4
+Validation: Ubuntu complete deterministic test suite + Windows focused contracts.
