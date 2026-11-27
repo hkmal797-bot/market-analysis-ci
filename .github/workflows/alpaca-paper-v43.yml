@@ -48,7 +48,7 @@ jobs:
           PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
-          python -m py_compile tools/alpaca_paper_credential_vault_v43.py tools/alpaca_paper_readonly.py tools/local_server.py
+          python -m py_compile tools/alpaca_paper_credential_vault_v42.py tools/alpaca_paper_readonly.py tools/local_server.py
           python -m unittest discover -s tests
 
   windows-contracts:
@@ -85,7 +85,7 @@ jobs:
           PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
-          python -m unittest discover -s tests -p "test_alpaca_paper_credential_vault_v43.py"
+          python -m unittest discover -s tests -p "test_alpaca_paper_credential_vault_v42.py"
           python -m unittest discover -s tests -p "test_alpaca_paper_readonly_v41.py"
           python -m unittest discover -s tests -p "test_alpaca_paper_dashboard_v41.py"
           python -m unittest discover -s tests -p "test_system_center_v20.py"
