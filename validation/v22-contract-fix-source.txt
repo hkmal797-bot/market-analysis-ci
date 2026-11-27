@@ -1,0 +1,2 @@
+Pinned MarketAnalysis_AI source SHA: cfce6a5a8433766aeba391c9f3bf2812a80a38ca
+Scope: Reports Studio V21/V22 contracts and complete suite.
