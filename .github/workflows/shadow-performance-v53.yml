@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: marketanalysis-v53-15351c02b9ca873ac8540f04e7b5505b2c80f397
+  group: marketanalysis-v53-f49f24b2a5a9f4c695f6285853722e1538b873e4
   cancel-in-progress: false
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 15351c02b9ca873ac8540f04e7b5505b2c80f397
+          ref: f49f24b2a5a9f4c695f6285853722e1538b873e4
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -35,7 +35,7 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "15351c02b9ca873ac8540f04e7b5505b2c80f397"
+          test "$actual" = "f49f24b2a5a9f4c695f6285853722e1538b873e4"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -80,7 +80,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 15351c02b9ca873ac8540f04e7b5505b2c80f397
+          ref: f49f24b2a5a9f4c695f6285853722e1538b873e4
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -90,7 +90,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
-          if ($actual -ne "15351c02b9ca873ac8540f04e7b5505b2c80f397") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "f49f24b2a5a9f4c695f6285853722e1538b873e4") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -112,6 +112,8 @@ jobs:
           python -m unittest discover -s tests -p "test_all_candidate_shadow_performance_v53.py" -v
           python -m unittest discover -s tests -p "test_local_launcher_v1.py" -v
 
-# Exact immutable MarketAnalysis_AI source: 15351c02b9ca873ac8540f04e7b5505b2c80f397
+# Exact immutable MarketAnalysis_AI source: f49f24b2a5a9f4c695f6285853722e1538b873e4
 
 # Revalidation after V53 response-contract assertion alignment.
+
+# Re-run after all shadow evidence assertions were corrected.
