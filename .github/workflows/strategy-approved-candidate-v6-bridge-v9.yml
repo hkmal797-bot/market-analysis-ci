@@ -62,7 +62,7 @@ jobs:
               raise SystemExit("No inline script found")
           Path("/tmp/strategy-library-v9.js").write_text("\n".join(scripts), encoding="utf-8")
           PY
-          node --check /tmp/strategy-library-v8.js
+          node --check /tmp/strategy-library-v9.js
       - name: Run complete test suite
         working-directory: source
         env:
