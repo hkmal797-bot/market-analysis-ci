@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: dce45bf3a584ba3bba0239f7c1127384baa84ee4
+          ref: 448abb6e8a5788f5d4b5137c96001b8e62c5a793
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -24,7 +24,7 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "dce45bf3a584ba3bba0239f7c1127384baa84ee4"
+          test "$actual" = "448abb6e8a5788f5d4b5137c96001b8e62c5a793"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -49,7 +49,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: dce45bf3a584ba3bba0239f7c1127384baa84ee4
+          ref: 448abb6e8a5788f5d4b5137c96001b8e62c5a793
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -59,7 +59,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = git rev-parse HEAD
-          if ($actual -ne "dce45bf3a584ba3bba0239f7c1127384baa84ee4") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "448abb6e8a5788f5d4b5137c96001b8e62c5a793") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -79,5 +79,7 @@ jobs:
           python -m unittest discover -s tests -p "test_persistent_audit_v1.py"
           python -m unittest discover -s tests -p "test_research_run_archive_v1.py"
           python -m unittest discover -s tests -p "test_local_launcher_v1.py"
-          python -m unittest discover -s tests -p "test_research_sessions.py"
-          python -m unittest discover -s tests -p "test_market_data_intake.py"
+          python -m unittest discover -s tests -p "test_research_session_controller_v1.py"
+          python -m unittest discover -s tests -p "test_research_session_http_v1.py"
+          python -m unittest discover -s tests -p "test_market_data_intake_v1.py"
+          python -m unittest discover -s tests -p "test_market_data_intake_http_v1.py"
