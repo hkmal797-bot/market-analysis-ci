@@ -81,3 +81,5 @@ jobs:
           python -m unittest discover -s tests -p "test_strategy_evaluation_v9.py"
           python -m unittest discover -s tests -p "test_local_runtime_status_v2.py"
           python -m unittest discover -s tests -p "test_operational_intelligence_v31.py"
+
+# Exact-source trigger record: V32 private implementation is pinned above.
