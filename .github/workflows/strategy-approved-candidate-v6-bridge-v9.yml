@@ -1,0 +1,105 @@
+# Trigger exact-source V8 validation for pinned MarketAnalysis_AI commit f6a66a980f9cd26246587cbd6cad61e3f5c6b4f6.
+name: Approved Candidate V6 Bridge V9 exact-source validation
+run-name: Approved Candidate V6 Bridge V9 exact-source validation
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/strategy-approved-candidate-v6-bridge-v9.yml"
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/strategy-approved-candidate-v6-bridge-v9.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  ubuntu-full-suite:
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_STRATEGY_GOVERNANCE_V8]'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: f6a66a980f9cd26246587cbd6cad61e3f5c6b4f6
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source commit
+        working-directory: source
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "f6a66a980f9cd26246587cbd6cad61e3f5c6b4f6"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install existing V5 test dependency
+        run: python -m pip install "cryptography>=44,<47"
+      - name: Compile V9 implementation
+        working-directory: source
+        run: python -m py_compile tools/strategy_governance.py tools/strategy_library.py tools/strategy_evaluation.py tools/local_server.py tools/research_archive.py
+      - name: Validate strategy library page and inline JavaScript
+        working-directory: source
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import re
+          class Checker(HTMLParser):
+              def error(self, message):
+                  raise RuntimeError(message)
+          path = Path("apps/research-command-center/strategy-library.html")
+          source = path.read_text(encoding="utf-8")
+          Checker().feed(source)
+          scripts = re.findall(r"<script[^>]*>(.*?)</script>", source, re.S | re.I)
+          if not scripts:
+              raise SystemExit("No inline script found")
+          Path("/tmp/strategy-library-v8.js").write_text("\n".join(scripts), encoding="utf-8")
+          PY
+          node --check /tmp/strategy-library-v8.js
+      - name: Run complete test suite
+        working-directory: source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests
+
+  windows-governance-contracts:
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_STRATEGY_GOVERNANCE_V8]'))
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: f6a66a980f9cd26246587cbd6cad61e3f5c6b4f6
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source commit
+        working-directory: source
+        shell: pwsh
+        run: |
+          $actual = git rev-parse HEAD
+          if ($actual -ne "f6a66a980f9cd26246587cbd6cad61e3f5c6b4f6") { throw "Source SHA mismatch: $actual" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Compile V9 implementation
+        working-directory: source
+        run: python -m py_compile tools/strategy_governance.py tools/local_server.py
+      - name: Run V8 cross-platform governance contracts
+        working-directory: source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests -p "test_strategy_evaluation_v9.py"
