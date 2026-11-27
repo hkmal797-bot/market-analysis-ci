@@ -101,3 +101,5 @@ jobs:
           PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
         run: python -m unittest discover -s tests -p "test_unified_dashboard_operations_v16.py" -v
+
+# Trigger the pinned V16 validation for the exact source commit.
