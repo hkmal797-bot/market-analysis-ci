@@ -24,7 +24,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: c2dffebde3f28fe40d4fcaab7fcffa16a78daedb
+          ref: 95227c36d4e7c6384b13e1fd288b20e6cf103956
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: source
           persist-credentials: false
@@ -33,7 +33,7 @@ jobs:
         working-directory: source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "c2dffebde3f28fe40d4fcaab7fcffa16a78daedb"
+          test "$actual" = "95227c36d4e7c6384b13e1fd288b20e6cf103956"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -57,7 +57,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: c2dffebde3f28fe40d4fcaab7fcffa16a78daedb
+          ref: 95227c36d4e7c6384b13e1fd288b20e6cf103956
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: source
           persist-credentials: false
@@ -67,7 +67,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = git rev-parse HEAD
-          if ($actual -ne "c2dffebde3f28fe40d4fcaab7fcffa16a78daedb") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "95227c36d4e7c6384b13e1fd288b20e6cf103956") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
