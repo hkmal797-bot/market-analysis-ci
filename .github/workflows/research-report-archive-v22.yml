@@ -15,7 +15,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 0576fba21393a9992cb11cc09edcc78b55783ce4
+          ref: 388e95296db70a348d3f6f47867e928ce287d051
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -24,14 +24,12 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "0576fba21393a9992cb11cc09edcc78b55783ce4"
+          test "$actual" = "388e95296db70a348d3f6f47867e928ce287d051"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
           python-version: "3.13"
       - name: Install existing test dependency
-        run: python -m pip install cryptography
-      - name: Install optional test dependency
         run: python -m pip install "cryptography>=44,<48"
       - name: Compile and run complete deterministic suite
         working-directory: private-source
@@ -51,7 +49,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 0576fba21393a9992cb11cc09edcc78b55783ce4
+          ref: 388e95296db70a348d3f6f47867e928ce287d051
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -61,7 +59,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = git rev-parse HEAD
-          if ($actual -ne "0576fba21393a9992cb11cc09edcc78b55783ce4") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "388e95296db70a348d3f6f47867e928ce287d051") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
