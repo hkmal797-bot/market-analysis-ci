@@ -1,0 +1,103 @@
+name: Research Monitoring V12 exact-source validation
+run-name: Research Monitoring V12 exact-source validation
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - ".github/workflows/research-monitoring-intelligence-v12.yml"
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/research-monitoring-intelligence-v12.yml"
+
+permissions:
+  contents: read
+
+jobs:
+  ubuntu-full-suite:
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_RESEARCH_MONITORING_V12]'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 925977e57deef99376c6799ed70b444b224d8185
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source commit
+        working-directory: source
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "925977e57deef99376c6799ed70b444b224d8185"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install existing test dependency
+        run: python -m pip install "cryptography>=44,<47"
+      - name: Compile V12 implementation
+        working-directory: source
+        run: python -m py_compile tools/research_monitoring_intelligence.py tools/research_portfolio_intelligence.py tools/strategy_evaluation_governance.py tools/local_server.py tools/research_archive.py
+      - name: Validate Strategy Library HTML and JavaScript
+        working-directory: source
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import re
+          class Checker(HTMLParser):
+              def error(self, message):
+                  raise RuntimeError(message)
+          source = Path("apps/research-command-center/strategy-library.html").read_text(encoding="utf-8")
+          Checker().feed(source)
+          scripts = re.findall(r"<script[^>]*>(.*?)</script>", source, re.S | re.I)
+          if not scripts:
+              raise SystemExit("No inline script found")
+          Path("/tmp/strategy-library-v12.js").write_text("\n".join(scripts), encoding="utf-8")
+          PY
+          node --check /tmp/strategy-library-v12.js
+      - name: Run complete test suite
+        working-directory: source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests
+
+  windows-v12-contracts:
+    if: github.ref == 'refs/heads/main' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_RESEARCH_MONITORING_V12]'))
+    runs-on: windows-latest
+    timeout-minutes: 25
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 925977e57deef99376c6799ed70b444b224d8185
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify exact source commit
+        working-directory: source
+        shell: pwsh
+        run: |
+          $actual = git rev-parse HEAD
+          if ($actual -ne "925977e57deef99376c6799ed70b444b224d8185") { throw "Source SHA mismatch: $actual" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Compile V12 implementation
+        working-directory: source
+        run: python -m py_compile tools/research_monitoring_intelligence.py tools/local_server.py
+      - name: Run V12 cross-platform contracts
+        working-directory: source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests -p "test_research_monitoring_intelligence_v12.py"
