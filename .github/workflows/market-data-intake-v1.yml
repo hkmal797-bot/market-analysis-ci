@@ -1,6 +1,10 @@
 name: Market Data Intake V1 exact-source validation
 
 on:
+  push:
+    branches: [main]
+    paths:
+      - ".github/workflows/market-data-intake-v1.yml"
   pull_request:
     branches: [main]
     paths:
