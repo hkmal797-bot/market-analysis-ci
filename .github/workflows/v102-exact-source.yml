@@ -44,7 +44,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check cryptography
       - name: Compile dashboard and V116 test
         working-directory: private-source
-        run: python -m py_compile tests/test_research_notification_center_v116.py tests/test_research_command_deck_v114.py tests/test_research_command_palette_v113.py tests/test_research_workbench_v112.py tests/test_research_outcome_observatory_v111.py tests/test_unified_research_cycle_studio_v110.py tests/test_unified_research_timeline_v109.py tests/test_unified_operations_pulse_v108.py tests/test_strategy_results_explorer_v106.py tests/test_approved_library_command_center_v105.py tests/test_research_portfolio_cockpit_v104.py
+        run: python -m py_compile tests/test_research_action_center_v116.py tests/test_research_command_deck_v114.py tests/test_research_command_palette_v113.py tests/test_research_workbench_v112.py tests/test_research_outcome_observatory_v111.py tests/test_unified_research_cycle_studio_v110.py tests/test_unified_research_timeline_v109.py tests/test_unified_operations_pulse_v108.py tests/test_strategy_results_explorer_v106.py tests/test_approved_library_command_center_v105.py tests/test_research_portfolio_cockpit_v104.py
       - name: Validate dashboard HTML and JavaScript syntax
         working-directory: private-source
         run: |
@@ -104,7 +104,7 @@ jobs:
           PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
-          python -m unittest discover -s tests -p "test_research_notification_center_v116.py"
+          python -m unittest discover -s tests -p "test_research_action_center_v116.py"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_research_command_deck_v114.py"
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
