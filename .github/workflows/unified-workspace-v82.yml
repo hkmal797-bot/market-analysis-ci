@@ -1,0 +1,88 @@
+name: MarketAnalysis_AI V82 Adaptive Selection governance lineage UI
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/unified-workspace-v82.yml"]
+  pull_request:
+    branches: [main]
+    paths: [".github/workflows/unified-workspace-v82.yml"]
+permissions:
+  contents: read
+concurrency:
+  group: marketanalysis-v82-7e04ce53c6dbb453aa30aadc9d629253fe8dfa66
+  cancel-in-progress: false
+jobs:
+  ubuntu-full-suite:
+    name: V82 exact source — Ubuntu full deterministic suite
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V82]'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 7e04ce53c6dbb453aa30aadc9d629253fe8dfa66
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify immutable source SHA
+        working-directory: private-source
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "7e04ce53c6dbb453aa30aadc9d629253fe8dfa66"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install pinned runtime dependencies
+        run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
+      - name: Compile V82 unified workspace shell and contracts
+        working-directory: private-source
+        run: python -m py_compile tests/test_unified_command_center_shell_v17.py
+      - name: Run full deterministic suite
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests
+  windows-unified-workspace-contracts:
+    name: V82 exact source — Windows Unified Workspace contracts
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V82]'))
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 7e04ce53c6dbb453aa30aadc9d629253fe8dfa66
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify immutable source SHA
+        working-directory: private-source
+        shell: pwsh
+        run: |
+          $actual = (git rev-parse HEAD).Trim()
+          if ($actual -ne "7e04ce53c6dbb453aa30aadc9d629253fe8dfa66") { throw "Source SHA mismatch: $actual" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install pinned runtime dependencies
+        run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
+      - name: Compile V82 unified workspace shell and contracts
+        working-directory: private-source
+        run: python -m py_compile tests/test_unified_command_center_shell_v17.py
+      - name: Run Adaptive Selection governance lineage UI contracts
+        working-directory: private-source
+        shell: pwsh
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m unittest discover -s tests -p "test_unified_command_center_shell_v17.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
