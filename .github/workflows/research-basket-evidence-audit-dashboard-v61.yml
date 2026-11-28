@@ -2,23 +2,23 @@ name: MarketAnalysis_AI V61 Research Basket Evidence Audit Dashboard exact-sourc
 
 on:
   push:
-    branches: [main, feature/research-basket-evidence-audit-v60-ci]
-    paths: [".github/workflows/research-basket-evidence-audit-v60.yml"]
+    branches: [main, feature/research-basket-evidence-audit-dashboard-v61-ci]
+    paths: [".github/workflows/research-basket-evidence-audit-dashboard-v61.yml"]
   pull_request:
     branches: [main]
-    paths: [".github/workflows/research-basket-evidence-audit-v60.yml"]
+    paths: [".github/workflows/research-basket-evidence-audit-dashboard-v61.yml"]
 
 permissions:
   contents: read
 
 concurrency:
-  group: marketanalysis-v60-6c80128457f8ae4bfda382fa243ca7f330f15a34
+  group: marketanalysis-v61-6c80128457f8ae4bfda382fa243ca7f330f15a34
   cancel-in-progress: false
 
 jobs:
   ubuntu-full-suite:
     name: V61 — Ubuntu full deterministic suite
-    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/research-basket-evidence-audit-v60-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V60]'))
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/research-basket-evidence-audit-dashboard-v61-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V61]'))
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -42,7 +42,7 @@ jobs:
           python-version: "3.13"
       - name: Install pinned runtime dependencies
         run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
-      - name: Compile V60 evidence audit and dependencies
+      - name: Compile V60 audit, V61 dashboard and server
         working-directory: private-source
         run: python -m py_compile tools/research_basket_evidence_audit_v60.py tools/research_basket_stability_v59.py tools/research_basket_optimizer_v58.py tools/all_candidate_shadow_performance_v53.py tools/strategy_diversification_intelligence_v57.py tools/local_server.py
       - name: Validate V61 evidence audit dashboard HTML and JavaScript
@@ -70,9 +70,9 @@ jobs:
           PYTHONDONTWRITEBYTECODE: "1"
         run: python -m unittest discover -s tests
 
-  windows-v60-contracts:
+  windows-v61-contracts:
     name: V61 — Windows evidence, archive and launcher contracts
-    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/research-basket-evidence-audit-v60-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V60]'))
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/research-basket-evidence-audit-dashboard-v61-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V61]'))
     runs-on: windows-latest
     timeout-minutes: 45
     steps:
@@ -97,7 +97,7 @@ jobs:
           python-version: "3.13"
       - name: Install pinned runtime dependencies
         run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
-      - name: Compile V60 implementation and server
+      - name: Compile V60 implementation, V61 page and server
         working-directory: private-source
         run: python -m py_compile tools/research_basket_evidence_audit_v60.py tools/local_server.py
       - name: Run V60 and upstream evidence contracts
