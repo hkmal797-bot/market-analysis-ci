@@ -127,3 +127,5 @@ jobs:
 # Retry V71 validation after source fixture correction.
 
 # Exact immutable MarketAnalysis_AI source: 45a082390abd135eed0a6e681aac16b557905f30
+
+# Retry exact-source validation after correcting the JavaScript artifact path.
