@@ -1,4 +1,4 @@
-name: V104 local research session monitor validation
+name: V104 local research session monitor validation # exact-source acceptance run
 
 on:
   pull_request:
