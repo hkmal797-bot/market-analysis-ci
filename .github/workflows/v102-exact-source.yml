@@ -1,4 +1,4 @@
-name: V104 exact-source validation
+name: V105 exact-source validation
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: v104-exact-source-${{ github.event.pull_request.head.sha }}
+  group: v105-exact-source-${{ github.event.pull_request.head.sha }}
   cancel-in-progress: false
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: c6849710e20b9ce5d9c93a7af7b94229bb328fce
+          ref: b165df418d355073b9213a9175deae8660c58feb
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -31,7 +31,7 @@ jobs:
       - name: Verify immutable source SHA
         working-directory: private-source
         env:
-          EXPECTED_SOURCE_SHA: c6849710e20b9ce5d9c93a7af7b94229bb328fce
+          EXPECTED_SOURCE_SHA: b165df418d355073b9213a9175deae8660c58feb
         run: |
           actual="$(git rev-parse HEAD)"
           test "$actual" = "$EXPECTED_SOURCE_SHA"
@@ -42,9 +42,9 @@ jobs:
           python-version: "3.13"
       - name: Install test runtime dependency
         run: python -m pip install --disable-pip-version-check cryptography
-      - name: Compile dashboard and V104 test
+      - name: Compile dashboard and V105 test
         working-directory: private-source
-        run: python -m py_compile tests/test_research_portfolio_cockpit_v104.py
+        run: python -m py_compile tests/test_research_portfolio_cockpit_v105.py
       - name: Run complete deterministic suite
         working-directory: private-source
         env:
@@ -63,7 +63,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: c6849710e20b9ce5d9c93a7af7b94229bb328fce
+          ref: b165df418d355073b9213a9175deae8660c58feb
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -73,18 +73,18 @@ jobs:
         shell: pwsh
         run: |
           $actual = git rev-parse HEAD
-          if ($actual -ne "c6849710e20b9ce5d9c93a7af7b94229bb328fce") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "b165df418d355073b9213a9175deae8660c58feb") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
           python-version: "3.13"
-      - name: Run V104 dashboard contracts
+      - name: Run V105 dashboard contracts
         working-directory: private-source
         shell: pwsh
         env:
           PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
-          python -m unittest discover -s tests -p "test_research_portfolio_cockpit_v104.py"
+          python -m unittest discover -s tests -p "test_research_portfolio_cockpit_v105.py"
           python -m unittest discover -s tests -p "test_research_command_center_ui_v1.py"
