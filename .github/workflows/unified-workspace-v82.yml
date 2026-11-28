@@ -1,4 +1,4 @@
-name: MarketAnalysis_AI V82 Adaptive Selection governance lineage UI
+name: MarketAnalysis_AI V82 Unified Workspace integration
 on:
   push:
     branches: [main]
@@ -77,7 +77,7 @@ jobs:
       - name: Compile V82 unified workspace shell and contracts
         working-directory: private-source
         run: python -m py_compile tests/test_unified_command_center_shell_v17.py
-      - name: Run Adaptive Selection governance lineage UI contracts
+      - name: Run V82 Unified Workspace contracts
         working-directory: private-source
         shell: pwsh
         env:
