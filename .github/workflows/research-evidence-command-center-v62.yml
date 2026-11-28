@@ -2,11 +2,11 @@ name: MarketAnalysis_AI V62 Research Basket Evidence Audit Dashboard exact-sourc
 
 on:
   push:
-    branches: [main, feature/research-basket-evidence-audit-dashboard-v62-ci]
-    paths: [".github/workflows/research-basket-evidence-audit-dashboard-v62.yml"]
+    branches: [main, feature/research-evidence-command-center-v62-ci]
+    paths: [".github/workflows/research-evidence-command-center-v62.yml"]
   pull_request:
     branches: [main]
-    paths: [".github/workflows/research-basket-evidence-audit-dashboard-v62.yml"]
+    paths: [".github/workflows/research-evidence-command-center-v62.yml"]
 
 permissions:
   contents: read
@@ -18,7 +18,7 @@ concurrency:
 jobs:
   ubuntu-full-suite:
     name: V62 — Ubuntu full deterministic suite
-    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/research-basket-evidence-audit-dashboard-v62-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V62]'))
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/research-evidence-command-center-v62-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V62]'))
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -90,7 +90,7 @@ jobs:
 
   windows-v62-contracts:
     name: V62 — Windows evidence, archive and launcher contracts
-    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/research-basket-evidence-audit-dashboard-v62-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V62]'))
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/research-evidence-command-center-v62-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V62]'))
     runs-on: windows-latest
     timeout-minutes: 45
     steps:
