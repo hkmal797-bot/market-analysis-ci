@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: c6849710e20b9ce5d9c93a7af7b94229bb328fce
+          ref: 57bb6365a06463955501d785e478642d92c006da
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -31,7 +31,7 @@ jobs:
       - name: Verify immutable source SHA
         working-directory: private-source
         env:
-          EXPECTED_SOURCE_SHA: c6849710e20b9ce5d9c93a7af7b94229bb328fce
+          EXPECTED_SOURCE_SHA: 57bb6365a06463955501d785e478642d92c006da
         run: |
           actual="$(git rev-parse HEAD)"
           test "$actual" = "$EXPECTED_SOURCE_SHA"
@@ -44,7 +44,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check cryptography
       - name: Compile dashboard and V104 test
         working-directory: private-source
-        run: python -m py_compile tests/test_research_portfolio_cockpit_v104.py
+        run: python -m py_compile tests/test_local_research_session_monitor_v104.py
       - name: Run complete deterministic suite
         working-directory: private-source
         env:
@@ -53,7 +53,7 @@ jobs:
         run: python -m unittest discover -s tests
 
   windows-dashboard-contract:
-    name: Windows — V102 dashboard contracts
+    name: Windows — V104 dashboard contracts
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
@@ -63,7 +63,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: c6849710e20b9ce5d9c93a7af7b94229bb328fce
+          ref: 57bb6365a06463955501d785e478642d92c006da
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -73,7 +73,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = git rev-parse HEAD
-          if ($actual -ne "c6849710e20b9ce5d9c93a7af7b94229bb328fce") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "57bb6365a06463955501d785e478642d92c006da") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
@@ -86,5 +86,5 @@ jobs:
           PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
-          python -m unittest discover -s tests -p "test_research_portfolio_cockpit_v104.py"
+          python -m unittest discover -s tests -p "test_local_research_session_monitor_v104.py"
           python -m unittest discover -s tests -p "test_research_command_center_ui_v1.py"
