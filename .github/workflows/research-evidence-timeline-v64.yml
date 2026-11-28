@@ -9,7 +9,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: marketanalysis-v64-d4bd34b0ef7bfff61d6e63ba7ac6ecf9acefad12
+  group: marketanalysis-v64-82947e3d3a590b654e2a9bd797595c0e82541d06
   cancel-in-progress: false
 jobs:
   ubuntu-full-suite:
@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: d4bd34b0ef7bfff61d6e63ba7ac6ecf9acefad12
+          ref: 82947e3d3a590b654e2a9bd797595c0e82541d06
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -31,7 +31,7 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "d4bd34b0ef7bfff61d6e63ba7ac6ecf9acefad12"
+          test "$actual" = "82947e3d3a590b654e2a9bd797595c0e82541d06"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: d4bd34b0ef7bfff61d6e63ba7ac6ecf9acefad12
+          ref: 82947e3d3a590b654e2a9bd797595c0e82541d06
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -85,7 +85,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
-          if ($actual -ne "d4bd34b0ef7bfff61d6e63ba7ac6ecf9acefad12") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "82947e3d3a590b654e2a9bd797595c0e82541d06") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -114,4 +114,4 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_local_launcher_v1.py" -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-# Exact immutable MarketAnalysis_AI source: d4bd34b0ef7bfff61d6e63ba7ac6ecf9acefad12
+# Exact immutable MarketAnalysis_AI source: 82947e3d3a590b654e2a9bd797595c0e82541d06
