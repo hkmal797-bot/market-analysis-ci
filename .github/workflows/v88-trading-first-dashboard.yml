@@ -667,7 +667,7 @@ jobs:
 
   v101-ubuntu-full-suite:
     name: V101 exact source — Ubuntu full deterministic suite
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V101]'))
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && (startsWith(github.event.pull_request.title, '[RUN_V101]') || startsWith(github.event.pull_request.title, '[RUN_V102]')))
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -703,7 +703,7 @@ jobs:
 
   v101-windows-focused:
     name: V101 exact source — Windows dashboard and archive contracts
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V101]'))
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && (startsWith(github.event.pull_request.title, '[RUN_V101]') || startsWith(github.event.pull_request.title, '[RUN_V102]')))
     runs-on: windows-latest
     timeout-minutes: 45
     steps:
