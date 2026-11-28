@@ -1,4 +1,4 @@
-name: V105 exact-source validation
+name: V106 exact-source validation
 
 on:
   pull_request:
@@ -8,7 +8,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: v105-exact-source-${{ github.event.pull_request.head.sha }}
+  group: v106-exact-source-${{ github.event.pull_request.head.sha }}
   cancel-in-progress: false
 
 jobs:
@@ -23,7 +23,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: a183bf7240274274e0324f586b7fd68b71f37c89
+          ref: 69b951d52705d6c22c0c49894070135d1333abc4
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -31,7 +31,7 @@ jobs:
       - name: Verify immutable source SHA
         working-directory: private-source
         env:
-          EXPECTED_SOURCE_SHA: a183bf7240274274e0324f586b7fd68b71f37c89
+          EXPECTED_SOURCE_SHA: 69b951d52705d6c22c0c49894070135d1333abc4
         run: |
           actual="$(git rev-parse HEAD)"
           test "$actual" = "$EXPECTED_SOURCE_SHA"
@@ -42,9 +42,24 @@ jobs:
           python-version: "3.13"
       - name: Install test runtime dependency
         run: python -m pip install --disable-pip-version-check cryptography
-      - name: Compile dashboard and V105 test
+      - name: Compile dashboard and V106 test
         working-directory: private-source
-        run: python -m py_compile tests/test_approved_library_command_center_v105.py tests/test_research_portfolio_cockpit_v104.py
+        run: python -m py_compile tests/test_strategy_results_explorer_v106.py tests/test_approved_library_command_center_v105.py tests/test_research_portfolio_cockpit_v104.py
+      - name: Validate dashboard HTML and JavaScript syntax
+        working-directory: private-source
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import re
+          raw = Path("apps/research-command-center/index.html").read_text(encoding="utf-8")
+          HTMLParser().feed(raw)
+          scripts = re.findall(r"<script[^>]*>(.*?)</script>", raw, re.S | re.I)
+          if len(scripts) != 1:
+              raise SystemExit("Expected one inline command-center script")
+          Path("/tmp/marketanalysis-v106-dashboard.js").write_text("\n".join(scripts), encoding="utf-8")
+          PY
+          node --check /tmp/marketanalysis-v106-dashboard.js
       - name: Run complete deterministic suite
         working-directory: private-source
         env:
@@ -53,7 +68,7 @@ jobs:
         run: python -m unittest discover -s tests
 
   windows-dashboard-contract:
-    name: Windows — V102 dashboard contracts
+    name: Windows — V106 dashboard contracts
     runs-on: windows-latest
     timeout-minutes: 15
     steps:
@@ -63,7 +78,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: a183bf7240274274e0324f586b7fd68b71f37c89
+          ref: 69b951d52705d6c22c0c49894070135d1333abc4
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -73,18 +88,21 @@ jobs:
         shell: pwsh
         run: |
           $actual = git rev-parse HEAD
-          if ($actual -ne "a183bf7240274274e0324f586b7fd68b71f37c89") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "69b951d52705d6c22c0c49894070135d1333abc4") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - name: Set up Python 3.13
         uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
           python-version: "3.13"
-      - name: Run V105 dashboard contracts
+      - name: Run V106 dashboard contracts
         working-directory: private-source
         shell: pwsh
         env:
           PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
+          python -m unittest discover -s tests -p "test_strategy_results_explorer_v106.py"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_approved_library_command_center_v105.py"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_research_command_center_ui_v1.py"
