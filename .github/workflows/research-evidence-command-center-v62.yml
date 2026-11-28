@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: marketanalysis-v62-891cdfdb78e74e0d3996f72f7785a0c6c5c9b678
+  group: marketanalysis-v62-3698542c3655af7bcbc4c34c781c4386f4277178
   cancel-in-progress: false
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 891cdfdb78e74e0d3996f72f7785a0c6c5c9b678
+          ref: 3698542c3655af7bcbc4c34c781c4386f4277178
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -35,7 +35,7 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "891cdfdb78e74e0d3996f72f7785a0c6c5c9b678"
+          test "$actual" = "3698542c3655af7bcbc4c34c781c4386f4277178"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -98,7 +98,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 891cdfdb78e74e0d3996f72f7785a0c6c5c9b678
+          ref: 3698542c3655af7bcbc4c34c781c4386f4277178
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -108,7 +108,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
-          if ($actual -ne "891cdfdb78e74e0d3996f72f7785a0c6c5c9b678") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "3698542c3655af7bcbc4c34c781c4386f4277178") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -126,11 +126,17 @@ jobs:
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
           python -m unittest discover -s tests -p "test_research_basket_evidence_audit_v60.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_research_evidence_command_center_v62.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_research_basket_stability_v59.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           # V58 selector is exercised transitively by the V59 five-scenario contract suite (each scenario calls V58).
           python -m unittest discover -s tests -p "test_all_candidate_shadow_performance_v53.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_strategy_diversification_intelligence_v57.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_local_launcher_v1.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-# Exact immutable MarketAnalysis_AI source: 891cdfdb78e74e0d3996f72f7785a0c6c5c9b678
+# Exact immutable MarketAnalysis_AI source: 3698542c3655af7bcbc4c34c781c4386f4277178
