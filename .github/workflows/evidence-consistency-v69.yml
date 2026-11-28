@@ -119,3 +119,5 @@ jobs:
           python -m unittest discover -s tests -p "test_research_evidence_command_center_v62.py" -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 # Exact immutable MarketAnalysis_AI source: 9a8a1cd0d1733c5b3b5ae053362e68d0a262c68f
+
+# Trigger V69 validation for the pinned private source SHA.
