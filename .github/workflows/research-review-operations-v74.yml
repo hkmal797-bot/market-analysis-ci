@@ -137,3 +137,5 @@ jobs:
 # Retry exact-source validation after correcting the JavaScript artifact path.
 
 # Retry V74 validation using isolated concurrency group.
+
+# Trigger final exact-source V74 validation after workflow activation.
