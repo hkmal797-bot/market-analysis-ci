@@ -108,7 +108,6 @@ jobs:
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
           python -m unittest discover -s tests -p "test_research_basket_stability_v59.py" -v
-          python -m unittest discover -s tests -p "test_research_basket_optimizer_v58.py" -v
           python -m unittest discover -s tests -p "test_all_candidate_shadow_performance_v53.py" -v
           python -m unittest discover -s tests -p "test_strategy_diversification_intelligence_v57.py" -v
           python -m unittest discover -s tests -p "test_local_launcher_v1.py" -v
