@@ -121,3 +121,5 @@ jobs:
 # Exact immutable MarketAnalysis_AI source: cdbe0dc084b1ab8c471cbeaa7980bb38135d0189
 
 # Trigger V69 validation for the pinned private source SHA.
+
+# Retry V69 validation after source fixture correction.
