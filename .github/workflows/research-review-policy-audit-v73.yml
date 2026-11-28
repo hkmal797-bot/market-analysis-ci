@@ -1,0 +1,137 @@
+name: MarketAnalysis_AI V73 Human Governance Review exact-source validation
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/research-review-policy-audit-v73.yml"]
+  pull_request:
+    branches: [main]
+    paths: [".github/workflows/research-review-policy-audit-v73.yml"]
+permissions:
+  contents: read
+concurrency:
+  group: marketanalysis-v73-d4a1ee833e92e018cbdb690dca819748c822d291-retry2
+  cancel-in-progress: false
+jobs:
+  ubuntu-full-suite:
+    name: V73 — Ubuntu full deterministic suite
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V73]'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: d4a1ee833e92e018cbdb690dca819748c822d291
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify immutable source SHA
+        working-directory: private-source
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "d4a1ee833e92e018cbdb690dca819748c822d291"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install pinned runtime dependencies
+        run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
+      - name: Compile V73 and upstream evidence chain and server
+        working-directory: private-source
+        run: python -m py_compile tools/research_review_policy_audit_v73.py tools/research_review_intelligence_v72.py tools/research_evidence_governance_review_v71.py tools/research_evidence_governance_v70.py tools/research_evidence_consistency_v69.py tools/research_evidence_lineage_intelligence_v68.py tools/research_evidence_lineage_v67.py tools/research_evidence_health_v66.py tools/research_evidence_drift_v65.py tools/research_evidence_timeline_v64.py tools/local_server.py
+      - name: Validate command center HTML and JavaScript
+        working-directory: private-source
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import re
+          raw = Path("apps/research-command-center/index.html").read_text(encoding="utf-8")
+          class Checker(HTMLParser):
+              def error(self, message):
+                  raise RuntimeError(message)
+          Checker().feed(raw)
+          scripts = re.findall(r"<script[^>]*>(.*?)</script>", raw, re.S | re.I)
+          if len(scripts) != 1:
+              raise SystemExit("Expected one inline command-center script")
+          Path("/tmp/research-evidence-governance-review-v73.js").write_text("\n".join(scripts), encoding="utf-8")
+          PY
+          node --check /tmp/research-evidence-governance-review-v73.js
+      - name: Run full deterministic suite
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests
+  windows-evidence-contracts:
+    name: V73 — Windows evidence and dashboard contracts
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V73]'))
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: d4a1ee833e92e018cbdb690dca819748c822d291
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify immutable source SHA
+        working-directory: private-source
+        shell: pwsh
+        run: |
+          $actual = (git rev-parse HEAD).Trim()
+          if ($actual -ne "d4a1ee833e92e018cbdb690dca819748c822d291") { throw "Source SHA mismatch: $actual" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install pinned runtime dependencies
+        run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
+      - name: Compile V73 evidence modules and server
+        working-directory: private-source
+        run: python -m py_compile tools/research_review_policy_audit_v73.py tools/research_evidence_governance_review_v71.py tools/research_evidence_lineage_intelligence_v68.py tools/research_evidence_lineage_v67.py tools/research_evidence_health_v66.py tools/local_server.py
+      - name: Run V73 and upstream evidence contracts
+        working-directory: private-source
+        shell: pwsh
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m unittest discover -s tests -p "test_research_review_policy_audit_v73.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_review_intelligence_v72.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_evidence_governance_review_v71.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_evidence_governance_v70.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_evidence_lineage_intelligence_v68.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_evidence_lineage_v67.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_evidence_health_v66.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_evidence_drift_v65.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_evidence_timeline_v64.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_basket_evidence_receipts_v63.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_evidence_command_center_v62.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+# Exact immutable MarketAnalysis_AI source: d4a1ee833e92e018cbdb690dca819748c822d291
+
+# Trigger V73 validation for the pinned private source SHA.
+
+# Retry V73 validation after source fixture correction.
+
+# Exact immutable MarketAnalysis_AI source: d4a1ee833e92e018cbdb690dca819748c822d291
+
+# Retry exact-source validation after correcting the JavaScript artifact path.
+
+# Retry V73 validation using isolated concurrency group.
