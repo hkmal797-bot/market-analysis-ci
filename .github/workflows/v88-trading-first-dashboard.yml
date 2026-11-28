@@ -99,7 +99,7 @@ jobs:
 
   v89-ubuntu-full-suite:
     name: V89 exact source — Ubuntu full deterministic suite
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && (startsWith(github.event.pull_request.title, '[RUN_V89]') || startsWith(github.event.pull_request.title, '[RUN_V90]')))
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && (startsWith(github.event.pull_request.title, '[RUN_V89]') || (startsWith(github.event.pull_request.title, '[RUN_V90]') || startsWith(github.event.pull_request.title, '[RUN_V91]'))))
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -107,7 +107,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 693fd785d5c33f1928708701a1a0a7bf225be51f
+          ref: 2d0249f75298e8a43379b17eaed8f88caefba37c
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -116,7 +116,7 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "693fd785d5c33f1928708701a1a0a7bf225be51f"
+          test "$actual" = "2d0249f75298e8a43379b17eaed8f88caefba37c"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -135,7 +135,7 @@ jobs:
 
   v89-windows-focused:
     name: V89 exact source — Windows focused contracts
-    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && (startsWith(github.event.pull_request.title, '[RUN_V89]') || startsWith(github.event.pull_request.title, '[RUN_V90]')))
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && (startsWith(github.event.pull_request.title, '[RUN_V89]') || (startsWith(github.event.pull_request.title, '[RUN_V90]') || startsWith(github.event.pull_request.title, '[RUN_V91]'))))
     runs-on: windows-latest
     timeout-minutes: 45
     steps:
@@ -143,7 +143,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 693fd785d5c33f1928708701a1a0a7bf225be51f
+          ref: 2d0249f75298e8a43379b17eaed8f88caefba37c
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -153,7 +153,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
-          if ($actual -ne "693fd785d5c33f1928708701a1a0a7bf225be51f") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "2d0249f75298e8a43379b17eaed8f88caefba37c") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
