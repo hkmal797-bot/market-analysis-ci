@@ -582,3 +582,84 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_order_lifecycle_archive_v86.py" -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+
+  v100-ubuntu-full-suite:
+    name: V100 exact source — Ubuntu full deterministic suite
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V100]'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 712311757f45d836af7295ee9438e2e8b9ee426f
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify immutable source SHA
+        working-directory: private-source
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "712311757f45d836af7295ee9438e2e8b9ee426f"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install pinned runtime dependencies
+        run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
+      - name: Compile V100 dashboard and research contracts
+        working-directory: private-source
+        run: python -m py_compile tools/local_server.py tools/trading_dashboard_research_v89.py tests/test_trading_dashboard_research_v89.py tests/test_research_command_center_ui_v1.py
+      - name: Run full deterministic suite
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests
+
+  v100-windows-focused:
+    name: V100 exact source — Windows dashboard and archive contracts
+    if: github.event_name == 'workflow_dispatch' || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V100]'))
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 712311757f45d836af7295ee9438e2e8b9ee426f
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify immutable source SHA
+        working-directory: private-source
+        shell: pwsh
+        run: |
+          $actual = (git rev-parse HEAD).Trim()
+          if ($actual -ne "712311757f45d836af7295ee9438e2e8b9ee426f") { throw "Source SHA mismatch: $actual" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install pinned runtime dependencies
+        run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
+      - name: Compile V100 dashboard and research contracts
+        working-directory: private-source
+        run: python -m py_compile tools/local_server.py tools/trading_dashboard_research_v89.py tests/test_trading_dashboard_research_v89.py tests/test_research_command_center_ui_v1.py
+      - name: Run focused dashboard and archive contracts
+        working-directory: private-source
+        shell: pwsh
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m unittest discover -s tests -p "test_research_command_center_ui_v1.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_trading_dashboard_research_v89.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_order_lifecycle_archive_v86.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
