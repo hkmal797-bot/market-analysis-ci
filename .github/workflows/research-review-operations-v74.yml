@@ -2,10 +2,10 @@ name: MarketAnalysis_AI V74 Human Governance Review exact-source validation
 on:
   push:
     branches: [main]
-    paths: [".github/workflows/research-review-policy-audit-v74.yml"]
+    paths: [".github/workflows/research-review-operations-v74.yml"]
   pull_request:
     branches: [main]
-    paths: [".github/workflows/research-review-policy-audit-v74.yml"]
+    paths: [".github/workflows/research-review-operations-v74.yml"]
 permissions:
   contents: read
 concurrency:
@@ -103,6 +103,8 @@ jobs:
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
           python -m unittest discover -s tests -p "test_research_review_operations_center_v74.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_review_policy_audit_v73.py" -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_research_review_intelligence_v72.py" -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
