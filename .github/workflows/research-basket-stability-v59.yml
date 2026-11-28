@@ -2,11 +2,11 @@ name: MarketAnalysis_AI V59 Research Basket Optimizer exact-source validation
 
 on:
   push:
-    branches: [main, feature/research-basket-optimizer-v59-ci]
-    paths: [".github/workflows/research-basket-optimizer-v59.yml"]
+    branches: [main, feature/research-basket-stability-v59-ci]
+    paths: [".github/workflows/research-basket-stability-v59.yml"]
   pull_request:
     branches: [main]
-    paths: [".github/workflows/research-basket-optimizer-v59.yml"]
+    paths: [".github/workflows/research-basket-stability-v59.yml"]
 
 permissions:
   contents: read
@@ -18,7 +18,7 @@ concurrency:
 jobs:
   ubuntu-full-suite:
     name: V59 — Ubuntu full deterministic suite
-    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/research-basket-optimizer-v59-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V59]'))
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/research-basket-stability-v59-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V59]'))
     runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
@@ -72,7 +72,7 @@ jobs:
 
   windows-v59-contracts:
     name: V59 — Windows optimizer, archive, HTTP and launcher contracts
-    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/research-basket-optimizer-v59-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V59]'))
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/research-basket-stability-v59-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V59]'))
     runs-on: windows-latest
     timeout-minutes: 45
     steps:
