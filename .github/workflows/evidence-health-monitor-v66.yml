@@ -1,0 +1,121 @@
+name: MarketAnalysis_AI V66 Evidence Health exact-source validation
+on:
+  push:
+    branches: [main, feature/evidence-health-monitor-v66-ci]
+    paths: [".github/workflows/evidence-health-monitor-v66.yml"]
+  pull_request:
+    branches: [main]
+    paths: [".github/workflows/evidence-health-monitor-v66.yml"]
+permissions:
+  contents: read
+concurrency:
+  group: marketanalysis-v66-0f3fcf1863f3bd083eeadcb3aa3fff3c4441ad44
+  cancel-in-progress: false
+jobs:
+  ubuntu-full-suite:
+    name: V66 — Ubuntu full deterministic suite
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/evidence-health-monitor-v66-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V66]'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 0f3fcf1863f3bd083eeadcb3aa3fff3c4441ad44
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify immutable source SHA
+        working-directory: private-source
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "0f3fcf1863f3bd083eeadcb3aa3fff3c4441ad44"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install pinned runtime dependencies
+        run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
+      - name: Compile V66, V65, V64 and server
+        working-directory: private-source
+        run: python -m py_compile tools/research_evidence_health_v66.py tools/research_evidence_drift_v65.py tools/research_evidence_timeline_v64.py tools/local_server.py
+      - name: Validate command center HTML and JavaScript
+        working-directory: private-source
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import re
+          raw = Path("apps/research-command-center/index.html").read_text(encoding="utf-8")
+          class Checker(HTMLParser):
+              def error(self, message):
+                  raise RuntimeError(message)
+          Checker().feed(raw)
+          scripts = re.findall(r"<script[^>]*>(.*?)</script>", raw, re.S | re.I)
+          if len(scripts) != 1:
+              raise SystemExit("Expected one inline command-center script")
+          Path("/tmp/research-evidence-command-center-v66.js").write_text("\n".join(scripts), encoding="utf-8")
+          PY
+          node --check /tmp/research-evidence-command-center-v66.js
+      - name: Run full deterministic suite
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests
+  windows-v66-contracts:
+    name: V66 — Windows evidence and dashboard contracts
+    if: (github.event_name == 'push' && (github.ref == 'refs/heads/main' || github.ref == 'refs/heads/feature/evidence-health-monitor-v66-ci')) || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V66]'))
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 0f3fcf1863f3bd083eeadcb3aa3fff3c4441ad44
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify immutable source SHA
+        working-directory: private-source
+        shell: pwsh
+        run: |
+          $actual = (git rev-parse HEAD).Trim()
+          if ($actual -ne "0f3fcf1863f3bd083eeadcb3aa3fff3c4441ad44") { throw "Source SHA mismatch: $actual" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install pinned runtime dependencies
+        run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
+      - name: Compile V66, V65, V64 and server
+        working-directory: private-source
+        run: python -m py_compile tools/research_evidence_health_v66.py tools/research_evidence_drift_v65.py tools/research_evidence_timeline_v64.py tools/local_server.py
+      - name: Run V66 and upstream evidence contracts
+        working-directory: private-source
+        shell: pwsh
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m unittest discover -s tests -p "test_research_evidence_health_v66.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_evidence_drift_v65.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_evidence_timeline_v64.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_basket_evidence_receipts_v63.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_evidence_command_center_v62.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_basket_evidence_audit_v60.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_basket_stability_v59.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_local_launcher_v1.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+# Exact immutable MarketAnalysis_AI source: 0f3fcf1863f3bd083eeadcb3aa3fff3c4441ad44
