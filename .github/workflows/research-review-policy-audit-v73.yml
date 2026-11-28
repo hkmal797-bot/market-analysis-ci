@@ -2,14 +2,14 @@ name: MarketAnalysis_AI V73 Human Governance Review exact-source validation
 on:
   push:
     branches: [main]
-    paths: [".github/workflows/research-review-intelligence-v73.yml"]
+    paths: [".github/workflows/research-review-policy-audit-v73.yml"]
   pull_request:
     branches: [main]
-    paths: [".github/workflows/research-review-intelligence-v73.yml"]
+    paths: [".github/workflows/research-review-policy-audit-v73.yml"]
 permissions:
   contents: read
 concurrency:
-  group: marketanalysis-v73-9ae3ed731245d8fdd668435d50f66628fda900b8-retry2
+  group: marketanalysis-v73-d4a1ee833e92e018cbdb690dca819748c822d291-retry2
   cancel-in-progress: false
 jobs:
   ubuntu-full-suite:
@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 9ae3ed731245d8fdd668435d50f66628fda900b8
+          ref: d4a1ee833e92e018cbdb690dca819748c822d291
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -31,7 +31,7 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "9ae3ed731245d8fdd668435d50f66628fda900b8"
+          test "$actual" = "d4a1ee833e92e018cbdb690dca819748c822d291"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -40,7 +40,7 @@ jobs:
         run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
       - name: Compile V73 and upstream evidence chain and server
         working-directory: private-source
-        run: python -m py_compile tools/research_review_policy_audit_v73.py tools/research_evidence_governance_review_v71.py tools/research_evidence_governance_v70.py tools/research_evidence_consistency_v69.py tools/research_evidence_lineage_intelligence_v68.py tools/research_evidence_lineage_v67.py tools/research_evidence_health_v66.py tools/research_evidence_drift_v65.py tools/research_evidence_timeline_v64.py tools/local_server.py
+        run: python -m py_compile tools/research_review_policy_audit_v73.py tools/research_review_intelligence_v72.py tools/research_evidence_governance_review_v71.py tools/research_evidence_governance_v70.py tools/research_evidence_consistency_v69.py tools/research_evidence_lineage_intelligence_v68.py tools/research_evidence_lineage_v67.py tools/research_evidence_health_v66.py tools/research_evidence_drift_v65.py tools/research_evidence_timeline_v64.py tools/local_server.py
       - name: Validate command center HTML and JavaScript
         working-directory: private-source
         run: |
@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 9ae3ed731245d8fdd668435d50f66628fda900b8
+          ref: d4a1ee833e92e018cbdb690dca819748c822d291
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -85,7 +85,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
-          if ($actual -ne "9ae3ed731245d8fdd668435d50f66628fda900b8") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "d4a1ee833e92e018cbdb690dca819748c822d291") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -124,13 +124,13 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_research_evidence_command_center_v62.py" -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-# Exact immutable MarketAnalysis_AI source: 9ae3ed731245d8fdd668435d50f66628fda900b8
+# Exact immutable MarketAnalysis_AI source: d4a1ee833e92e018cbdb690dca819748c822d291
 
 # Trigger V73 validation for the pinned private source SHA.
 
 # Retry V73 validation after source fixture correction.
 
-# Exact immutable MarketAnalysis_AI source: 9ae3ed731245d8fdd668435d50f66628fda900b8
+# Exact immutable MarketAnalysis_AI source: d4a1ee833e92e018cbdb690dca819748c822d291
 
 # Retry exact-source validation after correcting the JavaScript artifact path.
 
