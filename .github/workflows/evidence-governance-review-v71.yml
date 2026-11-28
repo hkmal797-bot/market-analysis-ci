@@ -9,7 +9,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: marketanalysis-v71-45a082390abd135eed0a6e681aac16b557905f30
+  group: marketanalysis-v71-45a082390abd135eed0a6e681aac16b557905f30-retry2
   cancel-in-progress: false
 jobs:
   ubuntu-full-suite:
