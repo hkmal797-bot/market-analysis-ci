@@ -123,3 +123,5 @@ jobs:
           python -m unittest discover -s tests -p "test_local_launcher_v1.py" -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 # Exact immutable MarketAnalysis_AI source: de947cc4e25d39c9c601c9a5615831e6a67373a7
+
+# Trigger V68 validation after the workflow was installed on the base branch.
