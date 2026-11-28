@@ -83,7 +83,7 @@ jobs:
       - name: Emit current Phase 07 SHA-256 values for manifest reconciliation
         working-directory: private-source
         run: |
-          python -c "import hashlib,pathlib; p=pathlib.Path('docs/DATA_LAST_PHASE07_EXECUTION_LIFECYCLE_SHA256SUMS.txt'); rows=[x.split(None,1) for x in p.read_text(encoding='utf-8').splitlines() if x and not x.startswith('#')]; bad=[name for digest,name in rows if hashlib.sha256(pathlib.Path(name).read_bytes()).hexdigest()!=digest]; print('MANIFEST_FAILURES='+','.join(bad)); assert not bad"
+          python -c "import hashlib,pathlib,subprocess; p=pathlib.Path('docs/DATA_LAST_PHASE07_EXECUTION_LIFECYCLE_SHA256SUMS.txt'); rows=[x.split(None,1) for x in p.read_text(encoding='utf-8').splitlines() if x and not x.startswith('#')]; bad=[name for digest,name in rows if hashlib.sha256(subprocess.check_output(['git','show','HEAD:'+name])).hexdigest()!=digest]; print('MANIFEST_FAILURES='+','.join(bad)); assert not bad"
       - name: Run Phase 07 lifecycle contracts
         working-directory: private-source
         shell: pwsh
