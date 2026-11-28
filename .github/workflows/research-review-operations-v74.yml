@@ -9,7 +9,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: marketanalysis-v74-0475d1e24551eb9813490e7a774397d391ab5898-retry2
+  group: marketanalysis-v74-2f193d59d61f6ee20de8d4adfb17e3e03bdd4887-retry2
   cancel-in-progress: false
 jobs:
   ubuntu-full-suite:
@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 0475d1e24551eb9813490e7a774397d391ab5898
+          ref: 2f193d59d61f6ee20de8d4adfb17e3e03bdd4887
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -31,7 +31,7 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "0475d1e24551eb9813490e7a774397d391ab5898"
+          test "$actual" = "2f193d59d61f6ee20de8d4adfb17e3e03bdd4887"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -75,7 +75,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 0475d1e24551eb9813490e7a774397d391ab5898
+          ref: 2f193d59d61f6ee20de8d4adfb17e3e03bdd4887
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -85,7 +85,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
-          if ($actual -ne "0475d1e24551eb9813490e7a774397d391ab5898") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "2f193d59d61f6ee20de8d4adfb17e3e03bdd4887") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -126,16 +126,18 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_research_evidence_command_center_v62.py" -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-# Exact immutable MarketAnalysis_AI source: 0475d1e24551eb9813490e7a774397d391ab5898
+# Exact immutable MarketAnalysis_AI source: 2f193d59d61f6ee20de8d4adfb17e3e03bdd4887
 
 # Trigger V74 validation for the pinned private source SHA.
 
 # Retry V74 validation after source fixture correction.
 
-# Exact immutable MarketAnalysis_AI source: 0475d1e24551eb9813490e7a774397d391ab5898
+# Exact immutable MarketAnalysis_AI source: 2f193d59d61f6ee20de8d4adfb17e3e03bdd4887
 
 # Retry exact-source validation after correcting the JavaScript artifact path.
 
 # Retry V74 validation using isolated concurrency group.
 
 # Trigger final exact-source V74 validation after workflow activation.
+
+# Retry after the initial GitHub Actions run was cancelled before job allocation.
