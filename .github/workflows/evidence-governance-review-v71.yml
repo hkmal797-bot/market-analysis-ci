@@ -131,3 +131,5 @@ jobs:
 # Retry exact-source validation after correcting the JavaScript artifact path.
 
 # Retry V71 validation using isolated concurrency group.
+
+# Keep the exact-source V71 retry active on its PR event.
