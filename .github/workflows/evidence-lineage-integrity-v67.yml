@@ -121,3 +121,5 @@ jobs:
           python -m unittest discover -s tests -p "test_local_launcher_v1.py" -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 # Exact immutable MarketAnalysis_AI source: e4fb809db4f456bed5e9e5260e6edd159ca1cb51
+
+# Trigger exact-source validation for V67 source review.
