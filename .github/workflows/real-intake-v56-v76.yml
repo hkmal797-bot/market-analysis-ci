@@ -1,0 +1,124 @@
+name: MarketAnalysis_AI V76 real-intake V56 exact-source validation
+on:
+  push:
+    branches: [main]
+    paths: [".github/workflows/real-intake-v56-v76.yml"]
+  pull_request:
+    branches: [main]
+    paths: [".github/workflows/real-intake-v56-v76.yml"]
+permissions:
+  contents: read
+concurrency:
+  group: marketanalysis-v76-1fa2b4e54b299c3c3bcc409e6df5c6f2767187e4
+  cancel-in-progress: false
+jobs:
+  ubuntu-full-suite:
+    name: V76 exact source — Ubuntu full deterministic suite
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V76]'))
+    runs-on: ubuntu-latest
+    timeout-minutes: 60
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 1fa2b4e54b299c3c3bcc409e6df5c6f2767187e4
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify immutable source SHA
+        working-directory: private-source
+        run: |
+          actual="$(git rev-parse HEAD)"
+          test "$actual" = "1fa2b4e54b299c3c3bcc409e6df5c6f2767187e4"
+          echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install pinned runtime dependencies
+        run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
+      - name: Compile affected application and tests
+        working-directory: private-source
+        run: python -m py_compile tools/local_server.py tools/market_data_intake.py tools/market_data_admission.py tools/research_dataset_bridge_v45.py tools/approved_strategy_library_v55.py tools/approved_library_evaluation_v56.py tests/test_v56_intake_to_evaluation_boundary_v1.py
+      - name: Validate command-center HTML and JavaScript
+        working-directory: private-source
+        run: |
+          python - <<'PY'
+          from html.parser import HTMLParser
+          from pathlib import Path
+          import re
+          raw = Path("apps/research-command-center/strategy-library.html").read_text(encoding="utf-8")
+          class Checker(HTMLParser):
+              def error(self, message):
+                  raise RuntimeError(message)
+          Checker().feed(raw)
+          scripts = re.findall(r"<script[^>]*>(.*?)</script>", raw, re.S | re.I)
+          if len(scripts) != 1:
+              raise SystemExit("Expected one inline strategy-library script")
+          Path("/tmp/marketanalysis-v76-strategy-library.js").write_text("\n".join(scripts), encoding="utf-8")
+          PY
+          node --check /tmp/marketanalysis-v76-strategy-library.js
+      - name: Run full deterministic suite
+        working-directory: private-source
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: python -m unittest discover -s tests
+  windows-intake-and-research-contracts:
+    name: V76 exact source — Windows intake and V56 contracts
+    if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V76]'))
+    runs-on: windows-latest
+    timeout-minutes: 45
+    steps:
+      - name: Checkout exact MarketAnalysis_AI source
+        uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
+        with:
+          repository: hkmal797-bot/market-analysis-system
+          ref: 1fa2b4e54b299c3c3bcc409e6df5c6f2767187e4
+          token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
+          path: private-source
+          persist-credentials: false
+          fetch-depth: 1
+      - name: Verify immutable source SHA
+        working-directory: private-source
+        shell: pwsh
+        run: |
+          $actual = (git rev-parse HEAD).Trim()
+          if ($actual -ne "1fa2b4e54b299c3c3bcc409e6df5c6f2767187e4") { throw "Source SHA mismatch: $actual" }
+          Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
+      - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
+        with:
+          python-version: "3.13"
+      - name: Install pinned runtime dependencies
+        run: python -m pip install --disable-pip-version-check cryptography==50.0.2 tzdata==2026.6
+      - name: Compile affected application
+        working-directory: private-source
+        run: python -m py_compile tools/local_server.py tools/market_data_intake.py tools/market_data_admission.py tools/research_dataset_bridge_v45.py tools/approved_strategy_library_v55.py tools/approved_library_evaluation_v56.py
+      - name: Run intake-to-evaluation boundary contracts
+        working-directory: private-source
+        shell: pwsh
+        env:
+          PYTHONPATH: src
+          PYTHONDONTWRITEBYTECODE: "1"
+        run: |
+          python -m unittest discover -s tests -p "test_v56_intake_to_evaluation_boundary_v1.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_approved_strategy_library_v55.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_approved_strategy_library_http_v55.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_approved_library_evaluation_v56.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_approved_library_evaluation_http_v56.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_market_data_intake_v1.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_market_data_intake_http_v1.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_market_data_admission_readiness_v1.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_research_dataset_bridge_v45.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_local_launcher_v1.py" -v
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
