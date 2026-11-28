@@ -101,5 +101,8 @@ jobs:
           PYTHONPATH: src
           PYTHONDONTWRITEBYTECODE: "1"
         run: |
-          python -m unittest discover -s tests -p "test_strategy_results_explorer_v106.py"\n          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }\n          python -m unittest discover -s tests -p "test_approved_library_command_center_v105.py"\n          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_strategy_results_explorer_v106.py"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+          python -m unittest discover -s tests -p "test_approved_library_command_center_v105.py"
+          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_research_command_center_ui_v1.py"
