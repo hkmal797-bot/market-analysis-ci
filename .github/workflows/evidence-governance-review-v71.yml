@@ -58,7 +58,7 @@ jobs:
               raise SystemExit("Expected one inline command-center script")
           Path("/tmp/research-evidence-governance-review-v71.js").write_text("\n".join(scripts), encoding="utf-8")
           PY
-          node --check /tmp/research-evidence-consistency-v71.js
+          node --check /tmp/research-evidence-governance-review-v71.js
       - name: Run full deterministic suite
         working-directory: private-source
         env:
