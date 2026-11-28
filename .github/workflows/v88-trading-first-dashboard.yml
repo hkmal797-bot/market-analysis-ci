@@ -9,7 +9,7 @@ on:
 permissions:
   contents: read
 concurrency:
-  group: marketanalysis-v88-833db8f3c4b3bdbf64bd62e1dc294cd6594b37d9
+  group: marketanalysis-v88-7bfb9f7b076f772b58aa4766d8bb94a06126e5a0
   cancel-in-progress: false
 jobs:
   ubuntu-full-suite:
@@ -22,7 +22,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 833db8f3c4b3bdbf64bd62e1dc294cd6594b37d9
+          ref: 7bfb9f7b076f772b58aa4766d8bb94a06126e5a0
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -31,7 +31,7 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "833db8f3c4b3bdbf64bd62e1dc294cd6594b37d9"
+          test "$actual" = "7bfb9f7b076f772b58aa4766d8bb94a06126e5a0"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -57,7 +57,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 833db8f3c4b3bdbf64bd62e1dc294cd6594b37d9
+          ref: 7bfb9f7b076f772b58aa4766d8bb94a06126e5a0
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -67,7 +67,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
-          if ($actual -ne "833db8f3c4b3bdbf64bd62e1dc294cd6594b37d9") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "7bfb9f7b076f772b58aa4766d8bb94a06126e5a0") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
