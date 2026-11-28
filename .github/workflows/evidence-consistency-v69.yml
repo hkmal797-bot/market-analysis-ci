@@ -123,3 +123,5 @@ jobs:
 # Trigger V69 validation for the pinned private source SHA.
 
 # Retry V69 validation after source fixture correction.
+
+# Run V69 validation from an open helper pull request.
