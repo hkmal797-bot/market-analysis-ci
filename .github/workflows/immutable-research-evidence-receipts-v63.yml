@@ -12,7 +12,7 @@ permissions:
   contents: read
 
 concurrency:
-  group: marketanalysis-v63-13852e5431d07e488c17261c6bc78880efd2bd36
+  group: marketanalysis-v63-3572f20c6857fb4e8eb11ca51349ec182a23a226
   cancel-in-progress: false
 
 jobs:
@@ -26,7 +26,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 13852e5431d07e488c17261c6bc78880efd2bd36
+          ref: 3572f20c6857fb4e8eb11ca51349ec182a23a226
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -35,7 +35,7 @@ jobs:
         working-directory: private-source
         run: |
           actual="$(git rev-parse HEAD)"
-          test "$actual" = "13852e5431d07e488c17261c6bc78880efd2bd36"
+          test "$actual" = "3572f20c6857fb4e8eb11ca51349ec182a23a226"
           echo "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -98,7 +98,7 @@ jobs:
         uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1
         with:
           repository: hkmal797-bot/market-analysis-system
-          ref: 13852e5431d07e488c17261c6bc78880efd2bd36
+          ref: 3572f20c6857fb4e8eb11ca51349ec182a23a226
           token: ${{ secrets.PRIVATE_REPO_READ_TOKEN }}
           path: private-source
           persist-credentials: false
@@ -108,7 +108,7 @@ jobs:
         shell: pwsh
         run: |
           $actual = (git rev-parse HEAD).Trim()
-          if ($actual -ne "13852e5431d07e488c17261c6bc78880efd2bd36") { throw "Source SHA mismatch: $actual" }
+          if ($actual -ne "3572f20c6857fb4e8eb11ca51349ec182a23a226") { throw "Source SHA mismatch: $actual" }
           Write-Output "PRIVATE_SOURCE_SHA_VERIFIED=$actual"
       - uses: actions/setup-python@6d4fd22b20465ccc0f7354476588e8df7c9ca0e0
         with:
@@ -141,4 +141,4 @@ jobs:
           python -m unittest discover -s tests -p "test_local_launcher_v1.py" -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
 
-# Exact immutable MarketAnalysis_AI source: 13852e5431d07e488c17261c6bc78880efd2bd36
+# Exact immutable MarketAnalysis_AI source: 3572f20c6857fb4e8eb11ca51349ec182a23a226
