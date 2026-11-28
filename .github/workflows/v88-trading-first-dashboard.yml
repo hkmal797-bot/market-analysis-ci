@@ -1,4 +1,4 @@
-name: MarketAnalysis_AI V88 Order Lifecycle Archive Integrity acceptance
+name: MarketAnalysis_AI V88 Trading-first Dashboard acceptance
 on:
   push:
     branches: [main]
@@ -48,7 +48,7 @@ jobs:
           PYTHONDONTWRITEBYTECODE: "1"
         run: python -m unittest discover -s tests
   windows-focused-contracts:
-    name: V88 exact source — Windows archive and runtime contracts
+    name: V88 exact source — Windows dashboard and runtime contracts
     if: (github.event_name == 'push' && github.ref == 'refs/heads/main') || (github.event_name == 'pull_request' && github.event.pull_request.head.repo.full_name == 'hkmal797-bot/market-analysis-ci' && startsWith(github.event.pull_request.title, '[RUN_V88]'))
     runs-on: windows-latest
     timeout-minutes: 45
@@ -77,7 +77,7 @@ jobs:
       - name: Compile V88 dashboard contracts
         working-directory: private-source
         run: python -m py_compile tools/local_server.py tests/test_research_command_center_ui_v1.py
-      - name: Run focused lifecycle and runtime contracts
+      - name: Run focused dashboard and runtime contracts
         working-directory: private-source
         shell: pwsh
         env:
@@ -93,8 +93,6 @@ jobs:
           python -m unittest discover -s tests -p "test_execution_lifecycle_v1.py" -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_local_runtime_status_v2.py" -v
-          if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
-          python -m unittest discover -s tests -p "test_research_command_center_ui_v1.py" -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_stage06_import_boundary.py" -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
