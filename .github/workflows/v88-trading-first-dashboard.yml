@@ -176,3 +176,5 @@ jobs:
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
           python -m unittest discover -s tests -p "test_strategy_performance_ledger_v52.py" -v
           if ($LASTEXITCODE -ne 0) { exit $LASTEXITCODE }
+
+# Trigger the exact-source V89 acceptance workflow after its jobs were installed on main.
